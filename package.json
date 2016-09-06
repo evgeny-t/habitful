@@ -1,5 +1,5 @@
 {
-  "name": "My Habits",
+  "name": "my-habits",
   "version": "0.0.0",
   "description": "Habits coach",
   "main": "webpack.config.js",
