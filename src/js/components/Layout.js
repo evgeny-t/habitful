@@ -21,7 +21,7 @@ export default class Layout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: 'Comment Box',
+      title: 'My Habits',
       drawer: false
     };
 
