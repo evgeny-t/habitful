@@ -1,19 +1,22 @@
 'use strict';
 
-import EventEmitter from 'events';
+// import EventEmitter from 'events';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, 
   browserHistory, IndexRoute } from 'react-router';
 
-import _ from 'lodash';
-import moment from 'moment';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+// import _ from 'lodash';
+// import moment from 'moment';
+// import request from 'superagent';
 
 import Layout from './components/Layout';
 import A from './pages/A';
 
-import request from 'superagent';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // Needed for onTouchTap

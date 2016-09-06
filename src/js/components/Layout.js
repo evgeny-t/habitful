@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import _ from 'lodash';
-import moment from 'moment';
+// import _ from 'lodash';
+// import moment from 'moment';
 
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
-import FontIcon from 'material-ui/FontIcon';
+// import FontIcon from 'material-ui/FontIcon';
 import Avatar from 'material-ui/Avatar';
-import FlatButton from 'material-ui/FlatButton';
+// import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -19,23 +19,20 @@ import Footer from './Footer';
 
 export default class Layout extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
       title: 'Comment Box',
       drawer: false
     };
 
-    props.route.controller.on('user', user => {
-      this.setState(_.merge(this.state, user));
-    });
-
-    this.handleBurgerClick = e => {
+    this.handleBurgerClick = () => {
       this.setState({ drawer: !this.state.drawer });
     };
   }
 
   render() {
 // TODO(ET): move style to styles
+// TODO(ET): correct auth
     const signInButton = (
       <RaisedButton 
         label='Sign in' 
@@ -49,6 +46,7 @@ export default class Layout extends React.Component {
     );
 
 // TODO(ET): move style to styles
+// TODO(ET): correct sign-out
     const avatar = (
       <IconMenu 
         iconButtonElement={
@@ -61,7 +59,7 @@ export default class Layout extends React.Component {
         desktop={true}
       >
         <MenuItem primaryText='Sign out' 
-          onClick={() => this.props.route.controller.signOut()} 
+          onClick={() => { console.error('not implemented'); }} 
         />
       </IconMenu>
     );
