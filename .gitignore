@@ -1,0 +1,6 @@
+node_modules
+client.min.js
+*.sublime-workspace
+set-env
+.version
+.build

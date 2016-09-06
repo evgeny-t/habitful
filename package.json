@@ -1,0 +1,36 @@
+{
+  "name": "My Habits",
+  "version": "0.0.0",
+  "description": "Habits coach",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "lodash": "^4.14.1",
+    "material-ui": "^0.15.4",
+    "moment": "^2.14.1",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
+    "react-router": "^2.6.1",
+    "react-tap-event-plugin": "^1.0.0",
+    "superagent": "^2.2.0",
+    "webpack": "^1.12.9"
+  },
+  "devDependencies": {
+    "babel-core": "^6.13.2",
+    "babel-loader": "^6.2.0",
+    "babel-plugin-add-module-exports": "^0.1.2",
+    "babel-plugin-react-html-attrs": "^2.0.0",
+    "babel-plugin-transform-class-properties": "^6.3.13",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "webpack-dev-server": "^1.15.0"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --content-base src --inline --hot --watch-poll --history-api-fallback",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "NODE_ENV=production webpack"
+  },
+  "author": "",
+  "license": "ISC"
+}
