@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import { browserHistory } from 'react-router';
 
 // import _ from 'lodash';
 // import moment from 'moment';
@@ -14,6 +15,7 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 import Footer from './Footer';
 
@@ -22,12 +24,12 @@ export default class Layout extends React.Component {
     super(props);
     this.state = {
       title: 'My Habits',
-      drawer: false
+      drawer: false,
     };
+  }
 
-    this.handleBurgerClick = () => {
-      this.setState({ drawer: !this.state.drawer });
-    };
+  handleBurgerClick = () => {
+    this.setState({ drawer: !this.state.drawer });
   }
 
   render() {

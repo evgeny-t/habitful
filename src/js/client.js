@@ -5,7 +5,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, 
-  browserHistory, IndexRoute } from 'react-router';
+  browserHistory, IndexRedirect } from 'react-router';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -15,7 +15,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 // import request from 'superagent';
 
 import Layout from './components/Layout';
-import A from './pages/A';
+import TabbedContent from './components/TabbedContent';
 
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -30,7 +30,8 @@ ReactDOM.render((
   <MuiThemeProvider muiTheme={muiTheme}>
     <Router history={browserHistory}>
       <Route path='/' component={Layout}>
-        <IndexRoute component={A} />
+        <IndexRedirect to='/habits' />
+        <Route path='/:q' component={TabbedContent} />
       </Route>
     </Router>
   </MuiThemeProvider>
