@@ -8,6 +8,7 @@ import moment from 'moment';
 import {  
 } from '../styles';
 
+import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -18,10 +19,15 @@ const topics_addNew = {
   position: 'fixed',
   marginRight: 50,
   marginBottom: 50,
-  zIndex: 1,
+  //zIndex: 1,
 };
 
-export default class A extends React.Component {
+export default class Habits extends React.Component {
+  static propTypes = {
+    habits: React.PropTypes.array,
+    isActive: React.PropTypes.bool
+  }
+
   constructor(props) {
     super(props);
 
@@ -39,18 +45,17 @@ export default class A extends React.Component {
   }
 
   render() {
+    const habitItems = _.map(this.props.habits, 
+      habit => (<ListItem primaryText={habit.text} key={habit.text} />));
     return (
       <div>
         <List>
-          <ListItem primaryText="Haya1" />
-          <ListItem primaryText="Haya2" />
-          <ListItem primaryText="Haya3" />
-          <ListItem primaryText="Haya4" />
+          {habitItems}
         </List>
         <FloatingActionButton 
           onClick={this.handleNewHabit}
           zDepth={2}
-          style={topics_addNew}>
+          style={this.props.isActive ? topics_addNew : null}>
           <ContentAdd />
         </FloatingActionButton>
       </div>

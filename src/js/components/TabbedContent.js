@@ -13,11 +13,42 @@ import Habits from '../pages/Habits';
 import Overview from '../pages/Overview';
 import Today from '../pages/Today';
 
+const HABITS_STUB = [
+  {
+    text: 'Running',
+    description: 'it will help me to be more healty',
+    period: {
+      value: 1,
+      type: 'day'
+    }
+  },
+
+  {
+    text: 'Writing Writing Writing Writing Writing Writing Writing Writing',
+    description: 'it will help me to obtain the voice ;)',
+    period: {
+      value: 1,
+      type: 'week'
+    }
+  },
+
+  {
+    text: 'Push-ups',
+    description: 'it will help me to be more muscled',
+    period: {
+      value: 1,
+      type: 'day'
+    }
+  },
+
+];
+
 export default class TabbedContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       tabsValue: 'habits',
+      habits: HABITS_STUB,
     };
   }
 
@@ -39,13 +70,14 @@ export default class TabbedContent extends React.Component {
         onChange={this.handleTabChange}
       >
         <Tab label="habits" value="habits" >
-          {<Habits />}
+          {<Habits isActive={this.state.tabsValue === 'habits'} 
+            habits={this.state.habits} />}
         </Tab>
         <Tab label="overview" value="overview">
-          {<Overview />}
+          {<Overview isActive={this.state.tabsValue === 'overview'} />}
         </Tab>
         <Tab label="today" value="today">
-          {<Today />}
+          {<Today isActive={this.state.tabsValue === 'today'} />}
         </Tab>
       </Tabs>
     );
