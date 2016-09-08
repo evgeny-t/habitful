@@ -47,7 +47,7 @@ export default class TabbedContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tabsValue: 'habits',
+      tabsValue: props.params.q,
       habits: HABITS_STUB,
     };
   }
@@ -66,7 +66,7 @@ export default class TabbedContent extends React.Component {
   render() {
     return (
       <Tabs
-        value={this.state.tabs_value}
+        value={this.state.tabsValue}
         onChange={this.handleTabChange}
       >
         <Tab label="habits" value="habits" >
