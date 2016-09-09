@@ -5,10 +5,20 @@ import React from 'react';
 // import _ from 'lodash';
 // import moment from 'moment';
 
-import Radium from 'radium';
+import Radium, { Style } from 'radium';
 
 import {  
 } from '../styles';
+
+const styles = {
+  day: {
+    width: 7,
+    height: 7,
+  }
+};
+
+const daysPadding = 2;
+const MaxAge = 90;
 
 class Overview extends React.Component {
   constructor(props) {
@@ -28,26 +38,52 @@ class Overview extends React.Component {
   }
 
   render() {
-    const rectStyle = {
-      width: 10,
-      height: 10,
-      ':hover': {
-        stroke: '#555',
-        strokeWidth: 1,
-        shapeRendering: 'crispedges',
+    const rects = [];
+
+    const stepX = (styles.day.width + daysPadding);
+    const stepY = (styles.day.height + daysPadding);
+
+    for (let age = 0; age <= MaxAge; ++age) {
+      for (let week = 0; week <= 52; ++week) {
+        rects.push((
+          <rect key={`${age}_${week}`} className="overview_calendar_day"
+            y={age * stepY + stepY} 
+            x={week * stepX + stepX * 1.5} 
+            fill="#d8d8d8" />
+        ));
       }
-    };
+    }
+
+    for (let age = 0; age <= MaxAge; age += 2) {
+      rects.push((
+        <text key={`age_${age}`} 
+          style={{ fontSize: 9 }}
+          textAnchor={'middle'}
+          x={stepX / 2} y={age * stepY + stepY * 2 - 2}>
+          {`${age}`}
+        </text>
+        ));
+    }
+
     return (
       <div>
+        <Style
+          scopeSelector=".overview_calendar_day"
+          rules={styles.day}
+        />
+        <Style
+          scopeSelector=".overview_calendar_day:hover"
+          rules={{
+            stroke: '#555',
+            strokeWidth: 1,
+            shapeRendering: 'crispedges',
+          }}
+        />
+
         <p>Overview</p>
-        <svg width={100} height={100} viewBox={"0 0 100 100"}>
-          <rect key={1} style={rectStyle} y="0" x="0" fill="#d8d8d8" />
-          <rect key={2} style={rectStyle} y="12" x="0" fill="#d8d8d8" />
-          <rect key={3} style={rectStyle} y="24" x="0" fill="#d8d8d8" />
-          <rect key={4} style={rectStyle} y="36" x="0" fill="#d8d8d8" />
-          <rect key={5} style={rectStyle} y="48" x="0" fill="#d8d8d8" />
-          <rect key={6} style={rectStyle} y="60" x="0" fill="#d8d8d8" />
-          <rect key={7} style={rectStyle} y="72" x="0" fill="#d8d8d8" />
+        <svg width={53 * stepX} height={(MaxAge + 2) * stepY} 
+          viewBox={`0 0 ${53 * stepX} ${(MaxAge + 2) * stepY}`}>
+          {rects}
         </svg>
       </div>
     );
