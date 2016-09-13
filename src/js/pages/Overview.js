@@ -14,6 +14,12 @@ const styles = {
   day: {
     width: 7,
     height: 7,
+  },
+
+  ['day:hover']: {
+    stroke: '#555',
+    strokeWidth: 1,
+    shapeRendering: 'crispedges',
   }
 };
 
@@ -65,6 +71,16 @@ class Overview extends React.Component {
         ));
     }
 
+    for (let week = 5; week <= 52; week += 5) {
+      rects.push((
+        <text key={`week_${week}`} 
+          style={{ fontSize: 9 }}
+          x={(week - 0.5) * stepX + stepX * 1.5} y={stepY / 2}
+          textAnchor={'middle'}
+          >{`${week}`}</text>
+        ));
+    }
+
     return (
       <div>
         <Style
@@ -73,16 +89,17 @@ class Overview extends React.Component {
         />
         <Style
           scopeSelector=".overview_calendar_day:hover"
-          rules={{
-            stroke: '#555',
-            strokeWidth: 1,
-            shapeRendering: 'crispedges',
-          }}
+          rules={styles['day:hover']}
         />
 
         <p>Overview</p>
-        <svg width={53 * stepX} height={(MaxAge + 2) * stepY} 
-          viewBox={`0 0 ${53 * stepX} ${(MaxAge + 2) * stepY}`}>
+        <svg width={54 * stepX} height={(MaxAge + 2) * stepY} 
+          style={{ 
+            marginRight: 'auto',
+            marginLeft: 'auto',
+            display: 'block' 
+          }}
+          viewBox={`0 -1 ${53 * stepX} ${(MaxAge + 2) * stepY}`}>
           {rects}
         </svg>
       </div>
