@@ -43,16 +43,41 @@ const HABITS_STUB = [
 
 ];
 
+const TODAY_ITEMS = [
+  {
+    text: 'Run',
+    done: false,
+  },
+  {
+    text: 'Run Run Run',
+    done: false,
+  },
+  {
+    text: 'Read',
+    done: true,
+  },
+  {
+    text: 'Write a book',
+    done: true,
+  }
+];
+
 export default class TabbedContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       tabsValue: props.params.q,
       habits: HABITS_STUB,
+      today: TODAY_ITEMS
     };
   }
 
   handleTabChange = value => {
+    // a workaround for http://stackoverflow.com/questions/39493516/why-does-checkbox-fires-tabs-onchange-event-in-material-ui
+    if (typeof value === 'object') {
+      return;
+    }
+
     browserHistory.push(`/${value}`);
   }
 
@@ -78,7 +103,7 @@ export default class TabbedContent extends React.Component {
         </Tab>
         <Tab label="today" value="today">
           {<Today isActive={this.state.tabsValue === 'today'} 
-            habits={this.state.habits}
+            today={this.state.today}
           />}
         </Tab>
       </Tabs>
