@@ -1,37 +1,31 @@
 'use strict';
 
 import React from 'react';
-import { Link } from 'react-router';
 import _ from 'lodash';
 import moment from 'moment';
+
+import {
+  Step,
+  Stepper,
+  StepButton,
+  StepContent,
+} from 'material-ui/Stepper';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 
 import {  
 } from '../styles';
 
-import Paper from 'material-ui/Paper';
-import { List, ListItem } from 'material-ui/List';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
-
-const topics_addNew = {
-  right: 0,
-  bottom: 0,
-  position: 'fixed',
-  marginRight: 50,
-  marginBottom: 50,
-  //zIndex: 1,
-};
 
 export default class Habits extends React.Component {
   static propTypes = {
-    habits: React.PropTypes.array,
-    isActive: React.PropTypes.bool
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
+      stepIndex: 0
     };
   }
 
@@ -44,25 +38,56 @@ export default class Habits extends React.Component {
     // sigh out from events
   }
 
-  render() {
-    const habitItems = _.map(this.props.habits, 
-      habit => (<ListItem primaryText={habit.text} key={habit.text} />));
+  renderStepActions(step) {
     return (
-      <div>
-        <List>
-          {habitItems}
-        </List>
-        <FloatingActionButton 
-          onClick={this.handleNewHabit}
-          zDepth={2}
-          style={this.props.isActive ? topics_addNew : null}>
-          <ContentAdd />
-        </FloatingActionButton>
+      <div style={{margin: '12px 0'}}>
+        <RaisedButton
+          label="Next"
+          disableTouchRipple={true}
+          disableFocusRipple={true}
+          primary={true}
+          onTouchTap={this.handleNext}
+          style={{marginRight: 12}}
+        />
+        {step > 0 && (
+          <FlatButton
+            label="Back"
+            disableTouchRipple={true}
+            disableFocusRipple={true}
+            onTouchTap={this.handlePrev}
+          />
+        )}
       </div>
     );
   }
 
-  handleNewHabit = (event) => {
-    console.log(event);
+  render() {
+    return (
+      <div>
+        <Stepper activeStep={this.state.stepIndex} 
+          linear={false} orientation='vertical'>
+          <Step>
+            <StepButton>Goal</StepButton>
+            <StepContent>
+              <p>Think up a goal you want to achieve
+                or a quality you want to obtain:</p>
+            </StepContent>
+          </Step>
+          <Step>
+            <StepButton>Habit</StepButton>
+            <StepContent>
+              <p>Come up with a step that bring
+                you a little bit closer to your goal:</p>
+            </StepContent>
+          </Step>
+          <Step>
+            <StepButton>Arrangement</StepButton>
+            <StepContent>
+              <p>Specify a time interval between steps:</p>
+            </StepContent>
+          </Step>
+        </Stepper>
+      </div>
+    );
   }
 }
