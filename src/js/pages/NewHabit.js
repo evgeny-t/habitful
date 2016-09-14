@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { browserHistory } from 'react-router';
 import { Link } from 'react-router';
 import _ from 'lodash';
 import moment from 'moment';
@@ -42,8 +41,6 @@ export default class Habits extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount');
-    this.setState({ isActive: false });
     // sigh out from events
   }
 
@@ -65,7 +62,7 @@ export default class Habits extends React.Component {
     );
   }
 
-  handleNewHabit = (/*event*/) => {
-    browserHistory.push('habits/new');
+  handleNewHabit = (event) => {
+    console.log(event);
   }
 }
