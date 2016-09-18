@@ -57,7 +57,7 @@ export default class NewHabit extends React.Component {
     super(props);
 
     this.state = {
-      stepIndex: 2,
+      stepIndex: 0,
       goal: '',
       checked_0: true,
       checked_1: true,
