@@ -26,13 +26,18 @@ injectTapEventPlugin();
 
 const muiTheme = getMuiTheme({ });
 
+function onDone(newHabit) {
+  console.log(newHabit);
+}
+
 const app = document.getElementById('app');
 ReactDOM.render((
   <MuiThemeProvider muiTheme={muiTheme}>
     <Router history={browserHistory}>
       <Route path='/' component={Layout}>
         <IndexRedirect to='/habits' />
-        <Route path='/habits/new' component={NewHabit} />
+        <Route path='/habits/new' 
+          component={props => <NewHabit onDone={onDone} {...props} />} />
         <Route path='/:q' component={TabbedContent} />
       </Route>
     </Router>
