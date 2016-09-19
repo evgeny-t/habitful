@@ -43,6 +43,10 @@ class Overview extends React.Component {
     // sigh out from events
   }
 
+  shouldComponentUpdate(/*nextProps, nextState*/) {
+    return false;
+  }
+
   render() {
     const rects = [];
 

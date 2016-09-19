@@ -4,6 +4,8 @@ import React from 'react';
 import _ from 'lodash';
 // import moment from 'moment';
 
+import { browserHistory } from 'react-router';
+
 import {
   Step,
   Stepper,
@@ -57,7 +59,7 @@ export default class NewHabit extends React.Component {
     super(props);
 
     this.state = {
-      stepIndex: 0,
+      stepIndex: 2,
       goal: '',
       checked_0: true,
       checked_1: true,

@@ -25,7 +25,11 @@ const topics_addNew = {
 
 export default class Habits extends React.Component {
   static propTypes = {
-    habits: React.PropTypes.array,
+    habits: React.PropTypes.arrayOf(React.PropTypes.shape({
+      routine: React.PropTypes.string,
+      goal: React.PropTypes.string,
+      days: React.PropTypes.array,
+    })),
     isActive: React.PropTypes.bool
   }
 
@@ -42,14 +46,13 @@ export default class Habits extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount');
     this.setState({ isActive: false });
     // sigh out from events
   }
 
   render() {
     const habitItems = _.map(this.props.habits, 
-      habit => (<ListItem primaryText={habit.text} key={habit.text} />));
+      habit => (<ListItem primaryText={habit.routine} key={habit.goal} />));
     return (
       <div>
         <List>

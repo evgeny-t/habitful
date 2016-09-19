@@ -3,6 +3,8 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 
+import { connect } from 'react-redux';
+
 // import _ from 'lodash';
 // import moment from 'moment';
 
@@ -13,62 +15,19 @@ import Habits from '../pages/Habits';
 import Overview from '../pages/Overview';
 import Today from '../pages/Today';
 
-const HABITS_STUB = [
-  {
-    text: 'Running',
-    description: 'it will help me to be more healty',
-    period: {
-      value: 1,
-      type: 'day'
-    }
-  },
-
-  {
-    text: 'Writing Writing Writing Writing Writing Writing Writing Writing',
-    description: 'it will help me to obtain the voice ;)',
-    period: {
-      value: 1,
-      type: 'week'
-    }
-  },
-
-  {
-    text: 'Push-ups',
-    description: 'it will help me to be more muscled',
-    period: {
-      value: 1,
-      type: 'day'
-    }
-  },
-
-];
-
-const TODAY_ITEMS = [
-  {
-    text: 'Run',
-    done: false,
-  },
-  {
-    text: 'Run Run Run',
-    done: false,
-  },
-  {
-    text: 'Read',
-    done: true,
-  },
-  {
-    text: 'Write a book',
-    done: true,
+class TabbedContent extends React.Component {
+  static propTypes = {
+    params: React.PropTypes.shape({
+      q: React.PropTypes.string,
+    }),
+    habits: React.PropTypes.array,
+    today: React.PropTypes.array,
   }
-];
 
-export default class TabbedContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       tabsValue: props.params.q,
-      habits: HABITS_STUB,
-      today: TODAY_ITEMS
     };
   }
 
@@ -96,17 +55,21 @@ export default class TabbedContent extends React.Component {
       >
         <Tab label="habits" value="habits" >
           {<Habits isActive={this.state.tabsValue === 'habits'} 
-            habits={this.state.habits} />}
+            habits={this.props.habits} />}
         </Tab>
         <Tab label="overview" value="overview">
           {<Overview isActive={this.state.tabsValue === 'overview'} />}
         </Tab>
         <Tab label="today" value="today">
           {<Today isActive={this.state.tabsValue === 'today'} 
-            today={this.state.today}
+            today={this.props.today}
           />}
         </Tab>
       </Tabs>
     );
   }
 }
+
+export default connect(state => {
+  return state;
+})(TabbedContent);
