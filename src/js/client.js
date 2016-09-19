@@ -67,8 +67,11 @@ const NewHabitVisual = connect(
 
 const TabbedContentVisual = connect(
   state => state,
-  dispatch => {
+  (/*dispatch*/) => {
     return {
+      onTabChanged: (tab) => {
+        browserHistory.push(`${tab}`);
+      }
     };
   })(TabbedContent);
 

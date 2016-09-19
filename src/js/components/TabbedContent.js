@@ -1,27 +1,25 @@
 'use strict';
 
 import React from 'react';
-import { browserHistory } from 'react-router';
-
-import { connect } from 'react-redux';
 
 // import _ from 'lodash';
 // import moment from 'moment';
 
-import {Tabs, Tab} from 'material-ui/Tabs';
+import { Tabs, Tab } from 'material-ui/Tabs';
 
 // TODO(ET): don't look like pages, should not be required from a component
 import Habits from '../pages/Habits';
 import Overview from '../pages/Overview';
 import Today from '../pages/Today';
 
-class TabbedContent extends React.Component {
+export default class TabbedContent extends React.Component {
   static propTypes = {
     params: React.PropTypes.shape({
       q: React.PropTypes.string,
     }),
     habits: React.PropTypes.array,
     today: React.PropTypes.array,
+    onTabChanged: React.PropTypes.func,
   }
 
   constructor(props) {
@@ -37,7 +35,7 @@ class TabbedContent extends React.Component {
       return;
     }
 
-    browserHistory.push(`/${value}`);
+    this.props.onTabChanged(`/${value}`);
   }
 
   componentDidMount() {
@@ -69,7 +67,3 @@ class TabbedContent extends React.Component {
     );
   }
 }
-
-export default connect(state => {
-  return state;
-})(TabbedContent);
