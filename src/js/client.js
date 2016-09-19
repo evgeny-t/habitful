@@ -65,6 +65,13 @@ const NewHabitVisual = connect(
     };
   })(NewHabit);
 
+const TabbedContentVisual = connect(
+  state => state,
+  dispatch => {
+    return {
+    };
+  })(TabbedContent);
+
 const app = document.getElementById('app');
 ReactDOM.render((
   <Provider store={store}>
@@ -73,7 +80,7 @@ ReactDOM.render((
         <Route path='/' component={Layout}>
           <IndexRedirect to='/habits' />
           <Route path='/habits/new' component={NewHabitVisual} />
-          <Route path='/:q' component={TabbedContent} />
+          <Route path='/:q' component={TabbedContentVisual} />
         </Route>
       </Router>
     </MuiThemeProvider>
