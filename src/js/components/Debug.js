@@ -12,10 +12,11 @@ export default class Debug extends React.Component {
   state = {}
   
   render() {
-    const Component = require(`./${this.props.params.component}`).default;
+    const module = require(`./${this.props.params.component}`);
+    const Component = module.default;
     return (
       <div>
-        {<Component {...this.props} />}
+        {<Component {...this.props} {...module.dummy} />}
       </div>
     );
   }
