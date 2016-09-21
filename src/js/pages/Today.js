@@ -6,21 +6,32 @@ import _ from 'lodash';
 import { List, ListItem } from 'material-ui/List';
 import Checkbox from 'material-ui/Checkbox';
 import Divider from 'material-ui/Divider';
+import CircularProgress from 'material-ui/CircularProgress';
+import { GridList, GridTile } from 'material-ui/GridList';
+import Subheader from 'material-ui/Subheader';
+import IconButton from 'material-ui/IconButton';
+import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+import Done from 'material-ui/svg-icons/action/done';
+
 
 import {  
 } from '../styles';
 
+const HabitStatus = (/*props*/) => (
+  <div>
+     <CircularProgress mode="determinate" value={66} />
+  </div>);
+
 export default class Today extends React.Component {
   static propTypes = {
-    today: React.PropTypes.array,
+    habits: React.PropTypes.array,
     isActive: React.PropTypes.bool
   }
 
+  state = {}
+
   constructor(props) {
     super(props);
-
-    this.state = {
-    };
   }
 
   componentDidMount() {
@@ -33,30 +44,21 @@ export default class Today extends React.Component {
   }
 
   render() {
-    const itemToReact = item => (
-      <ListItem primaryText={item.text} key={item.text} 
-        leftCheckbox={<Checkbox defaultChecked={item.done} />} 
-      />);
-    const today = _(this.props.today);
-    const todo = today.filter(['done', false]).map(itemToReact).value();
-    const done = today.filter('done').map(itemToReact).value();
+    const tiles = _(this.props.habits)
+      .map((habit, i) => (
+        <GridTile key={i} title={habit.routine}
+          actionIcon={<IconButton><Done color="white" /></IconButton>}
+          >
+          <HabitStatus habit={habit} />
+        </GridTile>))
+      .value();
     
     return (
-      <div>
-        <h3>TODO</h3>
-        <Divider />
-
-        <List>
-          {todo}
-        </List>
-
-        <h3>DONE</h3>
-        <Divider />
-
-        <List>
-          {done}
-        </List>        
-      </div>
+      <GridList 
+        cols={3}
+        cellHeight={200}>
+        {tiles}
+      </GridList>
     );
   }
 }

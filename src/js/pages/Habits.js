@@ -52,7 +52,9 @@ export default class Habits extends React.Component {
 
   render() {
     const habitItems = _.map(this.props.habits, 
-      habit => (<ListItem primaryText={habit.routine} key={habit.goal} />));
+      (habit, index) => (
+        <ListItem primaryText={habit.routine} key={index} />
+        ));
     return (
       <div>
         <List>
