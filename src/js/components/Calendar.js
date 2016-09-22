@@ -1,0 +1,133 @@
+'use strict';
+
+import React from 'react';
+// import _ from 'lodash';
+// import moment from 'moment';
+
+import Radium, { Style } from 'radium';
+
+import {  
+} from '../styles';
+
+function getStyles(props) {
+  return {
+    day: {
+      width: props.daySize,
+      height: props.daySize,
+    },
+
+    ['day:hover']: {
+      stroke: '#555',
+      strokeWidth: 1,
+      shapeRendering: 'crispedges',
+    }
+  };
+}
+
+class Calendar extends React.Component {
+  static propTypes = {
+    dayPadding: React.PropTypes.number,
+    daySize: React.PropTypes.number,
+    rows: React.PropTypes.number,
+    cols: React.PropTypes.number,
+    rowLabel: React.PropTypes.func,
+    colLabel: React.PropTypes.func,
+    tag: React.PropTypes.string,
+  };
+
+  static defaultProps = {
+    dayPadding: 2,
+    daySize: 7,
+    rows: 90,
+    cols: 51,
+    rowLabel: (index) => index % 2 === 0 ? `${index}` : undefined,
+    colLabel: (index) => 
+      (index == 0 || (index + 1) % 5 === 0) ? `${index + 1}` : undefined,
+    tag: '',
+  };
+
+  state = {}
+
+  constructor(props) {
+    super(props);
+  }
+
+  shouldComponentUpdate(/*nextProps, nextState*/) {
+    return false;
+  }
+
+  render() {
+    const styles = getStyles(this.props);
+    const { rows, cols, rowLabel, colLabel } = this.props;
+    const rects = [];
+
+    const stepX = (styles.day.width + this.props.dayPadding);
+    const stepY = (styles.day.height + this.props.dayPadding);
+
+    for (let row = 0; row <= rows; ++row) {
+      for (let col = 0; col <= cols; ++col) {
+        rects.push((
+          <rect key={`${row}_${col}`} className={`calendar-${this.props.tag}`}
+            y={row * stepY + stepY} 
+            x={col * stepX + stepX * 1.5} 
+            fill="#d8d8d8" />
+        ));
+      }
+    }
+
+    for (let row = 0; row <= rows; row++) {
+      const label = rowLabel(row);
+      if (label) {
+        rects.push((
+          <text key={`row_${row}`} 
+            style={{ fontSize: 9 }}
+            textAnchor={'middle'}
+            x={stepX / 2} y={row * stepY + stepY * 2 - 2}>
+            {`${label}`}
+          </text>
+          ));
+      }
+    }
+
+    for (let col = 0; col <= cols; col++) {
+      const label = colLabel(col);
+      if (label) {
+        rects.push((
+          <text key={`col_${col}`} 
+            style={{ fontSize: 9 }}
+            x={stepX * 1.5 + styles.day.width / 2 + col * stepX} 
+            y={stepY - 2}
+            textAnchor={'middle'}>
+            {`${label}`}
+          </text>
+          ));
+      }
+    }
+
+    return (
+      <div>
+        <Style
+          scopeSelector={`.calendar-${this.props.tag}`}
+          rules={styles.day}
+        />
+        <Style
+          scopeSelector={`.calendar-${this.props.tag}:hover`}
+          rules={styles['day:hover']}
+        />
+
+        <svg width={(cols + 3) * stepX} height={(rows + 2) * stepY} 
+          style={{ 
+            // border: '1px solid black',
+            // marginRight: 'auto',
+            // marginLeft: 'auto',
+            display: 'block' 
+          }}
+          viewBox={`0 0 ${(cols + 3) * stepX} ${(rows + 2) * stepY}`}>
+          {rects}
+        </svg>
+      </div>
+    );
+  }
+}
+
+export default Radium(Calendar);

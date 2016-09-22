@@ -9,6 +9,8 @@ import { GridTile } from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import Done from 'material-ui/svg-icons/action/done';
 
+import Calendar from './Calendar';
+
 const style = {
   gridTile: {
     minHeight: 180,
@@ -34,11 +36,11 @@ const HabitStatus = (props) => {
   return (
     <div>
     <div style={{ 
-          position: 'absolute',
-          top: 0,
-          bottom: 48,
-          // background: 'grey',
-        }} >
+      position: 'absolute',
+      top: 0,
+      bottom: 48,
+      // background: 'grey',
+    }} >
            <CircularProgress 
             color={progressColor}
             mode="determinate" value={value} />
@@ -46,14 +48,23 @@ const HabitStatus = (props) => {
            
         </div>
         <div style={{
-          background: '#EEEEEE',
+          // background: '#EEEEEE',
           position: 'absolute',
           top: 0,
           right: 0,
           left: 72,
           bottom: 48,
         }}>
-        123
+        <Calendar
+          tag='progress'
+          rows={7}
+          cols={14}
+          daySize={10}
+          dayPadding={3}
+          rowLabel={(index) => index % 2 === 0 ? `${index}` : undefined}
+          colLabel={(index) => 
+            (index == 0 || (index + 1) % 5 === 0) ? `${index + 1}` : undefined}
+          />
         </div>
         </div>);
 };
