@@ -12,6 +12,7 @@ import Done from 'material-ui/svg-icons/action/done';
 const style = {
   gridTile: {
     minHeight: 180,
+    maxWidth: 300,
   }
 };
 
@@ -31,17 +32,30 @@ const HabitStatus = (props) => {
   }
 
   return (
+    <div>
     <div style={{ 
-      position: 'absolute',
-      top: 0,
-      bottom: 48,
-      // background: 'grey',
-    }} >
-       <CircularProgress 
-        color={progressColor}
-        mode="determinate" value={value} />
-       <p>{props.in ? `in ${props.in} days` : 'TODAY'}</p>
-    </div>);
+          position: 'absolute',
+          top: 0,
+          bottom: 48,
+          // background: 'grey',
+        }} >
+           <CircularProgress 
+            color={progressColor}
+            mode="determinate" value={value} />
+           <p>{props.in ? `in ${props.in} days` : 'TODAY'}</p>
+           
+        </div>
+        <div style={{
+          background: '#EEEEEE',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          left: 72,
+          bottom: 48,
+        }}>
+        123
+        </div>
+        </div>);
 };
 
 HabitStatus.propTypes = {
