@@ -8,6 +8,7 @@ import { Router, Route,
   browserHistory, IndexRedirect } from 'react-router';
 import { Provider, connect } from 'react-redux';
 import { createStore } from 'redux';
+import { StyleRoot, Style } from 'radium';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -125,16 +126,26 @@ const TabbedContentVisual = connect(
 
 const app = document.getElementById('app');
 ReactDOM.render((
-  <Provider store={store}>
-    <MuiThemeProvider muiTheme={muiTheme}>
-      <Router history={browserHistory}>
-        <Route path='/' component={Layout}>
-          <IndexRedirect to='/habits' />
-          <Route path='/debug/:component' component={Debug} />
-          <Route path='/habits/new' component={NewHabitVisual} />
-          <Route path='/:q' component={TabbedContentVisual} />
-        </Route>
-      </Router>
-    </MuiThemeProvider>
-  </Provider>
+  <StyleRoot>
+    <Provider store={store}>
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <Router history={browserHistory}>
+          <Route path='/' component={Layout}>
+            <IndexRedirect to='/habits' />
+            <Route path='/debug/:component' component={Debug} />
+            <Route path='/habits/new' component={NewHabitVisual} />
+            <Route path='/:q' component={TabbedContentVisual} />
+          </Route>
+        </Router>
+      </MuiThemeProvider>
+    </Provider>
+    <Style 
+      rules={{
+        body: {
+          fontFamily: muiTheme.fontFamily
+        },
+        // TODO(ET): media queries
+      }}
+    />
+  </StyleRoot>
   ), app);

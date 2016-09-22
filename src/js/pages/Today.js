@@ -2,6 +2,7 @@
 
 import React from 'react';
 import _ from 'lodash';
+import moment from 'moment';
 
 // import { List, ListItem } from 'material-ui/List';
 // import Checkbox from 'material-ui/Checkbox';
@@ -41,9 +42,10 @@ export default class Today extends React.Component {
   }
 
   render() {
+    let today = moment();
     const tiles = _(this.props.habits)
       .map((habit, i) => (
-        <HabitProgress key={i} habit={habit} />))
+        <HabitProgress key={i} habit={habit} today={today} />))
       .value();
     
     return (
