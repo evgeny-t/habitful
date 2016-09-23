@@ -34,6 +34,8 @@ class Calendar extends React.Component {
     colLabel: React.PropTypes.func,
     showCell: React.PropTypes.func,
     tag: React.PropTypes.string,
+    viewBoxX: React.PropTypes.number,
+    viewBoxY: React.PropTypes.number,
   };
 
   static defaultProps = {
@@ -46,6 +48,8 @@ class Calendar extends React.Component {
       (index == 0 || (index + 1) % 5 === 0) ? `${index + 1}` : undefined,
     showCell: (row, col) => true || col,
     tag: '',
+    viewBoxX: 0,
+    viewBoxY: 0,
   };
 
   state = {}
@@ -60,7 +64,10 @@ class Calendar extends React.Component {
 
   render() {
     const styles = getStyles(this.props);
-    const { rows, cols, rowLabel, colLabel } = this.props;
+    const { 
+      rows, cols, rowLabel, colLabel,
+      viewBoxX, viewBoxY,
+    } = this.props;
     const rects = [];
 
     const stepX = (styles.day.width + this.props.dayPadding);
@@ -127,7 +134,7 @@ class Calendar extends React.Component {
             // marginLeft: 'auto',
             display: 'block' 
           }}
-          viewBox={`0 0 ${(cols + 3) * stepX} ${(rows + 2) * stepY}`}>
+          viewBox={`${viewBoxX} ${viewBoxY} ${(cols + 3) * stepX} ${(rows + 2) * stepY}`}>
           {rects}
         </svg>
       </div>

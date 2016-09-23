@@ -66,8 +66,14 @@ const HabitStatus = (props) => {
     bottom: 48,
   };
 
-console.log('today:', props.today, props.today.day());
   const dayOfWeek = props.today.day();
+  // console.log(props.today);
+  let startOfTheWeek = props.today.clone();
+  startOfTheWeek.day(0);
+  // console.log(dayOfWeek, startOfTheWeek);
+
+  const dayOfWeekLabels = [ 
+    undefined, 'Mon', undefined, 'Wed', undefined, 'Fri', undefined];
 
   return (
     <div>
@@ -83,14 +89,16 @@ console.log('today:', props.today, props.today.day());
       </div>
       <div style={calendarDivStyle}>
         <Calendar
+          viewBoxX={-10}
           tag='progress'
           rows={6}
           cols={14}
           daySize={10}
           dayPadding={3}
-          rowLabel={(index) => index % 2 === 0 ? `${index}` : undefined}
+          rowLabel={(index) => dayOfWeekLabels[index]}
           colLabel={(index) => 
-            (index == 0 || (index + 1) % 5 === 0) ? `${index + 1}` : undefined}
+            (index == 0 || (index + 1) % 5 === 0) ? 
+              `${startOfTheWeek.clone().date(7 * (index - 14)).date()}` : undefined}
           showCell={(row, col) => col === 14 ? (row <= dayOfWeek) : true }
           />
       </div>

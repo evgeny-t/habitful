@@ -23,7 +23,8 @@ import HabitProgress from '../components/HabitProgress';
 export default class Today extends React.Component {
   static propTypes = {
     habits: React.PropTypes.array,
-    isActive: React.PropTypes.bool
+    isActive: React.PropTypes.bool,
+    today: React.PropTypes.object,
   }
 
   state = {}
@@ -42,7 +43,7 @@ export default class Today extends React.Component {
   }
 
   render() {
-    let today = moment();
+    let { today } = this.props;
     const tiles = _(this.props.habits)
       .map((habit, i) => (
         <HabitProgress key={i} habit={habit} today={today} />))

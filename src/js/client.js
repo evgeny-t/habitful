@@ -33,7 +33,7 @@ import { addHabit } from './actions';
 const muiTheme = getMuiTheme({ });
 
 const store = createStore(reducer, {
-  today: moment('20160904', 'YYYYMMDD'),
+  today: moment('20160906', 'YYYYMMDD'),
   habits: [
     {
       _id: 'bf792bf1-6031-439d-b492-08b5a8472e49',
