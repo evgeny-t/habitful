@@ -40,11 +40,24 @@ const HabitStatus = (props) => {
       top: 0,
       bottom: 48,
       // background: 'grey',
+      width: 70,
     }} >
-           <CircularProgress 
-            color={progressColor}
-            mode="determinate" value={value} />
-           <p>{props.in ? `in ${props.in} days` : 'TODAY'}</p>
+          {props.in != 0 && (<div style={{ 
+              marginTop: 10,
+              fontSize: 13,
+              textAlign: 'center',
+            }}>next time in</div>)}
+           {props.in != 0 && <CircularProgress 
+                       
+                       color={progressColor}
+                       mode="determinate" value={value} />}
+           <div style={{ 
+              fontSize: props.in != 0 ? 13 : 20,
+              textAlign: 'center',
+              marginTop: props.in != 0 ? 0 : 50,
+            }}>
+            {props.in ? `${props.in} days` : 'TODAY'}
+           </div>
            
         </div>
         <div style={{
