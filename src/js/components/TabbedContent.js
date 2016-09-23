@@ -18,7 +18,7 @@ export default class TabbedContent extends React.Component {
       q: React.PropTypes.string,
     }),
     habits: React.PropTypes.array,
-    today: React.PropTypes.array,
+    today: React.PropTypes.object,
     onTabChanged: React.PropTypes.func,
   }
 

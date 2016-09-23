@@ -66,6 +66,9 @@ const HabitStatus = (props) => {
     bottom: 48,
   };
 
+console.log('today:', props.today, props.today.day());
+  const dayOfWeek = props.today.day();
+
   return (
     <div>
       <div style={divStyle}>
@@ -81,20 +84,22 @@ const HabitStatus = (props) => {
       <div style={calendarDivStyle}>
         <Calendar
           tag='progress'
-          rows={7}
+          rows={6}
           cols={14}
           daySize={10}
           dayPadding={3}
           rowLabel={(index) => index % 2 === 0 ? `${index}` : undefined}
           colLabel={(index) => 
             (index == 0 || (index + 1) % 5 === 0) ? `${index + 1}` : undefined}
+          showCell={(row, col) => col === 14 ? (row <= dayOfWeek) : true }
           />
       </div>
     </div>);
 };
 
 HabitStatus.propTypes = {
-  in: React.PropTypes.number
+  in: React.PropTypes.number,
+  today: React.PropTypes.object,
 };
 
 export default class HabitProgress extends React.Component {
@@ -151,8 +156,7 @@ export default class HabitProgress extends React.Component {
         actionIcon={!this.state.in ?
           (<IconButton><Done color="white" /></IconButton>) : null}
         >
-          {<HabitStatus {...this.state}
-            habit={this.props.habit} />}
+          {<HabitStatus {...this.props} {...this.state} />}
       </GridTile>);
   }
 }

@@ -32,6 +32,7 @@ class Calendar extends React.Component {
     cols: React.PropTypes.number,
     rowLabel: React.PropTypes.func,
     colLabel: React.PropTypes.func,
+    showCell: React.PropTypes.func,
     tag: React.PropTypes.string,
   };
 
@@ -43,6 +44,7 @@ class Calendar extends React.Component {
     rowLabel: (index) => index % 2 === 0 ? `${index}` : undefined,
     colLabel: (index) => 
       (index == 0 || (index + 1) % 5 === 0) ? `${index + 1}` : undefined,
+    showCell: (row, col) => true || col,
     tag: '',
   };
 
@@ -66,12 +68,14 @@ class Calendar extends React.Component {
 
     for (let row = 0; row <= rows; ++row) {
       for (let col = 0; col <= cols; ++col) {
-        rects.push((
-          <rect key={`${row}_${col}`} className={`calendar-${this.props.tag}`}
-            y={row * stepY + stepY} 
-            x={col * stepX + stepX * 1.5} 
-            fill="#d8d8d8" />
-        ));
+        if (this.props.showCell(row, col)) {
+          rects.push((
+            <rect key={`${row}_${col}`} className={`calendar-${this.props.tag}`}
+              x={col * stepX + stepX * 1.5} 
+              y={row * stepY + stepY} 
+              fill='#eeeeee' />
+          ));
+        }
       }
     }
 
@@ -82,7 +86,8 @@ class Calendar extends React.Component {
           <text key={`row_${row}`} 
             style={{ fontSize: 9 }}
             textAnchor={'middle'}
-            x={stepX / 2} y={row * stepY + stepY * 2 - 2}>
+            x={stepX / 2} 
+            y={row * stepY + stepY + styles.day.height}>
             {`${label}`}
           </text>
           ));
