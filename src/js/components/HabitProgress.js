@@ -33,41 +33,52 @@ const HabitStatus = (props) => {
     progressColor = '#4CAF50';
   }
 
+  const divStyle = { 
+    position: 'absolute',
+    top: 0,
+    bottom: 48,
+    width: 70,
+  };
+
+  const nextTimeInStyle = { 
+    marginTop: 10,
+    fontSize: 13,
+    textAlign: 'center',
+  };
+
+  const inStyle = { 
+    fontSize: 13,
+    textAlign: 'center',
+    marginTop: 0,
+  };
+
+  const todayStyle = { 
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 50,
+  };
+
+  const calendarDivStyle = {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 72,
+    bottom: 48,
+  };
+
   return (
     <div>
-    <div style={{ 
-      position: 'absolute',
-      top: 0,
-      bottom: 48,
-      // background: 'grey',
-      width: 70,
-    }} >
-          {props.in != 0 && (<div style={{ 
-              marginTop: 10,
-              fontSize: 13,
-              textAlign: 'center',
-            }}>next time in</div>)}
-           {props.in != 0 && <CircularProgress 
-                       
-                       color={progressColor}
-                       mode="determinate" value={value} />}
-           <div style={{ 
-              fontSize: props.in != 0 ? 13 : 20,
-              textAlign: 'center',
-              marginTop: props.in != 0 ? 0 : 50,
-            }}>
-            {props.in ? `${props.in} days` : 'TODAY'}
-           </div>
-           
-        </div>
-        <div style={{
-          // background: '#EEEEEE',
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          left: 72,
-          bottom: 48,
-        }}>
+      <div style={divStyle}>
+        {props.in != 0 && (<div style={nextTimeInStyle}>next time in</div>)}
+        {props.in != 0 && 
+          <CircularProgress
+            color={progressColor}
+            mode="determinate" value={value} />
+        }
+        {props.in != 0 && <div style={inStyle}>{`${props.in} days`}</div>}
+        {props.in == 0 && <div style={todayStyle}>TODAY</div>}
+      </div>
+      <div style={calendarDivStyle}>
         <Calendar
           tag='progress'
           rows={7}
@@ -78,8 +89,8 @@ const HabitStatus = (props) => {
           colLabel={(index) => 
             (index == 0 || (index + 1) % 5 === 0) ? `${index + 1}` : undefined}
           />
-        </div>
-        </div>);
+      </div>
+    </div>);
 };
 
 HabitStatus.propTypes = {
