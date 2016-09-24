@@ -76,9 +76,26 @@ const HabitStatus = (props) => {
   const dayOfWeekLabels = [ 
     undefined, 'Mon', undefined, 'Wed', undefined, 'Fri', undefined];
 
+  const columnFirstDay = index => 
+    startOfTheWeek.clone().subtract(7 * (14 - index), 'days');
+
   const columnLabel = (index) => {
-    const day = startOfTheWeek.clone().subtract(7 * (14 - index), 'days');
+    const day = columnFirstDay(index);
     return index % 2 === 0 ? `${day.date()}` : undefined;
+  };
+
+  const remapped = _.reduce(props.history, (prev, next) => {
+    prev[next.format('YYYYMMDD')] = (prev[next.format('YYYYMMDD')] || 0) + 1;
+    return prev;
+  }, {});
+
+  const showCell = (row, col) => {
+    if (col === 14 && row > dayOfWeek) {
+      return undefined;
+    }
+
+    const day = columnFirstDay(col).add(row, 'days');
+    return remapped[day.format('YYYYMMDD')] ? 5 : 0;
   };
 
   return (
@@ -95,8 +112,9 @@ const HabitStatus = (props) => {
       </div>
       <div style={calendarDivStyle}>
         <Calendar
+          hash={`${props.history.length}`}
           today={props.today}
-          viewBoxX={-10}
+          viewBoxX={-9}
           tag='progress'
           rows={6}
           cols={14}
@@ -104,7 +122,7 @@ const HabitStatus = (props) => {
           dayPadding={3}
           rowLabel={(index) => dayOfWeekLabels[index]}
           colLabel={columnLabel}
-          showCell={(row, col) => col === 14 ? (row <= dayOfWeek) : true }
+          showCell={showCell}
           />
       </div>
     </div>);
@@ -113,26 +131,30 @@ const HabitStatus = (props) => {
 HabitStatus.propTypes = {
   in: React.PropTypes.number,
   today: React.PropTypes.object,
+  history: React.PropTypes.array,
 };
 
 export default class HabitProgress extends React.Component {
   static propTypes = {
     today: React.PropTypes.object,
-    lastTime: React.PropTypes.object,
+    history: React.PropTypes.array,
     habit: React.PropTypes.shape({
       routine: React.PropTypes.string,
       goal: React.PropTypes.string,
       days: React.PropTypes.array,
     }),
+    onMarkRoutineDone: React.PropTypes.func,
   }
 
   state = {
     in: null
   }
   
-  _update() {
-    const { today, lastTime, habit } = this.props;
+  _update(props) {
+    const { today, history, habit } = props;
+    const lastTime = _.last(history);
 
+    history.sort();
     if (!_.some(habit.days)) {
       return;
     }
@@ -162,11 +184,15 @@ export default class HabitProgress extends React.Component {
   }
 
   componentWillMount() {
-    this._update();
+    this._update(this.props);
   }
 
-  componentWillReceiveProps(/*nextProps*/) {
-    this._update();
+  componentWillReceiveProps(nextProps) {
+    this._update(nextProps);
+  }
+
+  handleRoutineDoneClick = event => {
+    this.props.onMarkRoutineDone(event, this.props.habit);
   }
 
   render() {
@@ -175,7 +201,9 @@ export default class HabitProgress extends React.Component {
         title={this.props.habit.routine}
         titleBackground={this.state.in === 0 ? '#00bcd4' : 'grey'}
         actionIcon={!this.state.in ?
-          (<IconButton><Done color="white" /></IconButton>) : null}
+          (<IconButton onClick={this.handleRoutineDoneClick}>
+            <Done color="white" />
+          </IconButton>) : null}
         >
           {<HabitStatus {...this.props} {...this.state} />}
       </GridTile>);
@@ -189,7 +217,9 @@ export const dummy = {
     days: [true, true, true, true, true, true, true],
   },
   today: moment('20160921', 'YYYYMMDD'),
-  lastTime: moment('20160921', 'YYYYMMDD'),
+  history: [
+    moment('20160921', 'YYYYMMDD'),
+  ],
 };
 
 
@@ -202,7 +232,9 @@ const inOneDay = {
     days: [true, true, true, true, true, true, true],
   },
   today: moment('20160904', 'YYYYMMDD'),
-  lastTime: moment('20160904', 'YYYYMMDD'),
+  history: [
+    moment('20160904', 'YYYYMMDD'),
+  ],
 };
 
 const inSixDays = {
@@ -212,7 +244,9 @@ const inSixDays = {
     days: [true, false, false, false, false, false, true],
   },
   today: moment('20160904', 'YYYYMMDD'),
-  lastTime: moment('20160904', 'YYYYMMDD'),
+  history: [
+    moment('20160904', 'YYYYMMDD'),
+  ],
 };
 
 const today = {
@@ -222,7 +256,11 @@ const today = {
     days: [true, false, true, true, true, true, true],
   },
   today: moment('20160904', 'YYYYMMDD'),
-  lastTime: moment('20160903', 'YYYYMMDD'),
+  history: [
+    moment('20160903', 'YYYYMMDD'),
+    moment('20160807', 'YYYYMMDD'),
+    moment('20160813', 'YYYYMMDD'),
+  ],
 };
 
 export const debug = () => (

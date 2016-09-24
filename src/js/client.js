@@ -28,11 +28,16 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import reducer from './reducers';
-import { addHabit, updateDate } from './actions';
+import { 
+  addHabit, 
+  updateDate,
+  markRoutineDone,
+} from './actions';
 
 const muiTheme = getMuiTheme({ });
 
 const store = createStore(reducer, {
+  birthday: moment('19900821', 'YYYYMMDD'),
   today: moment('20160906', 'YYYYMMDD'),
   habits: [
     {
@@ -121,8 +126,11 @@ const TabbedContentVisual = connect(
   // state to props
   state => state,
   // dispatch to props
-  (/*dispatch*/) => {
+  (dispatch) => {
     return {
+      onMarkRoutineDone: (event, habit) => {
+        dispatch(markRoutineDone(habit._id));
+      },
       onTabChanged: (tab) => {
         browserHistory.push(`${tab}`);
       }

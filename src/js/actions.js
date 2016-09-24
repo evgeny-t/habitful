@@ -17,3 +17,12 @@ export function updateDate(date) {
     date
   };
 }
+
+export const MARK_ROUTINE_DONE = 'MARK_ROUTINE_DONE';
+
+export function markRoutineDone(habitId) {
+  return {
+    type: MARK_ROUTINE_DONE,
+    habitId
+  };
+}

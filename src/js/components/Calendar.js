@@ -24,6 +24,19 @@ function getStyles(props) {
   };
 }
 
+const LEVELS = [
+  '#EEEEEE',
+  '#C8E6C9',
+  '#A5D6A7',
+  '#81C784',
+  '#66BB6A',
+  '#4CAF50',
+  '#43A047',
+  '#388E3C',
+  '#2E7D32',
+  '#1B5E20',
+];
+
 class Calendar extends React.Component {
   static propTypes = {
     dayPadding: React.PropTypes.number,
@@ -37,6 +50,7 @@ class Calendar extends React.Component {
     viewBoxX: React.PropTypes.number,
     viewBoxY: React.PropTypes.number,
     today: React.PropTypes.object,
+    hash: React.PropTypes.string,
   };
 
   static defaultProps = {
@@ -47,10 +61,11 @@ class Calendar extends React.Component {
     rowLabel: (index) => index % 2 === 0 ? `${index}` : undefined,
     colLabel: (index) => 
       (index == 0 || (index + 1) % 5 === 0) ? `${index + 1}` : undefined,
-    showCell: (row, col) => true || col,
+    showCell: (/*row, col*/) => 0,
     tag: '',
     viewBoxX: 0,
     viewBoxY: 0,
+    hash: '',
   };
 
   state = {}
@@ -60,7 +75,8 @@ class Calendar extends React.Component {
   }
 
   shouldComponentUpdate(nextProps/*, nextState*/) {
-    return this.props.today && !this.props.today.isSame(nextProps.today);
+    return (this.props.today && !this.props.today.isSame(nextProps.today)) ||
+      (this.props.hash != nextProps.hash);
   }
 
   render() {
@@ -76,12 +92,13 @@ class Calendar extends React.Component {
 
     for (let row = 0; row <= rows; ++row) {
       for (let col = 0; col <= cols; ++col) {
-        if (this.props.showCell(row, col)) {
+        const level = this.props.showCell(row, col);
+        if (level !== undefined) {
           rects.push((
             <rect key={`${row}_${col}`} className={`calendar-${this.props.tag}`}
               x={col * stepX + stepX * 1.5} 
               y={row * stepY + stepY} 
-              fill='#eeeeee' />
+              fill={LEVELS[level]} />
           ));
         }
       }

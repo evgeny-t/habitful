@@ -2,18 +2,8 @@
 
 import React from 'react';
 import _ from 'lodash';
-import moment from 'moment';
 
-// import { List, ListItem } from 'material-ui/List';
-// import Checkbox from 'material-ui/Checkbox';
-// import Divider from 'material-ui/Divider';
-// import CircularProgress from 'material-ui/CircularProgress';
 import { GridList, /*GridTile*/ } from 'material-ui/GridList';
-// import Subheader from 'material-ui/Subheader';
-// import IconButton from 'material-ui/IconButton';
-// import StarBorder from 'material-ui/svg-icons/toggle/star-border';
-// import Done from 'material-ui/svg-icons/action/done';
-
 
 import {  
 } from '../styles';
@@ -22,6 +12,7 @@ import HabitProgress from '../components/HabitProgress';
 
 export default class Today extends React.Component {
   static propTypes = {
+    history: React.PropTypes.array,
     habits: React.PropTypes.array,
     isActive: React.PropTypes.bool,
     today: React.PropTypes.object,
@@ -42,12 +33,27 @@ export default class Today extends React.Component {
     // sigh out from events
   }
 
+  componentWillReceiveProps(/*props*/) {
+  }
+
   render() {
-    let { today } = this.props;
+    // eslint-disable-next-line no-unused-vars
+    let { habits, isActive, history, ...other } = this.props;
+
+    const remappedHistory = 
+      _.reduce(this.props.history, (prev, next) => {
+        prev[next.habit] = [...(prev[next.habit] || []), next.when];
+        return prev;
+      }, {});
+
     const tiles = _(this.props.habits)
-      .map((habit, i) => (
-        <HabitProgress key={i} habit={habit} today={today} />))
-      .value();
+      .map((habit, i) => {
+        let history = remappedHistory[habit._id];
+        history = history || [];
+        history.sort();
+        return (<HabitProgress key={i} habit={habit} 
+          history={history} {...other} />);
+      }).value();
     
     return (
       <GridList 
