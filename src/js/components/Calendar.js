@@ -36,6 +36,7 @@ class Calendar extends React.Component {
     tag: React.PropTypes.string,
     viewBoxX: React.PropTypes.number,
     viewBoxY: React.PropTypes.number,
+    today: React.PropTypes.object,
   };
 
   static defaultProps = {
@@ -58,8 +59,8 @@ class Calendar extends React.Component {
     super(props);
   }
 
-  shouldComponentUpdate(/*nextProps, nextState*/) {
-    return true;
+  shouldComponentUpdate(nextProps/*, nextState*/) {
+    return this.props.today && !this.props.today.isSame(nextProps.today);
   }
 
   render() {
