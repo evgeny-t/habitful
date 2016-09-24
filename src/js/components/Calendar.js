@@ -59,7 +59,7 @@ class Calendar extends React.Component {
   }
 
   shouldComponentUpdate(/*nextProps, nextState*/) {
-    return false;
+    return true;
   }
 
   render() {

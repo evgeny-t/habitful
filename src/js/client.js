@@ -28,7 +28,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import reducer from './reducers';
-import { addHabit } from './actions';
+import { addHabit, updateDate } from './actions';
 
 const muiTheme = getMuiTheme({ });
 
@@ -101,6 +101,10 @@ const store = createStore(reducer, {
     },
   ]
 });
+
+// setInterval(() => {
+//   store.dispatch(updateDate(store.getState().today.clone().add(1, 'days')));
+// }, 1000);
 
 const NewHabitVisual = connect(
   state => state, 

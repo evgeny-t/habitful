@@ -67,6 +67,7 @@ const HabitStatus = (props) => {
   };
 
   const dayOfWeek = props.today.day();
+  
   // console.log(props.today);
   let startOfTheWeek = props.today.clone();
   startOfTheWeek.day(0);
@@ -74,6 +75,11 @@ const HabitStatus = (props) => {
 
   const dayOfWeekLabels = [ 
     undefined, 'Mon', undefined, 'Wed', undefined, 'Fri', undefined];
+
+  const columnLabel = (index) => {
+    const day = startOfTheWeek.clone().subtract(7 * (14 - index), 'days');
+    return index % 2 === 0 ? `${day.date()}` : undefined;
+  };
 
   return (
     <div>
@@ -89,6 +95,7 @@ const HabitStatus = (props) => {
       </div>
       <div style={calendarDivStyle}>
         <Calendar
+          today={props.today}
           viewBoxX={-10}
           tag='progress'
           rows={6}
@@ -96,9 +103,7 @@ const HabitStatus = (props) => {
           daySize={10}
           dayPadding={3}
           rowLabel={(index) => dayOfWeekLabels[index]}
-          colLabel={(index) => 
-            (index == 0 || (index + 1) % 5 === 0) ? 
-              `${startOfTheWeek.clone().date(7 * (index - 14)).date()}` : undefined}
+          colLabel={columnLabel}
           showCell={(row, col) => col === 14 ? (row <= dayOfWeek) : true }
           />
       </div>
@@ -125,7 +130,7 @@ export default class HabitProgress extends React.Component {
     in: null
   }
   
-  componentWillMount() {
+  _update() {
     const { today, lastTime, habit } = this.props;
 
     if (!_.some(habit.days)) {
@@ -154,6 +159,14 @@ export default class HabitProgress extends React.Component {
       this.setState({ 
         in: daySpan >= 0 ? daySpan : (7 + daySpan) });
     }
+  }
+
+  componentWillMount() {
+    this._update();
+  }
+
+  componentWillReceiveProps(/*nextProps*/) {
+    this._update();
   }
 
   render() {
