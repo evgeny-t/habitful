@@ -2,6 +2,7 @@
 
 import React from 'react';
 import _ from 'lodash';
+import Radium, { Style } from 'radium';
 
 import { GridList, /*GridTile*/ } from 'material-ui/GridList';
 
@@ -10,6 +11,7 @@ import {
 
 import HabitProgress from '../components/HabitProgress';
 
+@Radium
 export default class Today extends React.Component {
   static propTypes = {
     history: React.PropTypes.array,
@@ -56,11 +58,23 @@ export default class Today extends React.Component {
       }).value();
     
     return (
+      <div>
+      {/*<Style
+          scopeSelector={`.calendar-${this.props.tag}`}
+          rules={styles.day}
+        />*/}
       <GridList 
-        cols={3}
-        cellHeight={200}>
-        {tiles}
-      </GridList>
+              style={{
+                paddingTop: 30,
+                paddingBottom: 30,
+                paddingLeft: 75,
+                paddingRight: 75,
+                myStyle: 3,
+              }}
+              cols={3}
+              cellHeight={200}>
+              {tiles}
+            </GridList></div>
     );
   }
 }

@@ -15,6 +15,7 @@ const style = {
   gridTile: {
     minHeight: 180,
     maxWidth: 300,
+    // minWidth: 300,
   }
 };
 

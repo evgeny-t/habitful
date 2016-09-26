@@ -13,7 +13,7 @@ import { StyleRoot, Style } from 'radium';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
-// import _ from 'lodash';
+import _ from 'lodash';
 import moment from 'moment';
 // import request from 'superagent';
 
@@ -104,6 +104,12 @@ const store = createStore(reducer, {
       habit: '061c28bf-28b5-4d9e-bd43-b42f3ede7038',
       when: moment('19900802', 'YYYYMMDD'),
     },
+    ...(_.range(1, 10).map(i => { 
+      return {
+        habit: '061c28bf-28b5-4d9e-bd43-b42f3ede7038',
+        when: moment().set({ year: 2016, month: 7, date: i }),
+      }; 
+    })),
   ]
 });
 
