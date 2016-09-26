@@ -53,17 +53,44 @@ export default class Today extends React.Component {
         let history = remappedHistory[habit._id];
         history = history || [];
         history.sort();
-        return (<HabitProgress key={i} habit={habit} 
+        return (<HabitProgress className="my-tile" style={{ }} key={i} habit={habit} 
           history={history} {...other} />);
       }).value();
     
     return (
       <div>
-      {/*<Style
-          scopeSelector={`.calendar-${this.props.tag}`}
-          rules={styles.day}
-        />*/}
-      <GridList 
+      {<Style
+          scopeSelector={'.my-tile'}
+          rules={{
+            mediaQueries: {
+              
+              '(min-width: 768px)': {
+                width: '33%',
+              },
+
+              '(min-width: 320px)': {
+                width: '50%',
+              },
+            }
+            
+            // flexGrow: 1,
+            // flexShrink: 1,
+          }}
+        />}
+
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          margin: -2,
+          paddingTop: 30,
+          paddingBottom: 30,
+          paddingLeft: 75,
+          paddingRight: 75,
+          // justifyContent: 'flex-start',
+        }}>
+          {tiles}
+        </div>
+      {/*<GridList 
               style={{
                 paddingTop: 30,
                 paddingBottom: 30,
@@ -74,7 +101,8 @@ export default class Today extends React.Component {
               cols={3}
               cellHeight={200}>
               {tiles}
-            </GridList></div>
+            </GridList>*/}
+      </div>
     );
   }
 }

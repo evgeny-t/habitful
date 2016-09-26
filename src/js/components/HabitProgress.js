@@ -4,6 +4,9 @@ import React from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 
+import MeasureIt from 'react-measure-it';
+
+import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import { GridTile } from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
@@ -14,12 +17,12 @@ import Calendar from './Calendar';
 const style = {
   gridTile: {
     minHeight: 180,
-    maxWidth: 300,
+    // maxWidth: 300,
     // minWidth: 300,
   }
 };
 
-const HabitStatus = (props) => {
+const HabitStatus = MeasureIt()((props) => {
   let value = 100 / 7 * props.in;
   let progressColor;
 
@@ -34,11 +37,19 @@ const HabitStatus = (props) => {
     progressColor = '#4CAF50';
   }
 
+  const outterDivStyle = {
+    // position: 'absolute',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+  };
+
   const divStyle = { 
-    position: 'absolute',
+    // position: 'absolute',
     top: 0,
     bottom: 48,
     width: 70,
+    // float: 'left',
+    display: 'inline-block',
   };
 
   const nextTimeInStyle = { 
@@ -60,7 +71,9 @@ const HabitStatus = (props) => {
   };
 
   const calendarDivStyle = {
-    position: 'absolute',
+    // float: 'right',
+    // position: 'absolute',
+    display: 'inline-block',
     top: 0,
     right: 0,
     left: 72,
@@ -99,8 +112,11 @@ const HabitStatus = (props) => {
     return remapped[day.format('YYYYMMDD')] ? 5 : 0;
   };
 
+  /*console.log(props.containerWidth);
+  console.log(props.containerHeight);*/
+
   return (
-    <div>
+    <div id='habitprogress__outter' style={outterDivStyle}>
       <div style={divStyle}>
         {props.in != 0 && (<div style={nextTimeInStyle}>next time in</div>)}
         {props.in != 0 && 
@@ -126,8 +142,15 @@ const HabitStatus = (props) => {
           showCell={showCell}
           />
       </div>
+      <div>
+        <p>{props.habit.routine}</p>
+        {!props.in ?
+        (<IconButton onClick={props.handleRoutineDoneClick}>
+            <Done color="black" />
+          </IconButton>) : null}
+      </div>
     </div>);
-};
+});
 
 HabitStatus.propTypes = {
   in: React.PropTypes.number,
@@ -135,7 +158,7 @@ HabitStatus.propTypes = {
   history: React.PropTypes.array,
 };
 
-export default class HabitProgress extends React.Component {
+/*export default*/ class HabitProgress extends React.Component {
   static propTypes = {
     today: React.PropTypes.object,
     history: React.PropTypes.array,
@@ -197,19 +220,21 @@ export default class HabitProgress extends React.Component {
   }
 
   render() {
+    // /titleBackground={this.state.in === 0 ? '#00bcd4' : 'grey'}
+    // title={this.props.habit.routine}
     return (
-      <GridTile style={style.gridTile} 
-        title={this.props.habit.routine}
-        titleBackground={this.state.in === 0 ? '#00bcd4' : 'grey'}
-        actionIcon={!this.state.in ?
-          (<IconButton onClick={this.handleRoutineDoneClick}>
-            <Done color="white" />
-          </IconButton>) : null}
+      <Paper className={this.props.className} 
+        style={Object.assign({}, style.gridTile, this.props.style)}
         >
-          {<HabitStatus {...this.props} {...this.state} />}
-      </GridTile>);
+        <HabitStatus 
+          handleRoutineDoneClick={this.handleRoutineDoneClick} 
+          {...this.props} {...this.state} 
+        />
+      </Paper>);
   }
 }
+
+export default HabitProgress;
 
 export const dummy = {
   habit: {
