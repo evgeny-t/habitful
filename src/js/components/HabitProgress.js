@@ -8,7 +8,7 @@ import MeasureIt from 'react-measure-it';
 
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
-import { GridTile } from 'material-ui/GridList';
+// import { GridTile } from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import Done from 'material-ui/svg-icons/action/done';
 
@@ -19,6 +19,7 @@ const style = {
     minHeight: 180,
     // maxWidth: 300,
     // minWidth: 300,
+    margin: 5,
   }
 };
 
@@ -45,8 +46,8 @@ const HabitStatus = MeasureIt()((props) => {
 
   const divStyle = { 
     // position: 'absolute',
-    top: 0,
-    bottom: 48,
+    // top: 0,
+    // bottom: 48,
     width: 70,
     // float: 'left',
     display: 'inline-block',
@@ -74,10 +75,10 @@ const HabitStatus = MeasureIt()((props) => {
     // float: 'right',
     // position: 'absolute',
     display: 'inline-block',
-    top: 0,
-    right: 0,
-    left: 72,
-    bottom: 48,
+    // top: 0,
+    // right: 0,
+    // left: 72,
+    // bottom: 48,
   };
 
   const dayOfWeek = props.today.day();
@@ -90,8 +91,12 @@ const HabitStatus = MeasureIt()((props) => {
   const dayOfWeekLabels = [ 
     undefined, 'Mon', undefined, 'Wed', undefined, 'Fri', undefined];
 
+  const calendarWidth = props.containerWidth - divStyle.width;
+  // size + padding
+  const cols = Math.min(14, Math.trunc(calendarWidth / (10 + 3)) - 3); 
+
   const columnFirstDay = index => 
-    startOfTheWeek.clone().subtract(7 * (14 - index), 'days');
+    startOfTheWeek.clone().subtract(7 * (cols - index), 'days');
 
   const columnLabel = (index) => {
     const day = columnFirstDay(index);
@@ -104,16 +109,13 @@ const HabitStatus = MeasureIt()((props) => {
   }, {});
 
   const showCell = (row, col) => {
-    if (col === 14 && row > dayOfWeek) {
+    if (col === cols && row > dayOfWeek) {
       return undefined;
     }
 
     const day = columnFirstDay(col).add(row, 'days');
     return remapped[day.format('YYYYMMDD')] ? 5 : 0;
   };
-
-  /*console.log(props.containerWidth);
-  console.log(props.containerHeight);*/
 
   return (
     <div id='habitprogress__outter' style={outterDivStyle}>
@@ -134,7 +136,7 @@ const HabitStatus = MeasureIt()((props) => {
           viewBoxX={-9}
           tag='progress'
           rows={6}
-          cols={14}
+          cols={cols}
           daySize={10}
           dayPadding={3}
           rowLabel={(index) => dayOfWeekLabels[index]}
@@ -168,6 +170,8 @@ HabitStatus.propTypes = {
       days: React.PropTypes.array,
     }),
     onMarkRoutineDone: React.PropTypes.func,
+    style: React.PropTypes.object,
+    className: React.PropTypes.string,
   }
 
   state = {

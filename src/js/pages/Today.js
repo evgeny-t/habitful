@@ -53,55 +53,46 @@ export default class Today extends React.Component {
         let history = remappedHistory[habit._id];
         history = history || [];
         history.sort();
-        return (<HabitProgress className="my-tile" style={{ }} key={i} habit={habit} 
+        return (<HabitProgress className="my-tile" key={i} habit={habit} 
           history={history} {...other} />);
       }).value();
     
     return (
       <div>
-      {<Style
-          scopeSelector={'.my-tile'}
+        <Style
           rules={{
             mediaQueries: {
-              
-              '(min-width: 768px)': {
-                width: '33%',
-              },
-
               '(min-width: 320px)': {
-                width: '50%',
+                '.my-tile': {
+                  width: 'calc(50% - 10px)',
+                }
+              },
+              '(min-width: 768px)': {
+                '.my-tile': {
+                  width: 'calc(33% - 10px)',
+                }
+              },
+              '(min-width: 1024px)': {
+                '.my-tile': {
+                  width: `calc(${100 / 5}% - 10px)`,
+                }
               },
             }
-            
-            // flexGrow: 1,
-            // flexShrink: 1,
           }}
-        />}
+        />
 
         <div style={{
           display: 'flex',
           flexWrap: 'wrap',
-          margin: -2,
+          // justifyContent: 'space-between',
+          // margin: -2,
           paddingTop: 30,
           paddingBottom: 30,
           paddingLeft: 75,
           paddingRight: 75,
-          // justifyContent: 'flex-start',
         }}>
           {tiles}
         </div>
-      {/*<GridList 
-              style={{
-                paddingTop: 30,
-                paddingBottom: 30,
-                paddingLeft: 75,
-                paddingRight: 75,
-                myStyle: 3,
-              }}
-              cols={3}
-              cellHeight={200}>
-              {tiles}
-            </GridList>*/}
       </div>
     );
   }

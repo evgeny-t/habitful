@@ -76,7 +76,9 @@ class Calendar extends React.Component {
 
   shouldComponentUpdate(nextProps/*, nextState*/) {
     return (this.props.today && !this.props.today.isSame(nextProps.today)) ||
-      (this.props.hash != nextProps.hash);
+      (this.props.hash != nextProps.hash) || 
+      (this.props.cols != nextProps.cols) || 
+      (this.props.rows != nextProps.rows);
   }
 
   render() {
