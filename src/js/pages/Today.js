@@ -1,29 +1,38 @@
 'use strict';
 
 import React from 'react';
+// import { browserHistory } from 'react-router';
+// import { Link } from 'react-router';
 import _ from 'lodash';
-import Radium, { Style } from 'radium';
+// import moment from 'moment';
 
-import { GridList, /*GridTile*/ } from 'material-ui/GridList';
-
-import {  
+import {
 } from '../styles';
 
-import HabitProgress from '../components/HabitProgress';
+// import Paper from 'material-ui/Paper';
+import { List, ListItem } from 'material-ui/List';
+import Paper from 'material-ui/Paper';
+// import FloatingActionButton from 'material-ui/FloatingActionButton';
+// import ContentAdd from 'material-ui/svg-icons/content/add';
 
-@Radium
+const HabitItem = (props) => {
+
+};
+
 export default class Today extends React.Component {
   static propTypes = {
-    history: React.PropTypes.array,
-    habits: React.PropTypes.array,
-    isActive: React.PropTypes.bool,
-    today: React.PropTypes.object,
+    habits: React.PropTypes.arrayOf(React.PropTypes.shape({
+      routine: React.PropTypes.string,
+      goal: React.PropTypes.string,
+      days: React.PropTypes.array,
+    })),
+    isActive: React.PropTypes.bool
   }
-
-  state = {}
 
   constructor(props) {
     super(props);
+    this.state = {
+    };
   }
 
   componentDidMount() {
@@ -32,68 +41,21 @@ export default class Today extends React.Component {
   }
 
   componentWillUnmount() {
+    this.setState({ isActive: false });
     // sigh out from events
   }
 
-  componentWillReceiveProps(/*props*/) {
-  }
-
   render() {
-    // eslint-disable-next-line no-unused-vars
-    let { habits, isActive, history, ...other } = this.props;
-
-    const remappedHistory = 
-      _.reduce(this.props.history, (prev, next) => {
-        prev[next.habit] = [...(prev[next.habit] || []), next.when];
-        return prev;
-      }, {});
-
-    const tiles = _(this.props.habits)
-      .map((habit, i) => {
-        let history = remappedHistory[habit._id];
-        history = history || [];
-        history.sort();
-        return (<HabitProgress className="my-tile" key={i} habit={habit} 
-          history={history} {...other} />);
-      }).value();
-    
+    const habitItems = _.map(this.props.habits,
+      (habit, index) => (
+        <Paper key={index}
+          style={{ height: 50, marginBottom: 5, marginTop: 5 }}
+        >{habit.routine}</Paper>
+        ));
     return (
-      <div>
-        <Style
-          rules={{
-            mediaQueries: {
-              '(min-width: 320px)': {
-                '.my-tile': {
-                  width: 'calc(50% - 10px)',
-                }
-              },
-              '(min-width: 768px)': {
-                '.my-tile': {
-                  width: 'calc(33% - 10px)',
-                }
-              },
-              '(min-width: 1024px)': {
-                '.my-tile': {
-                  width: `calc(${100 / 5}% - 10px)`,
-                }
-              },
-            }
-          }}
-        />
-
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          // justifyContent: 'space-between',
-          // margin: -2,
-          paddingTop: 30,
-          paddingBottom: 30,
-          paddingLeft: 75,
-          paddingRight: 75,
-        }}>
-          {tiles}
-        </div>
-      </div>
+      <Paper style={{ padding: 15, margin: 5 }}>
+        {habitItems}
+      </Paper>
     );
   }
 }

@@ -8,9 +8,9 @@ import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 
 // TODO(ET): don't look like pages, should not be required from a component
-import Habits from '../pages/Habits';
-import Overview from '../pages/Overview';
 import Today from '../pages/Today';
+import Overview from '../pages/Overview';
+import MyHabits from '../pages/MyHabits';
 
 export default class TabbedContent extends React.Component {
   static propTypes = {
@@ -51,18 +51,18 @@ export default class TabbedContent extends React.Component {
         value={this.state.tabsValue}
         onChange={this.handleTabChange}
       >
-        <Tab label="habits" value="habits" >
-          {<Habits isActive={this.state.tabsValue === 'habits'} 
+        <Tab label="my habits" value="myhabits">
+          {<MyHabits
+            isActive={this.state.tabsValue === 'myhabits'}
+            {...this.props}
+          />}
+        </Tab>
+        <Tab label="today" value="today" >
+          {<Today isActive={this.state.tabsValue === 'today'}
             habits={this.props.habits} />}
         </Tab>
         <Tab label="overview" value="overview">
           {<Overview isActive={this.state.tabsValue === 'overview'} />}
-        </Tab>
-        <Tab label="today" value="today">
-          {<Today 
-            isActive={this.state.tabsValue === 'today'} 
-            {...this.props}
-          />}
         </Tab>
       </Tabs>
     );
