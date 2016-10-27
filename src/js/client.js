@@ -4,7 +4,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, 
+import { Router, Route,
   browserHistory, IndexRedirect } from 'react-router';
 import { Provider, connect } from 'react-redux';
 import { createStore } from 'redux';
@@ -28,8 +28,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import reducer from './reducers';
-import { 
-  addHabit, 
+import {
+  addHabit,
   updateDate,
   markRoutineDone,
 } from './actions';
@@ -104,11 +104,11 @@ const store = createStore(reducer, {
       habit: '061c28bf-28b5-4d9e-bd43-b42f3ede7038',
       when: moment('19900802', 'YYYYMMDD'),
     },
-    ...(_.range(1, 10).map(i => { 
+    ...(_.range(1, 10).map(i => {
       return {
         habit: '061c28bf-28b5-4d9e-bd43-b42f3ede7038',
         when: moment().set({ year: 2016, month: 7, date: i }),
-      }; 
+      };
     })),
   ]
 });
@@ -118,7 +118,7 @@ const store = createStore(reducer, {
 // }, 1000);
 
 const NewHabitVisual = connect(
-  state => state, 
+  state => state,
   dispatch => {
     return {
       onDone: (habit) => {
@@ -158,7 +158,7 @@ ReactDOM.render((
         </Router>
       </MuiThemeProvider>
     </Provider>
-    <Style 
+    <Style
       rules={{
         body: {
           fontFamily: muiTheme.fontFamily
