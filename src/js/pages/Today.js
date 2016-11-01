@@ -10,7 +10,7 @@ import {
 } from '../styles';
 
 // import Paper from 'material-ui/Paper';
-import { List, ListItem } from 'material-ui/List';
+// import { List, ListItem } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import Checkbox from 'material-ui/Checkbox';
 import IconButton from 'material-ui/IconButton';
@@ -113,16 +113,25 @@ export default class Today extends React.Component {
     // sign out from events
   }
 
+  shouldComponentUpdate(nextProps/*, nextState*/) {
+    console.log(_(nextProps.habits)
+      .filter(habit => habit.in === 0).value());
+    //console.log(this.props == nextProps);
+    return true;
+  }
+
   render() {
     // eslint-disable-next-line no-unused-vars
     const { habits, isActive, ...childProps } = this.props;
-    const habitItems = _.map(this.props.habits,
-      (habit, index) => (
+    const habitItems = _(this.props.habits)
+      .filter(habit => habit.in === 0)
+      .map((habit, index) => (
         <TodayItem key={index}
           habit={habit}
           {...childProps}
         />
-        ));
+      )).value();
+
     return (
       <div style={styles.root}>
         {habitItems}
