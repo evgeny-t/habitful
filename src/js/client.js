@@ -32,6 +32,7 @@ import {
   addHabit,
   updateDate,
   markRoutineDone,
+  refreshTodos,
 } from './actions';
 
 const muiTheme = getMuiTheme({ });
@@ -45,36 +46,54 @@ const store = createStore(reducer, {
       routine: 'monday routine',
       goal: 'test TODAY view',
       days: [false, true, false, false, false, false, false],
+      history: [
+        {
+          when: moment('20160901', 'YYYYMMDD'),
+        },
+        {
+          when: moment('20160801', 'YYYYMMDD'),
+        },
+      ],
     },
     {
       _id: '65b0a34c-9153-421f-9820-8b38fd2767cd',
       routine: 'tuesday routine',
       goal: 'test TODAY view',
       days: [false, false, true, false, false, false, false],
+      history: [
+      ],
     },
     {
       _id: '6c13bac2-45cb-47f6-85bd-1078c59cd2c1',
       routine: 'wednesday routine',
       goal: 'test TODAY view',
       days: [false, false, false, true, false, false, false],
+      history: [
+      ],
     },
     {
       _id: 'eedd6da7-bd65-4d32-92e9-d5cdf9919e87',
       routine: 'thursday routine',
       goal: 'test TODAY view',
       days: [false, false, false, false, true, false, false],
+      history: [
+      ],
     },
     {
       _id: 'c769a825-06f4-4b6b-a131-3b39611c3e10',
       routine: 'friday routine',
       goal: 'test TODAY view',
       days: [false, false, false, false, false, true, false],
+      history: [
+      ],
     },
     {
       _id: '699b68d4-0bee-453f-b913-8a9b3344d604',
       routine: 'Running',
       goal: 'it will help me to be more healty',
       days: [false, true, true, true, true, true, true],
+      history: [
+      ],
     },
 
     {
@@ -82,6 +101,8 @@ const store = createStore(reducer, {
       routine: 'Writing Writing Writing Writing Writing Writing Writing Writing',
       goal: 'it will help me to obtain the voice ;)',
       days: [false, true, true, true, true, true, true],
+      history: [
+      ],
     },
 
     {
@@ -89,40 +110,32 @@ const store = createStore(reducer, {
       routine: 'Push-ups',
       goal: 'it will help me to be more muscled',
       days: [false, true, true, true, true, true, true],
+      history: [
+        {
+          when: moment('19900802', 'YYYYMMDD'),
+        },
+        ...(_.range(1, 10).map(i => {
+          return {
+            when: moment().set({ year: 2016, month: 7, date: i }),
+          };
+        })),
+      ],
     },
   ],
-  history: [
-    {
-      habit: 'bf792bf1-6031-439d-b492-08b5a8472e49',
-      when: moment('20160901', 'YYYYMMDD'),
-    },
-    {
-      habit: 'bf792bf1-6031-439d-b492-08b5a8472e49',
-      when: moment('20160801', 'YYYYMMDD'),
-    },
-    {
-      habit: '061c28bf-28b5-4d9e-bd43-b42f3ede7038',
-      when: moment('19900802', 'YYYYMMDD'),
-    },
-    ...(_.range(1, 10).map(i => {
-      return {
-        habit: '061c28bf-28b5-4d9e-bd43-b42f3ede7038',
-        when: moment().set({ year: 2016, month: 7, date: i }),
-      };
-    })),
-  ]
 });
 
 // setInterval(() => {
 //   store.dispatch(updateDate(store.getState().today.clone().add(1, 'days')));
 // }, 1000);
 
+store.dispatch(refreshTodos());
+
 const NewHabitVisual = connect(
   state => state,
   dispatch => {
     return {
       onDone: (habit) => {
-        browserHistory.push('/habits');
+        browserHistory.push('/myhabits');
         dispatch(addHabit(habit));
       }
     };
@@ -139,7 +152,10 @@ const TabbedContentVisual = connect(
       },
       onTabChanged: (tab) => {
         browserHistory.push(`${tab}`);
-      }
+      },
+      onNewHabit: () => {
+        browserHistory.push('/habits/new');
+      },
     };
   })(TabbedContent);
 
@@ -150,7 +166,7 @@ ReactDOM.render((
       <MuiThemeProvider muiTheme={muiTheme}>
         <Router history={browserHistory}>
           <Route path='/' component={Layout}>
-            <IndexRedirect to='/habits' />
+            <IndexRedirect to='/myhabits' />
             <Route path='/debug/:component' component={Debug} />
             <Route path='/habits/new' component={NewHabitVisual} />
             <Route path='/:q' component={TabbedContentVisual} />
@@ -163,6 +179,9 @@ ReactDOM.render((
         body: {
           fontFamily: muiTheme.fontFamily
         },
+        p: {
+          margin: 0
+        }
         // TODO(ET): media queries
       }}
     />

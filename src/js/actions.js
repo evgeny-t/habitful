@@ -26,3 +26,12 @@ export function markRoutineDone(habitId) {
     habitId
   };
 }
+
+export const REFRESH_TODOS = 'REFRESH_TODOS';
+
+export function refreshTodos() {
+  return {
+    type: REFRESH_TODOS
+  };
+}
+

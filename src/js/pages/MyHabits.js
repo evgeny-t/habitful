@@ -26,7 +26,6 @@ const topics_addNew = {
 @Radium
 export default class MyHabits extends React.Component {
   static propTypes = {
-    history: React.PropTypes.array,
     habits: React.PropTypes.array,
     isActive: React.PropTypes.bool,
     today: React.PropTypes.object,
@@ -57,22 +56,14 @@ export default class MyHabits extends React.Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    let { habits, isActive, history, ...other } = this.props;
-
-    const remappedHistory =
-      _.reduce(this.props.history, (prev, next) => {
-        prev[next.habit] = [...(prev[next.habit] || []), next.when];
-        return prev;
-      }, {});
+    let { habits, isActive, ...other } = this.props;
 
     const tiles = _(this.props.habits)
-      .map((habit, i) => {
-        let history = remappedHistory[habit._id];
-        history = history || [];
-        history.sort();
-        return (<HabitProgress className="my-tile" key={i} habit={habit}
-          history={history} {...other} />);
-      }).value();
+      .map((habit, i) => (
+        <HabitProgress
+          className="my-tile" key={i} habit={habit}
+          history={habit.history} {...other}
+        />)).value();
 
     return (
       <div>

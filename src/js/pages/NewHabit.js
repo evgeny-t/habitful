@@ -4,7 +4,7 @@ import React from 'react';
 import _ from 'lodash';
 // import moment from 'moment';
 
-import { browserHistory } from 'react-router';
+// import { browserHistory } from 'react-router';
 
 import {
   Step,
@@ -15,8 +15,8 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import { 
-  Table, TableBody, TableHeader, TableHeaderColumn, 
+import {
+  Table, TableBody, TableHeader, TableHeaderColumn,
   TableRow, TableRowColumn } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
 import Checkbox from 'material-ui/Checkbox';
@@ -31,7 +31,7 @@ const styles = {
     width: 0,
 
     header: {
-      borderBottomStyle: 'none', 
+      borderBottomStyle: 'none',
       height: 10,
 
       row: {
@@ -89,14 +89,14 @@ export default class NewHabit extends React.Component {
     this.setState({ stepIndex: this.state.stepIndex + 1 });
   }
 
-  validateGoal = () => 
+  validateGoal = () =>
     this.state.goal ? null : 'This field is required';
-  handleGoalChanged = e => 
+  handleGoalChanged = e =>
     this.setState({ goal: e.target.value });
 
-  validateRoutine = () => 
+  validateRoutine = () =>
     this.state.routine ? null : 'This field is required';
-  handleRoutineChanged = e => 
+  handleRoutineChanged = e =>
     this.setState({ routine: e.target.value });
 
   handleDoneClick = () => {
@@ -104,6 +104,7 @@ export default class NewHabit extends React.Component {
     newOne.goal = this.state.goal;
     newOne.routine = this.state.routine;
     newOne.days = _.range(7).map(i => this.state[`checked_${i}`]);
+    newOne.history = [];
 
     this.props.onDone(newOne);
   }
@@ -137,7 +138,7 @@ export default class NewHabit extends React.Component {
     const checkbox = index => {
       return {
         defaultChecked: this.state[`checked_${index}`],
-        onCheck: (e, checked) => 
+        onCheck: (e, checked) =>
           this.setState({ [`checked_${index}`]: checked }),
       };
     };
@@ -151,7 +152,7 @@ export default class NewHabit extends React.Component {
             <StepContent>
               <p>Think up a goal you want to achieve
                               or a quality you want to obtain:</p>
-              <TextField hintText='Your Goal' 
+              <TextField hintText='Your Goal'
                 errorText={this.validateGoal()}
                 onChange={this.handleGoalChanged}
                 defaultValue={this.state.goal} />
@@ -175,7 +176,7 @@ export default class NewHabit extends React.Component {
             <StepButton>Arrangement</StepButton>
             <StepContent>
               <p>You would like to repeat the routine each:</p>
-              <Table 
+              <Table
                 style={styles.table}
                 selectable={false}>
                 <TableHeader
@@ -206,7 +207,7 @@ export default class NewHabit extends React.Component {
                 </TableBody>
               </Table>
               <p>starting from</p>
-              <DatePicker 
+              <DatePicker
                 defaultDate={new Date}
                 hintText='Start date' container='inline'
                 />

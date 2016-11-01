@@ -58,8 +58,11 @@ export default class TabbedContent extends React.Component {
           />}
         </Tab>
         <Tab label="today" value="today" >
-          {<Today isActive={this.state.tabsValue === 'today'}
-            habits={this.props.habits} />}
+          {<Today
+            isActive={this.state.tabsValue === 'today'}
+            habits={this.props.habits}
+            onCheck={this.props.onMarkRoutineDone}
+            />}
         </Tab>
         <Tab label="overview" value="overview">
           {<Overview isActive={this.state.tabsValue === 'overview'} />}
