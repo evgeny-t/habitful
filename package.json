@@ -21,6 +21,7 @@
   "devDependencies": {
     "babel-core": "^6.13.2",
     "babel-eslint": "^6.1.2",
+    "babel-jest": "^16.0.0",
     "babel-loader": "^6.2.0",
     "babel-plugin-add-module-exports": "^0.1.2",
     "babel-plugin-react-html-attrs": "^2.0.0",
@@ -31,11 +32,13 @@
     "babel-preset-stage-0": "^6.3.13",
     "eslint": "^3.4.0",
     "eslint-plugin-react": "^6.2.0",
+    "jest": "^16.0.2",
     "webpack-dev-server": "^1.15.0"
   },
   "scripts": {
     "dev": "webpack-dev-server --content-base src --inline --hot --watch-poll --history-api-fallback",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "npm test -- --watch",
     "build": "NODE_ENV=production webpack"
   },
   "author": "",
