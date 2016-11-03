@@ -20,6 +20,7 @@ export default class TabbedContent extends React.Component {
     habits: React.PropTypes.array,
     today: React.PropTypes.object,
     onTabChanged: React.PropTypes.func,
+    onMarkRoutineDone: React.PropTypes.func,
   }
 
   constructor(props) {

@@ -57,13 +57,23 @@ class TodayItem extends React.Component {
     onCheck: React.PropTypes.func,
   }
 
+  state = { check: false }
+
   constructor(props) {
     super(props);
   }
 
+  shouldComponentUpdate(/*nextProps, nextState*/) {
+    return true;
+  }
+
   handleCheck = (event, isInputChecked) => {
     if (isInputChecked) {
-      this.props.onCheck(event, this.props.habit);
+      this.setState({ check: true });
+      setTimeout(() => {
+        console.log('handleCheck')
+        this.props.onCheck(event, this.props.habit);
+      }, 0);
     }
   }
 
@@ -71,6 +81,7 @@ class TodayItem extends React.Component {
     return (
       <Paper style={{ ...TodayItem.defaultStyles.root, ...this.props.style }}>
         <Checkbox
+          checked={this.state.check}
           onCheck={this.handleCheck}
           label={this.props.habit.routine}
           style={TodayItem.defaultStyles.checkbox} />
@@ -113,11 +124,16 @@ export default class Today extends React.Component {
     // sign out from events
   }
 
-  shouldComponentUpdate(nextProps/*, nextState*/) {
-    console.log(_(nextProps.habits)
-      .filter(habit => habit.in === 0).value());
-    //console.log(this.props == nextProps);
+  shouldComponentUpdate(/*nextProps, nextState*/) {
+  //   // console.log(_(nextProps.habits)
+  //   //   .filter(habit => habit.in === 0).value());
+  //   //console.log(this.props == nextProps);
     return true;
+  }
+
+  componentWillReceiveProps(props) {
+    console.log('componentWillReceiveProps:', props);
+    this.forceUpdate();
   }
 
   render() {
@@ -131,6 +147,8 @@ export default class Today extends React.Component {
           {...childProps}
         />
       )).value();
+
+    console.log('Today#render', habitItems.length);
 
     return (
       <div style={styles.root}>
