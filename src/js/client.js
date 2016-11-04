@@ -131,7 +131,11 @@ const store = createStore(reducer, {
 store.dispatch(refreshTodos());
 
 const NewHabitVisual = connect(
-  state => state,
+  // state to props
+  state => {
+    return { defaultStartDate: state.today };
+  },
+  // dipatch to props
   dispatch => {
     return {
       onDone: (habit) => {

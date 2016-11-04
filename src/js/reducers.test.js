@@ -11,6 +11,8 @@ describe('addHabit', () => {
     const habit = {
       goal: 'goal',
       routine: 'routine',
+      days: [true, false, false, false, false, false, false],
+      // today: moment().day(0)
     };
 
     const before = {
@@ -18,7 +20,13 @@ describe('addHabit', () => {
     };
 
     const after = {
-      habits: [ habit ]
+      habits: [ {
+        goal: 'goal',
+        routine: 'routine',
+        history: [],
+        days: [true, false, false, false, false, false, false],
+        in: 1
+      } ]
     };
 
     expect(reducer(before, actions.addHabit(habit)))

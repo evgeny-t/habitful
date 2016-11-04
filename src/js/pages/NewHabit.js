@@ -2,9 +2,6 @@
 
 import React from 'react';
 import _ from 'lodash';
-// import moment from 'moment';
-
-// import { browserHistory } from 'react-router';
 
 import {
   Step,
@@ -53,6 +50,7 @@ const styles = {
 export default class NewHabit extends React.Component {
   static propTypes = {
     onDone: React.PropTypes.func,
+    defaultStartDate: React.PropTypes.object,
   }
 
   constructor(props) {
@@ -61,6 +59,8 @@ export default class NewHabit extends React.Component {
     this.state = {
       stepIndex: 0,
       goal: '',
+      routine: '',
+      startDate: props.defaultStartDate,
       checked_0: true,
       checked_1: true,
       checked_2: true,
@@ -208,7 +208,7 @@ export default class NewHabit extends React.Component {
               </Table>
               <p>starting from</p>
               <DatePicker
-                defaultDate={new Date}
+                defaultDate={this.state.startDate}
                 hintText='Start date' container='inline'
                 />
               {this.renderStepActions(2, {

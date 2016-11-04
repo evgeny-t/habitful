@@ -56,7 +56,12 @@ export default (state, action) => {
   switch (action.type) {
   case ADD_HABIT: {
     return Object.assign({}, state, {
-      habits: [...state.habits, action.habit]
+      habits: [...state.habits, {
+        history: [],
+        in: null,
+        days: [false, false, false, false, false, false, false],
+        ...action.habit
+      }]
     });
   }
   case UPDATE_DATE: {
