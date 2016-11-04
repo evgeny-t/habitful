@@ -70,10 +70,7 @@ class TodayItem extends React.Component {
   handleCheck = (event, isInputChecked) => {
     if (isInputChecked) {
       this.setState({ check: true });
-      setTimeout(() => {
-        console.log('handleCheck')
-        this.props.onCheck(event, this.props.habit);
-      }, 0);
+      this.props.onCheck(event, this.props.habit);
     }
   }
 
@@ -124,31 +121,17 @@ export default class Today extends React.Component {
     // sign out from events
   }
 
-  shouldComponentUpdate(/*nextProps, nextState*/) {
-  //   // console.log(_(nextProps.habits)
-  //   //   .filter(habit => habit.in === 0).value());
-  //   //console.log(this.props == nextProps);
-    return true;
-  }
-
-  componentWillReceiveProps(props) {
-    console.log('componentWillReceiveProps:', props);
-    this.forceUpdate();
-  }
-
   render() {
     // eslint-disable-next-line no-unused-vars
     const { habits, isActive, ...childProps } = this.props;
     const habitItems = _(this.props.habits)
       .filter(habit => habit.in === 0)
-      .map((habit, index) => (
-        <TodayItem key={index}
+      .map((habit) => (
+        <TodayItem key={habit.routine}
           habit={habit}
           {...childProps}
         />
       )).value();
-
-    console.log('Today#render', habitItems.length);
 
     return (
       <div style={styles.root}>
