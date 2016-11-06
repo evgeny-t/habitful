@@ -13,10 +13,12 @@ import _ from 'lodash';
 function refreshTodos(state) {
   return Object.assign({}, state, {
     habits: state.habits.map(habit => {
-      const today = state.today;
+      const today = habit.startsFrom ?
+        (habit.startsFrom > state.today ? habit.startsFrom : state.today) :
+        state.today;
       habit = _.cloneDeep(habit);
       habit.in = null;
-      let history = habit.history;
+      let history = habit.history || [];
       history.sort((a, b) => a.when > b.when);
       const lastTime = history.length ? _.last(history).when : null;
 
@@ -45,6 +47,7 @@ function refreshTodos(state) {
         }
 
         habit.in = daySpan >= 0 ? daySpan : (7 + daySpan);
+        habit.in -= state.today.diff(today, 'days');
       }
 
       return habit;
@@ -52,24 +55,33 @@ function refreshTodos(state) {
   });
 }
 
+function addHabit(state, habit) {
+  const newState = Object.assign({}, state, {
+    habits: [...state.habits, {
+      history: [],
+      in: null,
+      days: [false, false, false, false, false, false, false],
+      ...habit
+    }]
+  });
+
+  return refreshTodos(newState);
+}
+
 export default (state, action) => {
   switch (action.type) {
   case ADD_HABIT: {
-    return Object.assign({}, state, {
-      habits: [...state.habits, {
-        history: [],
-        in: null,
-        days: [false, false, false, false, false, false, false],
-        ...action.habit
-      }]
-    });
+    return addHabit(state, action.habit);
   }
   case UPDATE_DATE: {
+// TODO: update todos,
+// TODO(ET): extract method
     return Object.assign({}, state, {
       today: action.date
     });
   }
   case MARK_ROUTINE_DONE: {
+// TODO(ET): extract method
     state = _.cloneDeep(state);
 
     const needsToBeUpdated =

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import _ from 'lodash';
+import moment from 'moment';
 
 import {
   Step,
@@ -53,23 +54,23 @@ export default class NewHabit extends React.Component {
     defaultStartDate: React.PropTypes.object,
   }
 
+  state = {
+    stepIndex: 0,
+    goal: '',
+    routine: '',
+    startDate: null,
+    checked_0: true,
+    checked_1: true,
+    checked_2: true,
+    checked_3: true,
+    checked_4: true,
+    checked_5: true,
+    checked_6: true,
+    checked_7: true,
+  }
+
   constructor(props) {
     super(props);
-
-    this.state = {
-      stepIndex: 0,
-      goal: '',
-      routine: '',
-      startDate: props.defaultStartDate,
-      checked_0: true,
-      checked_1: true,
-      checked_2: true,
-      checked_3: true,
-      checked_4: true,
-      checked_5: true,
-      checked_6: true,
-      checked_7: true,
-    };
   }
 
   componentDidMount() {
@@ -95,9 +96,10 @@ export default class NewHabit extends React.Component {
     this.setState({ goal: e.target.value });
 
   validateRoutine = () =>
-    this.state.routine ? null : 'This field is required';
+    this.state.routine ? null : 'This field is required'
+
   handleRoutineChanged = e =>
-    this.setState({ routine: e.target.value });
+    this.setState({ routine: e.target.value })
 
   handleDoneClick = () => {
     let newOne = {};
@@ -105,9 +107,13 @@ export default class NewHabit extends React.Component {
     newOne.routine = this.state.routine;
     newOne.days = _.range(7).map(i => this.state[`checked_${i}`]);
     newOne.history = [];
+    newOne.startsFrom = this.state.startDate;
 
     this.props.onDone(newOne);
   }
+
+  handleDateChange = (e, date) =>
+    this.setState({ startDate: moment(date) });
 
   renderStepActions(step, nextProps) {
     return (
@@ -208,8 +214,9 @@ export default class NewHabit extends React.Component {
               </Table>
               <p>starting from</p>
               <DatePicker
-                defaultDate={this.state.startDate}
+                defaultDate={this.props.defaultStartDate.toDate()}
                 hintText='Start date' container='inline'
+                onChange={this.handleDateChange}
                 />
               {this.renderStepActions(2, {
                 label: 'Done',

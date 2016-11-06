@@ -7,25 +7,25 @@ import moment from 'moment';
 import _ from 'lodash';
 
 describe('addHabit', () => {
-  it('should add one more habit', () => {
+  it('should add one more habit with updated `in` field', () => {
     const habit = {
+      startsFrom: moment().day(-1),
       goal: 'goal',
       routine: 'routine',
       days: [true, false, false, false, false, false, false],
-      // today: moment().day(0)
     };
 
     const before = {
+      today: moment().day(0),
       habits: [],
     };
 
     const after = {
+      ...before,
       habits: [ {
-        goal: 'goal',
-        routine: 'routine',
         history: [],
-        days: [true, false, false, false, false, false, false],
-        in: 1
+        in: 0,
+        ...habit,
       } ]
     };
 
@@ -37,19 +37,24 @@ describe('addHabit', () => {
 
 describe('refreshTodos', () => {
   it('should update `in`, when the next time on this week', () => {
-    const sunday = moment().day(0); // last sunday
+    const today = moment().day(0); // last sunday
+    const startsFrom = moment(today).subtract(1, 'week');
     const before = {
-      today: sunday,
+      today,
       habits: [{
+        startsFrom,
         days: [false, false, false, false, false, false, false],
         history: [],
       }, {
+        startsFrom,
         days: [true, false, false, false, false, false, false],
         history: [],
       }, {
+        startsFrom,
         days: [false, true, false, false, false, false, false],
         history: [],
       }, {
+        startsFrom,
         days: [false, false, false, false, false, false, true],
         history: [],
       }, ],
@@ -57,7 +62,7 @@ describe('refreshTodos', () => {
 
     expect(reducer(before, actions.refreshTodos()))
       .toEqual({
-        today: sunday,
+        today: today,
         habits: [
           _.assign({}, before.habits[0], { in: null }),
           _.assign({}, before.habits[1], { in: 0 }),
@@ -110,6 +115,30 @@ describe('refreshTodos', () => {
         habits: [
           _.assign({}, before.habits[0], { in: 7 }),
         ],
+      });
+  });
+
+  it('should set `in` correctly taking startsFrom into account', () => {
+    const today = moment().day(0);
+    const before = {
+      today,
+      habits: [{
+        startsFrom: moment().day(3),
+        goal: 'goal',
+        routine: 'routine',
+        days: [true, true, true, true, true, true, true],
+      }]
+    };
+
+    expect(reducer(before, actions.refreshTodos()))
+      .toEqual({
+        ...before,
+        habits: [
+          {
+            ...before.habits[0],
+            in: 3,
+          }
+        ]
       });
   });
 });
