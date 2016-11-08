@@ -12,6 +12,10 @@ import CircularProgress from 'material-ui/CircularProgress';
 // import IconButton from 'material-ui/IconButton';
 // import Done from 'material-ui/svg-icons/action/done';
 import TodayIcon from 'material-ui/svg-icons/action/today';
+import IconButton from 'material-ui/IconButton';
+import MoreVert from 'material-ui/svg-icons/navigation/more-vert';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 import Calendar from './Calendar';
 
@@ -70,13 +74,6 @@ const HabitStatus = MeasureIt()((props) => {
     paddingTop: 20,
   };
 
-  const goalStyle = {
-    margin: 10,
-    overflow: 'hidden',
-    fontSize: 'smaller',
-  };
-  const routineStyle = { ...goalStyle, fontSize: 'larger' };
-
   const calendarDivStyle = {
     float: 'right',
     marginRight: 10,
@@ -121,12 +118,6 @@ const HabitStatus = MeasureIt()((props) => {
 
   return (
     <div id='habitprogress__outter' style={outterDivStyle}>
-      <div style={routineStyle}>
-        <p>{props.habit.routine}</p>
-      </div>
-      <div style={goalStyle}>
-        <p>{props.habit.goal}</p>
-      </div>
       <div style={divStyle}>
         {props.habit.in != 0 && (<div style={nextTimeInStyle}>next time in</div>)}
         {props.habit.in != 0 &&
@@ -178,12 +169,32 @@ HabitStatus.propTypes = {
   }
 
   render() {
+    const goalStyle = {
+      margin: 10,
+      overflow: 'hidden',
+      fontSize: 'smaller',
+    };
+
+    const routineStyle = { ...goalStyle, fontSize: 'larger' };
+
     // /titleBackground={this.state.in === 0 ? '#00bcd4' : 'grey'}
     // title={this.props.habit.routine}
     return (
       <Paper className={this.props.className}
         style={Object.assign({}, style.gridTile, this.props.style)}
         >
+        <div style={routineStyle}>
+          <p>{this.props.habit.routine}</p>
+        </div>
+        <div style={goalStyle}>
+          <p>{this.props.habit.goal}</p>
+        </div>
+        <IconMenu
+          iconButtonElement={<IconButton><MoreVert /></IconButton>}
+          style={{}}>
+          <MenuItem primaryText="Go to habit page" />
+          <MenuItem primaryText="Remove" />
+        </IconMenu>
         <HabitStatus
           today={this.props.today}
           habit={this.props.habit}

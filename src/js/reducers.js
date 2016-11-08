@@ -2,6 +2,7 @@
 
 import {
   ADD_HABIT,
+  REMOVE_HABIT,
   UPDATE_DATE,
   MARK_ROUTINE_DONE,
   REFRESH_TODOS,
@@ -69,6 +70,13 @@ function addHabit(state, habit) {
   return refreshTodos(newState);
 }
 
+function removeHabit(state, habitId) {
+  return {
+    ...state,
+    habits: _.filter(state.habits, h => h.id !== habitId),
+  };
+}
+
 function refreshLifetime(state) {
   state = { lifetime: {}, ...state };
   const lifetime = _.map(state.habits, 'history')
@@ -85,6 +93,9 @@ export default (state, action) => {
   switch (action.type) {
   case ADD_HABIT: {
     return addHabit(state, action.habit);
+  }
+  case REMOVE_HABIT: {
+    return removeHabit(state, action.habitId);
   }
   case UPDATE_DATE: {
 // TODO: update todos,

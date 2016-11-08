@@ -9,6 +9,15 @@ export function addHabit(habit) {
   };
 }
 
+export const REMOVE_HABIT = 'REMOVE_HABIT';
+
+export function removeHabit(habitId) {
+  return {
+    type: REMOVE_HABIT,
+    habitId
+  };
+}
+
 export const UPDATE_DATE = 'UPDATE_DATE';
 
 export function updateDate(date) {
