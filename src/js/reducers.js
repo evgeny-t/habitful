@@ -5,6 +5,7 @@ import {
   UPDATE_DATE,
   MARK_ROUTINE_DONE,
   REFRESH_TODOS,
+  REFRESH_LIFETIME,
 } from './actions';
 
 import _ from 'lodash';
@@ -68,6 +69,18 @@ function addHabit(state, habit) {
   return refreshTodos(newState);
 }
 
+function refreshLifetime(state) {
+  state = { lifetime: {}, ...state };
+  const lifetime = _.map(state.habits, 'history')
+    .reduce((prev, current) => prev.concat(_.map(current, 'when')), [])
+    .map(h => h.diff(state.birthday, 'weeks'))
+    .reduce((prev, current) => {
+      prev[current] = prev[current] === undefined ? 1 : prev[current] + 1;
+      return prev;
+    }, { modified: (state.lifetime.modified || 0) + 1 });
+  return { ...state, lifetime };
+}
+
 export default (state, action) => {
   switch (action.type) {
   case ADD_HABIT: {
@@ -90,10 +103,12 @@ export default (state, action) => {
       when: state.today
     });
     state.habits[needsToBeUpdated].history.sort();
-    return refreshTodos(state);
+    return refreshLifetime(refreshTodos(state));
   }
   case REFRESH_TODOS:
     return refreshTodos(state);
+  case REFRESH_LIFETIME:
+    return refreshLifetime(state);
   default:
     return state;
   }

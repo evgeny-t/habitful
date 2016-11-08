@@ -142,3 +142,36 @@ describe('refreshTodos', () => {
       });
   });
 });
+
+describe('refreshLifetime', () => {
+  it('should set lifetime of state', () => {
+    const birthday = moment('19900821', 'YYYYMMDD');
+    const state = {
+      birthday,
+      habits: [{
+        history: [
+          { when: moment(birthday).add(1, 'days') },
+          { when: moment(birthday).add(2, 'days') },
+          { when: moment(birthday).add(3, 'days') },
+          { when: moment(birthday).add(4, 'days') },
+          { when: moment(birthday).add(5, 'days') },
+        ]
+      }, {
+        history: [
+          { when: moment(birthday).add(5, 'days') },
+          { when: moment(birthday).add(8, 'days') },
+        ]
+      }]
+    };
+
+    expect(reducer(state, actions.refreshLifetime()))
+      .toEqual({
+        ...state,
+        lifetime: {
+          '0': 6,
+          '1': 1,
+          modified: 1,
+        }
+      });
+  });
+});

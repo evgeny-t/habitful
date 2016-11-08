@@ -33,6 +33,7 @@ import {
   updateDate,
   markRoutineDone,
   refreshTodos,
+  refreshLifetime,
 } from './actions';
 
 const muiTheme = getMuiTheme({ });
@@ -48,10 +49,10 @@ const store = createStore(reducer, {
       days: [false, true, false, false, false, false, false],
       history: [
         {
-          when: moment('20160901', 'YYYYMMDD'),
+          when: moment('20130901', 'YYYYMMDD'),
         },
         {
-          when: moment('20160801', 'YYYYMMDD'),
+          when: moment('20130801', 'YYYYMMDD'),
         },
       ],
     },
@@ -112,16 +113,20 @@ const store = createStore(reducer, {
       days: [false, true, true, true, true, true, true],
       history: [
         {
-          when: moment('19900802', 'YYYYMMDD'),
+          when: moment('19900902', 'YYYYMMDD'),
         },
         ...(_.range(1, 10).map(i => {
           return {
-            when: moment().set({ year: 2016, month: 7, date: i }),
+            when: moment().set({ year: 2015, month: 7, date: i }),
           };
         })),
       ],
     },
   ],
+
+  lifetime: {
+    modified: 0,
+  },
 });
 
 // setInterval(() => {
@@ -129,6 +134,7 @@ const store = createStore(reducer, {
 // }, 1000);
 
 store.dispatch(refreshTodos());
+store.dispatch(refreshLifetime());
 
 const NewHabitVisual = connect(
   // state to props
@@ -154,9 +160,11 @@ const TabbedContentVisual = connect(
       onMarkRoutineDone: (event, habit) => {
         dispatch(markRoutineDone(habit._id));
       },
+
       onTabChanged: (tab) => {
         browserHistory.push(`${tab}`);
       },
+
       onNewHabit: () => {
         browserHistory.push('/habits/new');
       },

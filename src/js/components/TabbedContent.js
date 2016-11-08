@@ -66,7 +66,10 @@ export default class TabbedContent extends React.Component {
             />}
         </Tab>
         <Tab label="overview" value="overview">
-          {<Overview isActive={this.state.tabsValue === 'overview'} />}
+          {<Overview
+            isActive={this.state.tabsValue === 'overview'}
+            {...this.props}
+            />}
         </Tab>
       </Tabs>
     );

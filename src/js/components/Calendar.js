@@ -6,7 +6,7 @@ import React from 'react';
 
 import Radium, { Style } from 'radium';
 
-import {  
+import {
 } from '../styles';
 
 function getStyles(props) {
@@ -59,7 +59,7 @@ class Calendar extends React.Component {
     rows: 90,
     cols: 51,
     rowLabel: (index) => index % 2 === 0 ? `${index}` : undefined,
-    colLabel: (index) => 
+    colLabel: (index) =>
       (index == 0 || (index + 1) % 5 === 0) ? `${index + 1}` : undefined,
     showCell: (/*row, col*/) => 0,
     tag: '',
@@ -76,14 +76,14 @@ class Calendar extends React.Component {
 
   shouldComponentUpdate(nextProps/*, nextState*/) {
     return (this.props.today && !this.props.today.isSame(nextProps.today)) ||
-      (this.props.hash != nextProps.hash) || 
-      (this.props.cols != nextProps.cols) || 
+      (this.props.hash != nextProps.hash) ||
+      (this.props.cols != nextProps.cols) ||
       (this.props.rows != nextProps.rows);
   }
 
   render() {
     const styles = getStyles(this.props);
-    const { 
+    const {
       rows, cols, rowLabel, colLabel,
       viewBoxX, viewBoxY,
     } = this.props;
@@ -98,8 +98,8 @@ class Calendar extends React.Component {
         if (level !== undefined) {
           rects.push((
             <rect key={`${row}_${col}`} className={`calendar-${this.props.tag}`}
-              x={col * stepX + stepX * 1.5} 
-              y={row * stepY + stepY} 
+              x={col * stepX + stepX * 1.5}
+              y={row * stepY + stepY}
               fill={LEVELS[level]} />
           ));
         }
@@ -110,10 +110,10 @@ class Calendar extends React.Component {
       const label = rowLabel(row);
       if (label) {
         rects.push((
-          <text key={`row_${row}`} 
+          <text key={`row_${row}`}
             style={{ fontSize: 9 }}
             textAnchor={'middle'}
-            x={stepX / 2} 
+            x={stepX / 2}
             y={row * stepY + stepY + styles.day.height}>
             {`${label}`}
           </text>
@@ -125,9 +125,9 @@ class Calendar extends React.Component {
       const label = colLabel(col);
       if (label) {
         rects.push((
-          <text key={`col_${col}`} 
+          <text key={`col_${col}`}
             style={{ fontSize: 9 }}
-            x={stepX * 1.5 + styles.day.width / 2 + col * stepX} 
+            x={stepX * 1.5 + styles.day.width / 2 + col * stepX}
             y={stepY - 2}
             textAnchor={'middle'}>
             {`${label}`}
@@ -147,12 +147,12 @@ class Calendar extends React.Component {
           rules={styles['day:hover']}
         />
 
-        <svg width={(cols + 3) * stepX} height={(rows + 2) * stepY} 
-          style={{ 
+        <svg width={(cols + 3) * stepX} height={(rows + 2) * stepY}
+          style={{
             // border: '1px solid black',
             // marginRight: 'auto',
             // marginLeft: 'auto',
-            display: 'block' 
+            display: 'block'
           }}
           viewBox={`${viewBoxX} ${viewBoxY} ${(cols + 3) * stepX} ${(rows + 2) * stepY}`}>
           {rects}
