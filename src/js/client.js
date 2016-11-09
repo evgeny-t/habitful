@@ -30,6 +30,7 @@ injectTapEventPlugin();
 import reducer from './reducers';
 import {
   addHabit,
+  removeHabit,
   updateDate,
   markRoutineDone,
   refreshTodos,
@@ -168,6 +169,10 @@ const TabbedContentVisual = connect(
       onNewHabit: () => {
         browserHistory.push('/habits/new');
       },
+
+      onHabitRemove: (habitId) => {
+        dispatch(removeHabit(habitId));
+      }
     };
   })(TabbedContent);
 

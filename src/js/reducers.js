@@ -10,7 +10,7 @@ import {
 } from './actions';
 
 import _ from 'lodash';
-// import moment from 'moment';
+import moment from 'moment';
 
 function refreshTodos(state) {
   return Object.assign({}, state, {
@@ -73,7 +73,9 @@ function addHabit(state, habit) {
 function removeHabit(state, habitId) {
   return {
     ...state,
-    habits: _.filter(state.habits, h => h.id !== habitId),
+// NOTE(ET): moment() should not be used here.
+    habits: _.map(state.habits, h =>
+      h._id === habitId ? {...h, deletedAt: moment() } : h),
   };
 }
 

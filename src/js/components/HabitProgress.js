@@ -13,6 +13,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 // import Done from 'material-ui/svg-icons/action/done';
 import TodayIcon from 'material-ui/svg-icons/action/today';
 import IconButton from 'material-ui/IconButton';
+import Delete from 'material-ui/svg-icons/action/delete';
 import MoreVert from 'material-ui/svg-icons/navigation/more-vert';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -23,6 +24,7 @@ const style = {
   gridTile: {
     minHeight: 180,
     margin: 5,
+    position: 'relative',
   }
 };
 
@@ -154,10 +156,11 @@ HabitStatus.propTypes = {
   habit: React.PropTypes.object,
 };
 
-/*export default*/ class HabitProgress extends React.Component {
+class HabitProgress extends React.Component {
   static propTypes = {
     today: React.PropTypes.object,
     habit: React.PropTypes.shape({
+      _id: React.PropTypes.string,
       in: React.PropTypes.number,
       routine: React.PropTypes.string,
       goal: React.PropTypes.string,
@@ -166,6 +169,12 @@ HabitStatus.propTypes = {
     }),
     style: React.PropTypes.object,
     className: React.PropTypes.string,
+
+    onHabitRemove: React.PropTypes.func,
+  }
+
+  handleRemove = (/*event*/) => {
+    this.props.onHabitRemove(this.props.habit._id);
   }
 
   render() {
@@ -177,11 +186,15 @@ HabitStatus.propTypes = {
 
     const routineStyle = { ...goalStyle, fontSize: 'larger' };
 
-    // /titleBackground={this.state.in === 0 ? '#00bcd4' : 'grey'}
-    // title={this.props.habit.routine}
+    const menuButtonStyle = {
+      position: 'absolute',
+      top: 0,
+      right: 0,
+    };
+
     return (
       <Paper className={this.props.className}
-        style={Object.assign({}, style.gridTile, this.props.style)}
+        style={{...style.gridTile, ...this.props.style}}
         >
         <div style={routineStyle}>
           <p>{this.props.habit.routine}</p>
@@ -191,9 +204,12 @@ HabitStatus.propTypes = {
         </div>
         <IconMenu
           iconButtonElement={<IconButton><MoreVert /></IconButton>}
-          style={{}}>
+          style={menuButtonStyle}>
           <MenuItem primaryText="Go to habit page" />
-          <MenuItem primaryText="Remove" />
+          <MenuItem primaryText="Remove"
+            rightIcon={<Delete />}
+            onTouchTap={this.handleRemove}
+            />
         </IconMenu>
         <HabitStatus
           today={this.props.today}
