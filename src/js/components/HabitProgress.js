@@ -17,6 +17,9 @@ import Delete from 'material-ui/svg-icons/action/delete';
 import MoreVert from 'material-ui/svg-icons/navigation/more-vert';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import Calendar from './Calendar';
 
@@ -173,8 +176,21 @@ class HabitProgress extends React.Component {
     onHabitRemove: React.PropTypes.func,
   }
 
+  state = {
+    removeDialogOpen: false,
+  }
+
   handleRemove = (/*event*/) => {
     this.props.onHabitRemove(this.props.habit._id);
+    this.setState({ removeDialogOpen: false });
+  }
+
+  handleRemoveItemTap = () => {
+    this.setState({ removeDialogOpen: true });
+  }
+
+  handleCancel = () => {
+    this.setState({ removeDialogOpen: false });
   }
 
   render() {
@@ -208,13 +224,24 @@ class HabitProgress extends React.Component {
           <MenuItem primaryText="Go to habit page" />
           <MenuItem primaryText="Remove"
             rightIcon={<Delete />}
-            onTouchTap={this.handleRemove}
+            onTouchTap={this.handleRemoveItemTap}
             />
         </IconMenu>
         <HabitStatus
           today={this.props.today}
           habit={this.props.habit}
         />
+        <Dialog
+          title={`Remove ${this.props.habit.routine}`}
+          modal={true}
+          open={this.state.removeDialogOpen}
+          actions={[
+            <FlatButton label="Cancel" primary={true}
+              onTouchTap={this.handleCancel} />,
+            <FlatButton label="Remove" primary={true}
+              onTouchTap={this.handleRemove} />,]}>
+          Habit {this.props.habit.routine} will be removed.
+        </Dialog>
       </Paper>);
   }
 }
