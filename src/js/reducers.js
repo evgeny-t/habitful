@@ -12,6 +12,44 @@ import {
 import _ from 'lodash';
 import moment from 'moment';
 
+function addHabit(state, habit) {
+  const newState = Object.assign({}, state, {
+    habits: [...state.habits, {
+      history: [],
+      in: null,
+      days: [false, false, false, false, false, false, false],
+      ...habit
+    }]
+  });
+
+  return refreshTodos(newState);
+}
+
+function removeHabit(state, habitId) {
+  return {
+    ...state,
+// NOTE(ET): moment() should not be used here.
+    habits: _.map(state.habits, h =>
+      h._id === habitId ? {...h, deletedAt: moment() } : h),
+  };
+}
+
+function updateDate(state, today) {
+  return refreshTodos({ ...state, today });
+}
+
+function markRoutineDone(state, habitId) {
+  state = _.cloneDeep(state);
+
+  const needsToBeUpdated =
+    _.findIndex(state.habits, h => h._id === habitId);
+  state.habits[needsToBeUpdated].history.push({
+    when: state.today
+  });
+  state.habits[needsToBeUpdated].history.sort();
+  return refreshLifetime(refreshTodos(state));
+}
+
 function refreshTodos(state) {
   return Object.assign({}, state, {
     habits: state.habits.map(habit => {
@@ -57,28 +95,6 @@ function refreshTodos(state) {
   });
 }
 
-function addHabit(state, habit) {
-  const newState = Object.assign({}, state, {
-    habits: [...state.habits, {
-      history: [],
-      in: null,
-      days: [false, false, false, false, false, false, false],
-      ...habit
-    }]
-  });
-
-  return refreshTodos(newState);
-}
-
-function removeHabit(state, habitId) {
-  return {
-    ...state,
-// NOTE(ET): moment() should not be used here.
-    habits: _.map(state.habits, h =>
-      h._id === habitId ? {...h, deletedAt: moment() } : h),
-  };
-}
-
 function refreshLifetime(state) {
   state = { lifetime: {}, ...state };
   const lifetime = _.map(state.habits, 'history')
@@ -93,31 +109,14 @@ function refreshLifetime(state) {
 
 export default (state, action) => {
   switch (action.type) {
-  case ADD_HABIT: {
+  case ADD_HABIT:
     return addHabit(state, action.habit);
-  }
-  case REMOVE_HABIT: {
+  case REMOVE_HABIT:
     return removeHabit(state, action.habitId);
-  }
-  case UPDATE_DATE: {
-// TODO: update todos,
-// TODO(ET): extract method
-    return Object.assign({}, state, {
-      today: action.date
-    });
-  }
-  case MARK_ROUTINE_DONE: {
-// TODO(ET): extract method
-    state = _.cloneDeep(state);
-
-    const needsToBeUpdated =
-      _.findIndex(state.habits, h => h._id === action.habitId);
-    state.habits[needsToBeUpdated].history.push({
-      when: state.today
-    });
-    state.habits[needsToBeUpdated].history.sort();
-    return refreshLifetime(refreshTodos(state));
-  }
+  case UPDATE_DATE:
+    return updateDate(state, action.date);
+  case MARK_ROUTINE_DONE:
+    return markRoutineDone(state, action.habitId);
   case REFRESH_TODOS:
     return refreshTodos(state);
   case REFRESH_LIFETIME:

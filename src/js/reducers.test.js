@@ -175,3 +175,33 @@ describe('refreshLifetime', () => {
       });
   });
 });
+
+describe('updateDate', () => {
+  it('should update and todos', () => {
+    const today = moment().day(0);
+    const tomorrow = moment(today).add(1, 'days');
+    const state = {
+      today,
+      habits: [{
+        days: [true, false, false, false, false, false, false],
+        history: [],
+      }, {
+        days: [false, true, false, false, false, false, false],
+        history: [],
+        in: 1,
+      }],
+    };
+
+    expect(reducer(state, actions.updateDate(tomorrow)))
+      .toEqual({
+        today: tomorrow,
+        habits: [{
+          ...state.habits[0],
+          in: 6,
+        }, {
+          ...state.habits[1],
+          in: 0,
+        }],
+      });
+  });
+});
