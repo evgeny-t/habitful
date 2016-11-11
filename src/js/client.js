@@ -7,11 +7,15 @@ import ReactDOM from 'react-dom';
 import { Router, Route,
   browserHistory, IndexRedirect } from 'react-router';
 import { Provider, connect } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
 import { StyleRoot, Style } from 'radium';
+import createLogger from 'redux-logger';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+import 'whatwg-fetch';
 
 import _ from 'lodash';
 import moment from 'moment';
@@ -39,6 +43,9 @@ import {
 
 const muiTheme = getMuiTheme({ });
 
+const logger = createLogger();
+
+// TODO(ET): move dummy data outside (10)
 const store = createStore(reducer, {
   birthday: moment('19900821', 'YYYYMMDD'),
   today: moment('20160906', 'YYYYMMDD'),
@@ -128,7 +135,7 @@ const store = createStore(reducer, {
   lifetime: {
     modified: 0,
   },
-});
+}, applyMiddleware(ReduxThunk, logger));
 
 // setInterval(() => {
 //   store.dispatch(updateDate(store.getState().today.clone().add(1, 'days')));

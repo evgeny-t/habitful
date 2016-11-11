@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import { browserHistory } from 'react-router';
 
 // import _ from 'lodash';
 // import moment from 'moment';
@@ -15,10 +14,16 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
+import FontIcon from 'material-ui/FontIcon';
 
 import Footer from './Footer';
 
+
 export default class Layout extends React.Component {
+  static propTypes = {
+    children: React.PropTypes.any,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -33,11 +38,11 @@ export default class Layout extends React.Component {
 
   render() {
 // TODO(ET): move style to styles
-// TODO(ET): correct auth
+
+// TODO(ET): trigger sign in action (1)
     const signInButton = (
-      <RaisedButton 
-        label='Sign in' 
-        href='/auth/google'
+      <RaisedButton
+        label='Sign in'
         secondary={true}
         style={{
           marginTop: 5,
@@ -49,7 +54,7 @@ export default class Layout extends React.Component {
 // TODO(ET): move style to styles
 // TODO(ET): correct sign-out
     const avatar = (
-      <IconMenu 
+      <IconMenu
         iconButtonElement={
           <IconButton style={{ padding: 0 }}>
             <Avatar src={this.state.avatar} />
@@ -59,22 +64,22 @@ export default class Layout extends React.Component {
         targetOrigin={{ horizontal: 'right', vertical: 'top' }}
         desktop={true}
       >
-        <MenuItem primaryText='Sign out' 
-          onClick={() => { console.error('not implemented'); }} 
+        <MenuItem primaryText='Sign out'
+          onClick={() => { console.error('not implemented'); }}
         />
       </IconMenu>
     );
 
     return (
       <div>
-        <AppBar 
-          title={this.state.title} 
+        <AppBar
+          title={this.state.title}
           iconElementRight={this.state.avatar ? avatar : signInButton}
           onLeftIconButtonTouchTap={this.handleBurgerClick}
           />
         {this.props.children}
         <Footer />
-        <Drawer 
+        <Drawer
           docked={false}
           onRequestChange={open => this.setState({drawer:open})}
           open={this.state.drawer}>

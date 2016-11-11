@@ -28,7 +28,7 @@ function addHabit(state, habit) {
 function removeHabit(state, habitId) {
   return {
     ...state,
-// NOTE(ET): moment() should not be used here.
+// TODO(ET): moment() should not be used here (3)
     habits: _.map(state.habits, h =>
       h._id === habitId ? {...h, deletedAt: moment() } : h),
   };
