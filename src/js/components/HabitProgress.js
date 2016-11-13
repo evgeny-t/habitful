@@ -208,6 +208,7 @@ class HabitProgress extends React.Component {
       right: 0,
     };
 
+// TODO(ET): avoid creating a modal dialog for each HabitProgress, see F12 > React (5)
     return (
       <Paper className={this.props.className}
         style={{...style.gridTile, ...this.props.style}}

@@ -39,6 +39,8 @@ import {
   markRoutineDone,
   refreshTodos,
   refreshLifetime,
+  signInGoogle,
+  initGoogleAuth,
 } from './actions';
 
 const muiTheme = getMuiTheme({ });
@@ -141,6 +143,7 @@ const store = createStore(reducer, {
 //   store.dispatch(updateDate(store.getState().today.clone().add(1, 'days')));
 // }, 1000);
 
+store.dispatch(initGoogleAuth());
 store.dispatch(refreshTodos());
 store.dispatch(refreshLifetime());
 
@@ -183,13 +186,25 @@ const TabbedContentVisual = connect(
     };
   })(TabbedContent);
 
+const VisualLayout = connect(
+  // state to props
+  state => state,
+  // dispatch to props
+  dispatch => {
+    return {
+      onSignInClick: () => {
+        dispatch(signInGoogle());
+      },
+    };
+  })(Layout);
+
 const app = document.getElementById('app');
 ReactDOM.render((
   <StyleRoot>
     <Provider store={store}>
       <MuiThemeProvider muiTheme={muiTheme}>
         <Router history={browserHistory}>
-          <Route path='/' component={Layout}>
+          <Route path='/' component={VisualLayout}>
             <IndexRedirect to='/myhabits' />
             <Route path='/debug/:component' component={Debug} />
             <Route path='/habits/new' component={NewHabitVisual} />

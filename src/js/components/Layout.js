@@ -42,6 +42,7 @@ export default class Layout extends React.Component {
 // TODO(ET): trigger sign in action (1)
     const signInButton = (
       <RaisedButton
+        onClick={this.props.onSignInClick}
         label='Sign in'
         secondary={true}
         style={{
@@ -54,27 +55,36 @@ export default class Layout extends React.Component {
 // TODO(ET): move style to styles
 // TODO(ET): correct sign-out
     const avatar = (
-      <IconMenu
-        iconButtonElement={
-          <IconButton style={{ padding: 0 }}>
-            <Avatar src={this.state.avatar} />
-          </IconButton>
-        }
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        targetOrigin={{ horizontal: 'right', vertical: 'top' }}
-        desktop={true}
-      >
-        <MenuItem primaryText='Sign out'
-          onClick={() => { console.error('not implemented'); }}
-        />
-      </IconMenu>
+      <div style={{
+        display: 'flex',
+      }}>
+        <a href='#'
+          style={{
+            alignSelf: 'center',
+            paddingRight: '10',
+          }}>{this.props.user ? this.props.user.givenName : ''}</a>
+        <IconMenu
+          iconButtonElement={
+            <IconButton style={{ padding: 0 }}>
+              <Avatar src={this.props.user ? this.props.user.imageUrl : null} />
+            </IconButton>
+          }
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+          desktop={true}
+        >
+          <MenuItem primaryText='Sign out'
+            onClick={() => { console.error('not implemented'); }}
+          />
+        </IconMenu>
+      </div>
     );
 
     return (
       <div>
         <AppBar
           title={this.state.title}
-          iconElementRight={this.state.avatar ? avatar : signInButton}
+          iconElementRight={this.props.user ? avatar : signInButton}
           onLeftIconButtonTouchTap={this.handleBurgerClick}
           />
         {this.props.children}

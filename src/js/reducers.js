@@ -1,18 +1,9 @@
 'use strict';
 
-import {
-  ADD_HABIT,
-  REMOVE_HABIT,
-  UPDATE_DATE,
-  MARK_ROUTINE_DONE,
-  REFRESH_TODOS,
-  REFRESH_LIFETIME,
-} from './actions';
-
 import _ from 'lodash';
 import moment from 'moment';
 
-function addHabit(state, habit) {
+export function addHabit(state, { habit }) {
   const newState = Object.assign({}, state, {
     habits: [...state.habits, {
       history: [],
@@ -25,7 +16,8 @@ function addHabit(state, habit) {
   return refreshTodos(newState);
 }
 
-function removeHabit(state, habitId) {
+// TODO(ET): write a test (5)
+export function removeHabit(state, { habitId }) {
   return {
     ...state,
 // TODO(ET): moment() should not be used here (3)
@@ -34,11 +26,11 @@ function removeHabit(state, habitId) {
   };
 }
 
-function updateDate(state, today) {
-  return refreshTodos({ ...state, today });
+export function updateDate(state, { date }) {
+  return refreshTodos({ ...state, today: date });
 }
 
-function markRoutineDone(state, habitId) {
+export function markRoutineDone(state, { habitId }) {
   state = _.cloneDeep(state);
 
   const needsToBeUpdated =
@@ -50,7 +42,7 @@ function markRoutineDone(state, habitId) {
   return refreshLifetime(refreshTodos(state));
 }
 
-function refreshTodos(state) {
+export function refreshTodos(state) {
   return Object.assign({}, state, {
     habits: state.habits.map(habit => {
       const today = habit.startsFrom ?
@@ -95,7 +87,7 @@ function refreshTodos(state) {
   });
 }
 
-function refreshLifetime(state) {
+export function refreshLifetime(state) {
   state = { lifetime: {}, ...state };
   const lifetime = _.map(state.habits, 'history')
     .reduce((prev, current) => prev.concat(_.map(current, 'when')), [])
@@ -107,21 +99,15 @@ function refreshLifetime(state) {
   return { ...state, lifetime };
 }
 
+export function setUser(state, { user }) {
+  return { ...state, user };
+}
+
 export default (state, action) => {
-  switch (action.type) {
-  case ADD_HABIT:
-    return addHabit(state, action.habit);
-  case REMOVE_HABIT:
-    return removeHabit(state, action.habitId);
-  case UPDATE_DATE:
-    return updateDate(state, action.date);
-  case MARK_ROUTINE_DONE:
-    return markRoutineDone(state, action.habitId);
-  case REFRESH_TODOS:
-    return refreshTodos(state);
-  case REFRESH_LIFETIME:
-    return refreshLifetime(state);
-  default:
+  const actionMethod = _.camelCase(action.type);
+  if (module.exports[actionMethod]) {
+    return module.exports[actionMethod](state, action);
+  } else {
     return state;
   }
 };
