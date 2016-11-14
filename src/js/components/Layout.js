@@ -89,10 +89,23 @@ export default class Layout extends React.Component {
           iconElementRight={this.props.user ? avatar : signInButton}
           onLeftIconButtonTouchTap={this.handleBurgerClick}
           />
-        {this.props.children}
+
+        <div style={{
+          display: 'flex',
+        }}>
+          <div style={{
+            display: 'flex',
+            height: '100%',
+            width: 100,
+            background: 'green',
+          }}></div>
+          <div style={{
+            display: 'flex',
+          }}>{this.props.children}</div>
+        </div>
         <Footer />
         <Drawer
-          docked={false}
+          docked={true}
           onRequestChange={open => this.setState({drawer:open})}
           open={this.state.drawer}>
         </Drawer>
