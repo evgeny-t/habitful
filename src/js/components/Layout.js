@@ -14,7 +14,7 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
-import FontIcon from 'material-ui/FontIcon';
+// import FontIcon from 'material-ui/FontIcon';
 
 import Footer from './Footer';
 
@@ -22,6 +22,8 @@ import Footer from './Footer';
 export default class Layout extends React.Component {
   static propTypes = {
     children: React.PropTypes.any,
+    onSignInClick: React.PropTypes.func,
+    user: React.PropTypes.object,
   }
 
   constructor(props) {
@@ -61,7 +63,7 @@ export default class Layout extends React.Component {
         <a href='#'
           style={{
             alignSelf: 'center',
-            paddingRight: '10',
+            paddingRight: 10,
           }}>{this.props.user ? this.props.user.givenName : ''}</a>
         <IconMenu
           iconButtonElement={
