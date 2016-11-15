@@ -200,7 +200,7 @@ const VisualLayout = connect(
 
 const app = document.getElementById('app');
 ReactDOM.render((
-  <StyleRoot>
+  <StyleRoot style={{ height: '100%' }}>
     <Provider store={store}>
       <MuiThemeProvider muiTheme={muiTheme}>
         <Router history={browserHistory}>
@@ -215,8 +215,15 @@ ReactDOM.render((
     </Provider>
     <Style
       rules={{
+        html: {
+          height: '100%',
+        },
         body: {
-          fontFamily: muiTheme.fontFamily
+          fontFamily: muiTheme.fontFamily,
+          height: '100%',
+        },
+        '#app': {
+          height: '100%',
         },
         p: {
           margin: 0

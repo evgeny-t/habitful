@@ -18,6 +18,15 @@ import Drawer from 'material-ui/Drawer';
 
 import Footer from './Footer';
 
+class DockedDrawer extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+
+  }
+}
 
 export default class Layout extends React.Component {
   static propTypes = {
@@ -83,8 +92,13 @@ export default class Layout extends React.Component {
     );
 
     return (
-      <div>
+      <div style={{ height: '100%' }}>
         <AppBar
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+          }}
           title={this.state.title}
           iconElementRight={this.props.user ? avatar : signInButton}
           onLeftIconButtonTouchTap={this.handleBurgerClick}
@@ -92,17 +106,22 @@ export default class Layout extends React.Component {
 
         <div style={{
           display: 'flex',
+          // height: '100%',
+          width: 200,
+          background: 'green',
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          top: 0,
+        }}></div>
+        <div style={{
+          display: 'flex',
+          marginTop: 100,
+          marginLeft: 200,
         }}>
-          <div style={{
-            display: 'flex',
-            height: '100%',
-            width: 100,
-            background: 'green',
-          }}></div>
-          <div style={{
-            display: 'flex',
-          }}>{this.props.children}</div>
+          {this.props.children}
         </div>
+
         <Footer />
         <Drawer
           docked={true}

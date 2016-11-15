@@ -51,6 +51,13 @@ export default class TabbedContent extends React.Component {
       <Tabs
         value={this.state.tabsValue}
         onChange={this.handleTabChange}
+        style={{
+          position: 'fixed',
+          top: 100,
+        }}
+        tabTemplateStyle={{
+          position: 'relative',
+        }}
       >
         <Tab label="my habits" value="myhabits">
           {<MyHabits
