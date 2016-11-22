@@ -116,7 +116,7 @@ export default class Layout extends React.Component {
         }}></div>
         <div style={{
           display: 'flex',
-          marginTop: 100,
+          marginTop: 64,
           marginLeft: 200,
         }}>
           {this.props.children}

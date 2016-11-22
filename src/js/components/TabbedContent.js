@@ -46,39 +46,76 @@ export default class TabbedContent extends React.Component {
     this.setState({ tabsValue: props.params.q });
   }
 
+/*
+        <Tabs
+          value={this.state.tabsValue}
+          onChange={this.handleTabChange}
+          zDepth={1}
+          style={{
+            position: 'fixed',
+            //width: '100%',
+            left: 0,
+            right: 0,
+          }}
+        >
+          <Tab label="my habits" value="myhabits">
+          </Tab>
+          <Tab label="today" value="today" >
+          </Tab>
+          <Tab label="overview" value="overview">
+          </Tab>
+        </Tabs>
+*/
+
   render() {
     return (
-      <Tabs
-        value={this.state.tabsValue}
-        onChange={this.handleTabChange}
-        style={{
-          position: 'fixed',
-          top: 100,
-        }}
-        tabTemplateStyle={{
-          position: 'relative',
-        }}
-      >
-        <Tab label="my habits" value="myhabits">
-          {<MyHabits
-            isActive={this.state.tabsValue === 'myhabits'}
-            {...this.props}
-          />}
-        </Tab>
-        <Tab label="today" value="today" >
-          {<Today
-            isActive={this.state.tabsValue === 'today'}
-            habits={this.props.habits}
-            onCheck={this.props.onMarkRoutineDone}
+      <div>
+
+        <Tabs
+          value={this.state.tabsValue}
+          onChange={this.handleTabChange}
+          contentContainerStyle={{
+            border: '1px solid black',
+            position: 'relative',
+          }}
+          // style={{
+          //   marginTop: 50,
+          // }}
+          inkBarStyle={{
+            //display: 'none',
+          }}
+          tabItemContainerStyle={{
+            top: 50,
+            //width: '100%',
+            position: 'fixed',
+            border: '1px solid red',
+            display: 'flex',
+            //display: 'none',
+            // left: '50%',
+            //top: '50%',
+            //transform: 'translate(-50%, -50%)',
+          }}>
+          <Tab label="my habits" value="myhabits">
+            {<MyHabits
+              isActive={this.state.tabsValue === 'myhabits'}
+              {...this.props}
             />}
-        </Tab>
-        <Tab label="overview" value="overview">
-          {<Overview
-            isActive={this.state.tabsValue === 'overview'}
-            {...this.props}
-            />}
-        </Tab>
-      </Tabs>
+          </Tab>
+          <Tab label="today" value="today" >
+            {<Today
+              isActive={this.state.tabsValue === 'today'}
+              habits={this.props.habits}
+              onCheck={this.props.onMarkRoutineDone}
+              />}
+          </Tab>
+          <Tab label="overview" value="overview">
+            {<Overview
+              isActive={this.state.tabsValue === 'overview'}
+              {...this.props}
+              />}
+          </Tab>
+        </Tabs>
+      </div>
     );
   }
 }
