@@ -85,15 +85,11 @@ export default class TabbedContent extends React.Component {
             //display: 'none',
           }}
           tabItemContainerStyle={{
-            top: 50,
-            //width: '100%',
+            top: 64,
             position: 'fixed',
             border: '1px solid red',
-            display: 'flex',
-            //display: 'none',
-            // left: '50%',
-            //top: '50%',
-            //transform: 'translate(-50%, -50%)',
+            left: 0,
+            right: 0,
           }}>
           <Tab label="my habits" value="myhabits">
             {<MyHabits
