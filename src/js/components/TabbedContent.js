@@ -46,27 +46,6 @@ export default class TabbedContent extends React.Component {
     this.setState({ tabsValue: props.params.q });
   }
 
-/*
-        <Tabs
-          value={this.state.tabsValue}
-          onChange={this.handleTabChange}
-          zDepth={1}
-          style={{
-            position: 'fixed',
-            //width: '100%',
-            left: 0,
-            right: 0,
-          }}
-        >
-          <Tab label="my habits" value="myhabits">
-          </Tab>
-          <Tab label="today" value="today" >
-          </Tab>
-          <Tab label="overview" value="overview">
-          </Tab>
-        </Tabs>
-*/
-
   render() {
     return (
       <div>

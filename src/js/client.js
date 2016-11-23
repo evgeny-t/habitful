@@ -26,6 +26,10 @@ import Debug from './components/Debug';
 import TabbedContent from './components/TabbedContent';
 import NewHabit from './pages/NewHabit';
 
+import Today from './pages/Today';
+import Overview from './pages/Overview';
+import MyHabits from './pages/MyHabits';
+
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -162,29 +166,52 @@ const NewHabitVisual = connect(
     };
   })(NewHabit);
 
-const TabbedContentVisual = connect(
-  // state to props
+// const TabbedContentVisual = connect(
+//   // state to props
+//   state => state,
+//   // dispatch to props
+//   (dispatch) => {
+//     return {
+//       onMarkRoutineDone: (event, habit) => {
+//         dispatch(markRoutineDone(habit._id));
+//       },
+
+//       onTabChanged: (tab) => {
+//         browserHistory.push(`${tab}`);
+//       },
+
+//       onNewHabit: () => {
+//         browserHistory.push('/habits/new');
+//       },
+
+//       onHabitRemove: (habitId) => {
+//         dispatch(removeHabit(habitId));
+//       }
+//     };
+//   })(TabbedContent);
+
+const MyHabitsVisual = connect(
   state => state,
-  // dispatch to props
-  (dispatch) => {
+  (/*dispatch*/) => {
     return {
-      onMarkRoutineDone: (event, habit) => {
+    };
+  })(MyHabits);
+
+const OverviewVisual = connect(
+  state => state,
+  () => {
+    return {};
+  })(Overview);
+
+const TodayVisual = connect(
+  state => state,
+  dispatch => {
+    return {
+      onCheck: (event, habit) => {
         dispatch(markRoutineDone(habit._id));
       },
-
-      onTabChanged: (tab) => {
-        browserHistory.push(`${tab}`);
-      },
-
-      onNewHabit: () => {
-        browserHistory.push('/habits/new');
-      },
-
-      onHabitRemove: (habitId) => {
-        dispatch(removeHabit(habitId));
-      }
     };
-  })(TabbedContent);
+  })(Today);
 
 const VisualLayout = connect(
   // state to props
@@ -195,6 +222,9 @@ const VisualLayout = connect(
       onSignInClick: () => {
         dispatch(signInGoogle());
       },
+      onNavigate: (route) => {
+        browserHistory.push(`${route}`);
+      }
     };
   })(Layout);
 
@@ -208,7 +238,10 @@ ReactDOM.render((
             <IndexRedirect to='/myhabits' />
             <Route path='/debug/:component' component={Debug} />
             <Route path='/habits/new' component={NewHabitVisual} />
-            <Route path='/:q' component={TabbedContentVisual} />
+            <Route path='/myhabits' component={MyHabitsVisual} />
+            <Route path='/today' component={TodayVisual} />
+            <Route path='/overview' component={OverviewVisual} />
+
           </Route>
         </Router>
       </MuiThemeProvider>

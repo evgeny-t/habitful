@@ -23,6 +23,7 @@ import MenuItem from 'material-ui/MenuItem';
 
 const styles = {
   root: {
+    width: '100%',
     paddingLeft: 100,
     paddingRight: 100,
   },

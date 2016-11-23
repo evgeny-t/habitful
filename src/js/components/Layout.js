@@ -15,23 +15,20 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
 // import FontIcon from 'material-ui/FontIcon';
+import { List, ListItem } from 'material-ui/List';
 
 import Footer from './Footer';
 
-class DockedDrawer extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-
-  }
-}
 
 export default class Layout extends React.Component {
+  static contextTypes = {
+    muiTheme: React.PropTypes.object,
+  }
+
   static propTypes = {
     children: React.PropTypes.any,
     onSignInClick: React.PropTypes.func,
+    onNavigate: React.PropTypes.func,
     user: React.PropTypes.object,
   }
 
@@ -106,27 +103,26 @@ export default class Layout extends React.Component {
 
         <div style={{
           display: 'flex',
-          // height: '100%',
-          width: 200,
-          background: 'green',
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          top: 0,
-        }}></div>
-        <div style={{
-          display: 'flex',
           marginTop: 64,
-          marginLeft: 200,
+          marginLeft: this.state.drawer ? 200 : 0,
         }}>
           {this.props.children}
         </div>
 
         <Footer />
         <Drawer
-          docked={true}
+          width={200}
+          containerStyle={{ zIndex: this.context.muiTheme.zIndex.appBar - 100 }}
           onRequestChange={open => this.setState({drawer:open})}
           open={this.state.drawer}>
+          <List style={{ marginTop: 64 }}>
+            <ListItem primaryText="My Habits"
+              onClick={this.props.onNavigate.bind(null, 'myhabits')} />
+            <ListItem primaryText="Today"
+              onClick={this.props.onNavigate.bind(null, 'today')}/>
+            <ListItem primaryText="Overview"
+              onClick={this.props.onNavigate.bind(null, 'overview')} />
+          </List>
         </Drawer>
       </div>
     );
