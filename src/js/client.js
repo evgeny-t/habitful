@@ -23,7 +23,7 @@ import moment from 'moment';
 
 import Layout from './components/Layout';
 import Debug from './components/Debug';
-import TabbedContent from './components/TabbedContent';
+// import TabbedContent from './components/TabbedContent';
 import NewHabit from './pages/NewHabit';
 
 import Today from './pages/Today';
@@ -38,8 +38,8 @@ injectTapEventPlugin();
 import reducer from './reducers';
 import {
   addHabit,
-  removeHabit,
-  updateDate,
+  // removeHabit,
+  // updateDate,
   markRoutineDone,
   refreshTodos,
   refreshLifetime,

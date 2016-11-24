@@ -47,7 +47,7 @@ export default class Layout extends React.Component {
   render() {
 // TODO(ET): move style to styles
 
-// TODO(ET): trigger sign in action (1)
+// TODO(ET): trigger sign in action (2)
     const signInButton = (
       <RaisedButton
         onClick={this.props.onSignInClick}

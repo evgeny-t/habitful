@@ -85,6 +85,7 @@ export const initDriveApi = () => {
   };
 };
 
+// TODO(ET): sync store with google drive (1)
 // TODO(ET): think over a better way of wrapping actions to
 // avoid calling them `module.exports.func` from the inside of the module.
 
