@@ -27,7 +27,6 @@ const topics_addNew = {
 export default class MyHabits extends React.Component {
   static propTypes = {
     habits: React.PropTypes.array,
-    isActive: React.PropTypes.bool,
     today: React.PropTypes.object,
     onNewHabit: React.PropTypes.func,
   }
@@ -56,7 +55,7 @@ export default class MyHabits extends React.Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    let { habits, isActive, ...other } = this.props;
+    let { habits, ...other } = this.props;
 
     const tiles = _(this.props.habits)
       .filter(habit => !habit.deletedAt)
@@ -105,7 +104,7 @@ export default class MyHabits extends React.Component {
         <FloatingActionButton
           onClick={this.props.onNewHabit}
           zDepth={2}
-          style={this.props.isActive ? topics_addNew : null}
+          style={topics_addNew}
         >
           <ContentAdd />
         </FloatingActionButton>
