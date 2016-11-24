@@ -71,6 +71,20 @@ export function setGoogleAuth2(auth2) {
   };
 }
 
+export const initDriveApiSucceeded = () => {
+  return {
+  };
+};
+
+// https://developers.google.com/drive/v3/web/quickstart/js
+export const initDriveApi = () => {
+  return dispatch => {
+    gapi.client.load('drive', 'v3', () => {
+      dispatch(exports.initDriveApiSucceeded());
+    });
+  };
+};
+
 // TODO(ET): think over a better way of wrapping actions to
 // avoid calling them `module.exports.func` from the inside of the module.
 
@@ -79,7 +93,7 @@ export function initGoogleAuth() {
     gapi.load('auth2', () => {
       gapi.auth2.init({
         client_id: '478874198596-bcmpccejmulhe4uf9o04tejtq16pbjmu.apps.googleusercontent.com',
-        fetch_basic_profile: true,
+        scope: 'profile email https://www.googleapis.com/auth/drive',
       }).then(() => {
         const auth2 = gapi.auth2.getAuthInstance();
         if (auth2.isSignedIn.get()) {
