@@ -19,33 +19,38 @@ import {
 import DatePicker from 'material-ui/DatePicker';
 import Checkbox from 'material-ui/Checkbox';
 
-import {
-} from '../styles';
-
-
-// TODO(ET): move to styles
 const styles = {
-  table: {
-    width: 0,
-
-    header: {
-      borderBottomStyle: 'none',
-      height: 10,
-
-      row: {
-        column: {
-          width: 24,
-          paddingRight: 2,
-          paddingLeft: 2,
-          textAlign: 'middle',
-          height: 0
-        }
-      }
+  stepActions: {
+    margin: '12px 0',
+    nextButton: {
+      marginRight: 12,
     },
-    body: {
-      height: 0,
+  },
+
+  arrangement: {
+    table: {
+      width: 0,
+
+      header: {
+        borderBottomStyle: 'none',
+        height: 10,
+
+        row: {
+          column: {
+            width: 24,
+            paddingRight: 2,
+            paddingLeft: 2,
+            textAlign: 'middle',
+            height: 0
+          }
+        }
+      },
+      body: {
+        height: 0,
+      }
     }
-  }
+  },
+
 };
 
 export default class NewHabit extends React.Component {
@@ -71,15 +76,6 @@ export default class NewHabit extends React.Component {
 
   constructor(props) {
     super(props);
-  }
-
-  componentDidMount() {
-    // sign up for events
-    this.setState({  });
-  }
-
-  componentWillUnmount() {
-    // sigh out from events
   }
 
   handlePrev = () => {
@@ -117,14 +113,14 @@ export default class NewHabit extends React.Component {
 
   renderStepActions(step, nextProps) {
     return (
-      <div style={{margin: '12px 0'}}>
+      <div style={styles.stepActions}>
         <RaisedButton
           label="Next"
           disableTouchRipple={true}
           disableFocusRipple={true}
           primary={true}
           onTouchTap={this.handleNext}
-          style={{marginRight: 12}}
+          style={styles.stepActions.nextButton}
           {...nextProps}
         />
         {step > 0 && (
@@ -140,7 +136,7 @@ export default class NewHabit extends React.Component {
   }
 
   render() {
-    const { column } = styles.table.header.row;
+    const { column } = styles.arrangement.table.header.row;
     const checkbox = index => {
       return {
         defaultChecked: this.state[`checked_${index}`],
@@ -183,13 +179,13 @@ export default class NewHabit extends React.Component {
             <StepContent>
               <p>You would like to repeat the routine each:</p>
               <Table
-                style={styles.table}
+                style={styles.arrangement.table}
                 selectable={false}>
                 <TableHeader
-                  style={styles.table.header}
+                  style={styles.arrangement.table.header}
                   displaySelectAll={false}
                   adjustForCheckbox={false}>
-                  <TableRow style={styles.table.header}>
+                  <TableRow style={styles.arrangement.table.header}>
                     <TableHeaderColumn style={column}>Mon</TableHeaderColumn>
                     <TableHeaderColumn style={column}>Tue</TableHeaderColumn>
                     <TableHeaderColumn style={column}>Wed</TableHeaderColumn>
@@ -200,9 +196,9 @@ export default class NewHabit extends React.Component {
                   </TableRow>
                 </TableHeader>
                 <TableBody
-                  style={styles.table.body}
+                  style={styles.arrangement.table.body}
                   displayRowCheckbox={false}>
-                  <TableRow style={styles.table.body}>
+                  <TableRow style={styles.arrangement.table.body}>
                     {
                       _.range(7).map(i => (
                         <TableRowColumn key={i} style={column}>
