@@ -194,6 +194,9 @@ const MyHabitsVisual = connect(
   state => state,
   (/*dispatch*/) => {
     return {
+      onNewHabit: () => {
+        browserHistory.push('/habits/new');
+      },
     };
   })(MyHabits);
 
@@ -213,7 +216,7 @@ const TodayVisual = connect(
     };
   })(Today);
 
-const VisualLayout = connect(
+const LayoutVisual = connect(
   // state to props
   state => state,
   // dispatch to props
@@ -234,7 +237,7 @@ ReactDOM.render((
     <Provider store={store}>
       <MuiThemeProvider muiTheme={muiTheme}>
         <Router history={browserHistory}>
-          <Route path='/' component={VisualLayout}>
+          <Route path='/' component={LayoutVisual}>
             <IndexRedirect to='/myhabits' />
             <Route path='/debug/:component' component={Debug} />
             <Route path='/habits/new' component={NewHabitVisual} />
