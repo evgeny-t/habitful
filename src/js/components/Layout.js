@@ -2,23 +2,65 @@
 
 import React from 'react';
 
-// import _ from 'lodash';
-// import moment from 'moment';
-
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
-// import FontIcon from 'material-ui/FontIcon';
 import Avatar from 'material-ui/Avatar';
-// import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
-// import FontIcon from 'material-ui/FontIcon';
 import { List, ListItem } from 'material-ui/List';
 
 import Footer from './Footer';
 
+const styles = {
+  height: '100%',
+
+  appBar: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+
+    avatar: {
+      display: 'flex',
+
+      menuLink: {
+        alignSelf: 'center',
+        paddingRight: 10,
+      },
+
+      iconButton: {
+        padding: 0,
+      },
+    },
+
+    signInButton: {
+      marginTop: 5,
+      marginRight: 5,
+    },
+  },
+
+  container: state => {
+    return {
+      display: 'flex',
+      marginTop: 64,
+      marginLeft: state.drawer ? 200 : 0,
+    };
+  },
+
+  drawer: {
+    containerStyle: (state, context) => {
+      return {
+        zIndex: context.muiTheme.zIndex.appBar - 100
+      };
+    },
+
+    list: {
+      marginTop: 64,
+    },
+  }
+
+};
 
 export default class Layout extends React.Component {
   static contextTypes = {
@@ -45,35 +87,25 @@ export default class Layout extends React.Component {
   }
 
   render() {
-// TODO(ET): move style to styles
-
-// TODO(ET): trigger sign in action (2)
     const signInButton = (
       <RaisedButton
         onClick={this.props.onSignInClick}
         label='Sign in'
         secondary={true}
-        style={{
-          marginTop: 5,
-          marginRight: 5
-        }}
+        style={styles.appBar.signInButton}
       />
     );
 
-// TODO(ET): move style to styles
 // TODO(ET): correct sign-out
     const avatar = (
-      <div style={{
-        display: 'flex',
-      }}>
+      <div style={styles.appBar.avatar}>
         <a href='#'
-          style={{
-            alignSelf: 'center',
-            paddingRight: 10,
-          }}>{this.props.user ? this.props.user.givenName : ''}</a>
+          style={styles.appBar.avatar.menuLink}>
+            {this.props.user ? this.props.user.givenName : ''}
+        </a>
         <IconMenu
           iconButtonElement={
-            <IconButton style={{ padding: 0 }}>
+            <IconButton style={styles.appBar.avatar.iconButton}>
               <Avatar src={this.props.user ? this.props.user.imageUrl : null} />
             </IconButton>
           }
@@ -89,33 +121,25 @@ export default class Layout extends React.Component {
     );
 
     return (
-      <div style={{ height: '100%' }}>
+      <div style={styles}>
         <AppBar
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-          }}
+          style={styles.appBar}
           title={this.state.title}
           iconElementRight={this.props.user ? avatar : signInButton}
           onLeftIconButtonTouchTap={this.handleBurgerClick}
           />
 
-        <div style={{
-          display: 'flex',
-          marginTop: 64,
-          marginLeft: this.state.drawer ? 200 : 0,
-        }}>
+        <div style={styles.container(this.state)}>
           {this.props.children}
         </div>
 
         <Footer />
         <Drawer
           width={200}
-          containerStyle={{ zIndex: this.context.muiTheme.zIndex.appBar - 100 }}
-          onRequestChange={open => this.setState({drawer:open})}
+          containerStyle={styles.drawer.containerStyle(this.state, this.context)}
+          onRequestChange={open => this.setState({ drawer:open })}
           open={this.state.drawer}>
-          <List style={{ marginTop: 64 }}>
+          <List style={styles.drawer.list}>
             <ListItem primaryText="My Habits"
               onClick={this.props.onNavigate.bind(null, 'myhabits')} />
             <ListItem primaryText="Today"
