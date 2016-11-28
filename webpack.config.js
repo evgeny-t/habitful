@@ -23,7 +23,8 @@ module.exports = {
     path: __dirname + '/src/public/',
     filename: 'client.min.js'
   },
-  plugins: debug ? [] : [
+  plugins: debug ? [ ] : [
+    new webpack.IgnorePlugin(/dummy\.js$/),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),

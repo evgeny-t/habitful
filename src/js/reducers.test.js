@@ -20,20 +20,46 @@ describe('addHabit', () => {
       habits: [],
     };
 
-    const after = {
-      ...before,
-      habits: [ {
-        history: [],
-        in: 0,
-        ...habit,
-      } ]
-    };
-
-    expect(reducer(before, actions.addHabit(habit)))
-      .toEqual(after);
+    const result = reducer(before, actions.addHabit(habit));
+    expect(result.habits[0].history).toEqual([]);
+    expect(result.habits[0].in).toEqual(0);
+    expect(result.habits[0]._id).toBeTruthy();
+    for (let key in habit) {
+      expect(result.habits[0][key]).toEqual(habit[key]);
+    }
   });
 });
 
+describe('removeHabit', () => {
+  it('should mark habit as deleted', () => {
+    const habit = {
+    };
+    const before = {
+      today: moment().day(0),
+      habits: [],
+    };
+    const afterAdd = reducer(before, actions.addHabit(habit));
+    const afterRemove = reducer(
+      afterAdd, actions.removeHabit(afterAdd.habits[0]._id));
+
+    expect(afterRemove.habits[0].deletedAt).toBeTruthy();
+  });
+});
+
+describe('markRoutineDone', () => {
+  it('should add an timestamp to the history of habit', () => {
+    const habit = {
+    };
+    const before = {
+      today: moment().day(0),
+      habits: [],
+    };
+    const afterAdd = reducer(before, actions.addHabit(habit));
+    const afterDone = reducer(afterAdd,
+      actions.markRoutineDone(afterAdd.habits[0]._id));
+    expect(afterDone.habits[0].history[0].when).toBeTruthy();
+  });
+});
 
 describe('refreshTodos', () => {
   it('should update `in`, when the next time on this week', () => {

@@ -1,16 +1,22 @@
 'use strict';
 
 import _ from 'lodash';
+import moment from 'moment';
+import uuid from 'uuid';
 
 export function addHabit(habit) {
   return {
-    habit,
+    habit: {
+      _id: uuid.v4(),
+      ...habit
+    },
   };
 }
 
 export function removeHabit(habitId) {
   return {
-    habitId
+    habitId,
+    now: moment(),
   };
 }
 
@@ -23,6 +29,7 @@ export function updateDate(date) {
 export function markRoutineDone(habitId) {
   return {
     habitId,
+    now: moment(),
   };
 }
 

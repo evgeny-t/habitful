@@ -1,7 +1,6 @@
 'use strict';
 
 import _ from 'lodash';
-import moment from 'moment';
 
 export function addHabit(state, { habit }) {
   const newState = Object.assign({}, state, {
@@ -16,13 +15,11 @@ export function addHabit(state, { habit }) {
   return refreshTodos(newState);
 }
 
-// TODO(ET): write a test (5)
-export function removeHabit(state, { habitId }) {
+export function removeHabit(state, { habitId, now }) {
   return {
     ...state,
-// TODO(ET): moment() should not be used here (3)
     habits: _.map(state.habits, h =>
-      h._id === habitId ? {...h, deletedAt: moment() } : h),
+      h._id === habitId ? {...h, deletedAt: now } : h),
   };
 }
 
@@ -30,13 +27,13 @@ export function updateDate(state, { date }) {
   return refreshTodos({ ...state, today: date });
 }
 
-export function markRoutineDone(state, { habitId }) {
+export function markRoutineDone(state, { habitId, now }) {
   state = _.cloneDeep(state);
 
   const needsToBeUpdated =
     _.findIndex(state.habits, h => h._id === habitId);
   state.habits[needsToBeUpdated].history.push({
-    when: state.today
+    when: now,
   });
   state.habits[needsToBeUpdated].history.sort();
   return refreshLifetime(refreshTodos(state));
