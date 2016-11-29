@@ -60,6 +60,10 @@ const dummy = {
       routine: 'Running',
       goal: 'it will help me to be more healty',
       days: [false, true, true, true, true, true, true],
+      tags: [
+        'some fancy long tag', 'i love running running', 'foo', 'bar', 'az',
+        'qweq', 'wer', 'ert', 'tyu',
+      ],
       history: [
       ],
     },

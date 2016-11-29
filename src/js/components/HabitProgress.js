@@ -19,13 +19,14 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import Chip from './Chip';
+// import RaisedButton from 'material-ui/RaisedButton';
 
 import Calendar from './Calendar';
 
 const style = {
   gridTile: {
-    minHeight: 180,
+    // minHeight: 180,
     margin: 5,
     position: 'relative',
   }
@@ -49,6 +50,7 @@ const HabitStatus = MeasureIt()((props) => {
   const outterDivStyle = {
     whiteSpace: 'nowrap',
     overflow: 'hidden',
+    marginBottom: 5,
   };
 
   const divStyle = {
@@ -122,7 +124,7 @@ const HabitStatus = MeasureIt()((props) => {
   };
 
   return (
-    <div id='habitprogress__outter' style={outterDivStyle}>
+    <div style={outterDivStyle}>
       <div style={divStyle}>
         {props.habit.in != 0 && (<div style={nextTimeInStyle}>next time in</div>)}
         {props.habit.in != 0 &&
@@ -169,6 +171,7 @@ class HabitProgress extends React.Component {
       goal: React.PropTypes.string,
       days: React.PropTypes.array,
       history: React.PropTypes.array,
+      tags: React.PropTypes.array,
     }),
     style: React.PropTypes.object,
     className: React.PropTypes.string,
@@ -208,6 +211,12 @@ class HabitProgress extends React.Component {
       right: 0,
     };
 
+    const tagContainerStyle = {
+      display: 'flex',
+      flexWrap: 'wrap',
+      marginBottom: 5,
+    };
+
 // TODO(ET): avoid creating a modal dialog for each HabitProgress, see F12 > React (5)
     return (
       <Paper className={this.props.className}
@@ -232,6 +241,10 @@ class HabitProgress extends React.Component {
           today={this.props.today}
           habit={this.props.habit}
         />
+        <div style={tagContainerStyle}>
+        {this.props.habit.tags && this.props.habit.tags.map(t =>
+          (<Chip key={t} text={t} />))}
+        </div>
         <Dialog
           title={`Remove ${this.props.habit.routine}`}
           modal={true}
@@ -248,67 +261,4 @@ class HabitProgress extends React.Component {
 }
 
 export default HabitProgress;
-
-// outdated
-
-// export const dummy = {
-//   habit: {
-//     routine: 'routine routine',
-//     goal: 'goal goal',
-//     days: [true, true, true, true, true, true, true],
-//   },
-//   today: moment('20160921', 'YYYYMMDD'),
-//   history: [
-//     moment('20160921', 'YYYYMMDD'),
-//   ],
-// };
-
-
-// // 09/04/2016 is Sunday
-
-// const inOneDay = {
-//   habit: {
-//     routine: 'in one day routine',
-//     goal: 'in one day goal',
-//     days: [true, true, true, true, true, true, true],
-//   },
-//   today: moment('20160904', 'YYYYMMDD'),
-//   history: [
-//     moment('20160904', 'YYYYMMDD'),
-//   ],
-// };
-
-// const inSixDays = {
-//   habit: {
-//     routine: 'in six days routine',
-//     goal: 'in six days goal',
-//     days: [true, false, false, false, false, false, true],
-//   },
-//   today: moment('20160904', 'YYYYMMDD'),
-//   history: [
-//     moment('20160904', 'YYYYMMDD'),
-//   ],
-// };
-
-// const today = {
-//   habit: {
-//     routine: 'today routine',
-//     goal: 'today goal',
-//     days: [true, false, true, true, true, true, true],
-//   },
-//   today: moment('20160904', 'YYYYMMDD'),
-//   history: [
-//     moment('20160903', 'YYYYMMDD'),
-//     moment('20160807', 'YYYYMMDD'),
-//     moment('20160813', 'YYYYMMDD'),
-//   ],
-// };
-
-// export const debug = () => (
-//   <div>
-//     <HabitProgress {...inOneDay} />
-//     <HabitProgress {...inSixDays} />
-//     <HabitProgress {...today} />
-//   </div>
-//   );
 
