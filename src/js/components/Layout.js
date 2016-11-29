@@ -141,11 +141,11 @@ export default class Layout extends React.Component {
           open={this.state.drawer}>
           <List style={styles.drawer.list}>
             <ListItem primaryText="My Habits"
-              onClick={this.props.onNavigate.bind(null, 'myhabits')} />
+              onClick={this.props.onNavigate.bind(null, '/myhabits')} />
             <ListItem primaryText="Today"
-              onClick={this.props.onNavigate.bind(null, 'today')}/>
+              onClick={this.props.onNavigate.bind(null, '/today')}/>
             <ListItem primaryText="Overview"
-              onClick={this.props.onNavigate.bind(null, 'overview')} />
+              onClick={this.props.onNavigate.bind(null, '/overview')} />
           </List>
         </Drawer>
       </div>

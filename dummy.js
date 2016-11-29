@@ -11,6 +11,7 @@ const dummy = {
       routine: 'monday routine',
       goal: 'test TODAY view',
       days: [false, true, false, false, false, false, false],
+      tags: ['foo', 'bar'],
       history: [
         {
           when: moment('20130901', 'YYYYMMDD'),
@@ -25,6 +26,7 @@ const dummy = {
       routine: 'tuesday routine',
       goal: 'test TODAY view',
       days: [false, false, true, false, false, false, false],
+      tags: [],
       history: [
       ],
     },
@@ -33,6 +35,7 @@ const dummy = {
       routine: 'wednesday routine',
       goal: 'test TODAY view',
       days: [false, false, false, true, false, false, false],
+      tags: ['bar', 'health'],
       history: [
       ],
     },
