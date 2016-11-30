@@ -126,7 +126,7 @@ const HabitStatus = MeasureIt()((props) => {
     const day = columnFirstDay(col).add(row, 'days');
     return remapped[day.format('YYYYMMDD')] ? 5 : 0;
   };
-  console.log(remapped)
+
   return (
     <div style={outterDivStyle}>
       <div style={divStyle}>
