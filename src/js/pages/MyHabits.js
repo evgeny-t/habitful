@@ -60,9 +60,8 @@ export default class MyHabits extends React.Component {
     const tiles = _(this.props.habits)
       .filter(habit => !habit.deletedAt)
       .map((habit, i) => (
-        <HabitProgress
-          className="my-tile" key={i} habit={habit}
-          history={habit.history} {...other}
+        <HabitProgress className="my-tile" key={i}
+          habit={habit} {...other}
         />)).value();
 
     return (

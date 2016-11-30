@@ -1,6 +1,7 @@
 'use strict';
 
 import moment from 'moment';
+import _ from 'lodash';
 
 const dummy = {
   birthday: moment('19900821', 'YYYYMMDD'),
@@ -37,6 +38,7 @@ const dummy = {
       days: [false, false, false, true, false, false, false],
       tags: ['bar', 'health'],
       history: [
+        { when: moment().set({ year: 2016, month: 8, date: 21 }) },
       ],
     },
     {

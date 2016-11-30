@@ -27,13 +27,13 @@ export function updateDate(state, { date }) {
   return refreshTodos({ ...state, today: date });
 }
 
-export function markRoutineDone(state, { habitId, now }) {
+export function markRoutineDone(state, { habitId/*, now*/ }) {
   state = _.cloneDeep(state);
 
   const needsToBeUpdated =
     _.findIndex(state.habits, h => h._id === habitId);
   state.habits[needsToBeUpdated].history.push({
-    when: now,
+    when: state.today,
   });
   state.habits[needsToBeUpdated].history.sort();
   return refreshLifetime(refreshTodos(state));

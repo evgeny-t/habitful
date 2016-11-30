@@ -29,7 +29,7 @@ export function updateDate(date) {
 export function markRoutineDone(habitId) {
   return {
     habitId,
-    now: moment(),
+    // now,
   };
 }
 

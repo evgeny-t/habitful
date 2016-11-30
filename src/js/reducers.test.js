@@ -49,6 +49,7 @@ describe('removeHabit', () => {
 describe('markRoutineDone', () => {
   it('should add an timestamp to the history of habit', () => {
     const habit = {
+      days: [true, false, false, false, false, false, false],
     };
     const before = {
       today: moment().day(0),
@@ -56,8 +57,9 @@ describe('markRoutineDone', () => {
     };
     const afterAdd = reducer(before, actions.addHabit(habit));
     const afterDone = reducer(afterAdd,
-      actions.markRoutineDone(afterAdd.habits[0]._id));
+      actions.markRoutineDone(afterAdd.habits[0]._id, before.today));
     expect(afterDone.habits[0].history[0].when).toBeTruthy();
+    expect(afterDone.habits[0].in).toBe(7);
   });
 });
 
