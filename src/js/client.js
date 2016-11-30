@@ -25,6 +25,7 @@ import NewHabit from './pages/NewHabit';
 import Today from './pages/Today';
 import Overview from './pages/Overview';
 import MyHabits from './pages/MyHabits';
+import Library from './pages/Library';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 // Needed for onTouchTap
@@ -158,6 +159,16 @@ const LayoutVisual = connect(
     };
   })(Layout);
 
+const LibraryVisual = connect(
+  state => {
+    return { library: state.library };
+  },
+  dispatch => {
+    return {
+
+    };
+  })(Library);
+
 const app = document.getElementById('app');
 ReactDOM.render((
   <StyleRoot style={{ height: '100%' }}>
@@ -171,7 +182,7 @@ ReactDOM.render((
             <Route path='/myhabits' component={MyHabitsVisual} />
             <Route path='/today' component={TodayVisual} />
             <Route path='/overview' component={OverviewVisual} />
-
+            <Route path='/library' component={LibraryVisual} />
           </Route>
         </Router>
       </MuiThemeProvider>

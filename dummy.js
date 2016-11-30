@@ -2,6 +2,7 @@
 
 import moment from 'moment';
 import _ from 'lodash';
+import uuid from 'uuid';
 
 const dummy = {
   birthday: moment('19900821', 'YYYYMMDD'),
@@ -104,6 +105,28 @@ const dummy = {
   lifetime: {
     modified: 0,
   },
+
+  library: {
+    items: [
+      {
+        _id: 'e64467c5-bfe2-4043-a935-ad658f8a854d',
+        name: 'foo',
+        description: 'foo description. see http://foo.bar/topic',
+        url: 'http://learn.more',
+      },
+
+      {
+        _id: '6f0d9e31-8241-430c-bb49-40a4e861960f',
+        name: 'baz bar',
+        description: 'description of the foo description. see http://foo.bar/topic',
+        url: 'http://google.com',
+      },
+    ],
+    popularity: [
+      { itemId: 'e64467c5-bfe2-4043-a935-ad658f8a854d', count: 123 },
+      { itemId: '6f0d9e31-8241-430c-bb49-40a4e861960f', count: 2 },
+    ],
+  }
 };
 
 export default dummy;
