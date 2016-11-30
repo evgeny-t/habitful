@@ -27,6 +27,7 @@ import Calendar from './Calendar';
 const style = {
   gridTile: {
     // minHeight: 180,
+    minWidth: 200,
     margin: 5,
     position: 'relative',
   }
@@ -99,6 +100,9 @@ const HabitStatus = MeasureIt()((props) => {
     props.containerWidth - divStyle.width - calendarDivStyle.marginRight;
   // day size + day padding - 4 cols
   const cols = Math.min(14, Math.trunc(calendarWidth / (10 + 3)) - 4);
+  if (cols < 0) {
+    throw new Error('Number of column should not be negative');
+  }
 
   const columnFirstDay = index =>
     startOfTheWeek.clone().subtract(7 * (cols - index), 'days');
@@ -122,7 +126,7 @@ const HabitStatus = MeasureIt()((props) => {
     const day = columnFirstDay(col).add(row, 'days');
     return remapped[day.format('YYYYMMDD')] ? 5 : 0;
   };
-
+  console.log(remapped)
   return (
     <div style={outterDivStyle}>
       <div style={divStyle}>

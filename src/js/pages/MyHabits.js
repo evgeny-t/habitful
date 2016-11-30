@@ -23,6 +23,21 @@ const topics_addNew = {
   //zIndex: 1,
 };
 
+const style = {
+  root: {
+    width: '100%',
+
+    tilesContainer: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      paddingTop: 30,
+      paddingBottom: 30,
+      paddingLeft: 75,
+      paddingRight: 75,
+    },
+  },
+};
+
 @Radium
 export default class MyHabits extends React.Component {
   static propTypes = {
@@ -65,7 +80,7 @@ export default class MyHabits extends React.Component {
         />)).value();
 
     return (
-      <div>
+      <div style={style.root}>
         <Style
           rules={{
             mediaQueries: {
@@ -88,16 +103,7 @@ export default class MyHabits extends React.Component {
           }}
         />
 
-        <div style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          // justifyContent: 'space-between',
-          // margin: -2,
-          paddingTop: 30,
-          paddingBottom: 30,
-          paddingLeft: 75,
-          paddingRight: 75,
-        }}>
+        <div style={style.root.tilesContainer}>
           {tiles}
         </div>
         <FloatingActionButton
