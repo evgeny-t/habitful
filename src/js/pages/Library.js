@@ -4,6 +4,8 @@ import React from 'react';
 // import _ from 'lodash';
 
 import { GridList, GridTile } from 'material-ui/GridList';
+import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+import IconButton from 'material-ui/IconButton';
 
 import {
 } from '../styles';
@@ -55,11 +57,15 @@ export default class Library extends React.Component {
     //     />)).value();
 
     return (
-      <div style={Object.assign(styles.root, style)}>
+      <div style={Object.assign({}, styles.root, style)}>
         <GridList>
         {library.items.map(x => (
-          <GridTile key={x.name} title={x.name}>
-            <img src={'http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg'} />
+          <GridTile key={x.name} title={x.name}
+            actionIcon={<IconButton><StarBorder color="white" /></IconButton>}
+            subtitle={<a target="_blank" rel='external noopener '
+              href={x.url}>Learn more</a>}
+            >
+            <img src={x.image} />
           </GridTile>))}
         </GridList>
       </div>

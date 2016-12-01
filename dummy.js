@@ -113,6 +113,7 @@ const dummy = {
         name: 'foo',
         description: 'foo description. see http://foo.bar/topic',
         url: 'http://learn.more',
+        image: 'http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
       },
 
       {
@@ -120,6 +121,23 @@ const dummy = {
         name: 'baz bar',
         description: 'description of the foo description. see http://foo.bar/topic',
         url: 'http://google.com',
+        image: 'http://www.material-ui.com/images/grid-list/morning-819362_640.jpg',
+      },
+
+      {
+        _id: '1f0d9e31-8241-430c-bb49-40a4e861960f',
+        name: 'Eat sandwiches',
+        description: 'description of the foo description. see http://foo.bar/topic',
+        url: '',
+        image: 'http://www.material-ui.com/images/grid-list/burger-827309_640.jpg',
+      },
+
+      {
+        _id: '2f0d9e31-8241-430c-bb49-40a4e861960f',
+        name: 'Take photos',
+        description: 'description of the foo description. see http://foo.bar/topic',
+        url: '',
+        image: 'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
       },
     ],
     popularity: [
