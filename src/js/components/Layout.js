@@ -45,6 +45,7 @@ const styles = {
       display: 'flex',
       marginTop: 64,
       marginLeft: state.drawer ? 200 : 0,
+      width: `calc(100% - ${state.drawer ? 200 : 0}px)`,
     };
   },
 

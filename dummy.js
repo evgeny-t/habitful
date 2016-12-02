@@ -139,6 +139,22 @@ const dummy = {
         url: '',
         image: 'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
       },
+
+      {
+        _id: '4f0d9e31-8241-430c-bb49-40a4e861960f',
+        name: 'Take photos 2',
+        description: 'description of the foo description. see http://foo.bar/topic',
+        url: '',
+        image: 'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
+      },
+
+      {
+        _id: '5f0d9e31-8241-430c-bb49-40a4e861960f',
+        name: 'Take photos 22',
+        description: 'description of the foo description. see http://foo.bar/topic',
+        url: '',
+        image: 'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
+      },
     ],
     popularity: [
       { itemId: 'e64467c5-bfe2-4043-a935-ad658f8a854d', count: 123 },
