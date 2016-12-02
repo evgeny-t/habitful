@@ -114,6 +114,7 @@ const dummy = {
         description: 'foo description. see http://foo.bar/topic',
         url: 'http://learn.more',
         image: 'http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
+        tags: ['foo', 'bar', 'baz'],
       },
 
       {
@@ -122,6 +123,7 @@ const dummy = {
         description: 'description of the foo description. see http://foo.bar/topic',
         url: 'http://google.com',
         image: 'http://www.material-ui.com/images/grid-list/morning-819362_640.jpg',
+        tags: ['foo'],
       },
 
       {
@@ -138,6 +140,7 @@ const dummy = {
         description: 'description of the foo description. see http://foo.bar/topic',
         url: '',
         image: 'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
+        tags: ['baz'],
       },
 
       {
@@ -151,6 +154,54 @@ const dummy = {
       {
         _id: '5f0d9e31-8241-430c-bb49-40a4e861960f',
         name: 'Take photos 22',
+        description: 'description of the foo description. see http://foo.bar/topic',
+        url: '',
+        image: 'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
+      },
+
+      {
+        _id: 'e64467c5-bfe2-4043-a935-ad658f8a854d1',
+        name: 'foo 1',
+        description: 'foo description. see http://foo.bar/topic',
+        url: 'http://learn.more',
+        image: 'http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
+      },
+
+      {
+        _id: '6f0d9e31-8241-430c-bb49-40a4e861960f2',
+        name: 'baz bar 2',
+        description: 'description of the foo description. see http://foo.bar/topic',
+        url: 'http://google.com',
+        image: 'http://www.material-ui.com/images/grid-list/morning-819362_640.jpg',
+      },
+
+      {
+        _id: '1f0d9e31-8241-430c-bb49-40a4e861960f3',
+        name: 'Eat sandwiches 3',
+        description: 'description of the foo description. see http://foo.bar/topic',
+        url: '',
+        image: 'http://www.material-ui.com/images/grid-list/burger-827309_640.jpg',
+      },
+
+      {
+        _id: '2f0d9e31-8241-430c-bb49-40a4e861960f4',
+        name: 'Take photos 4',
+        description: 'des cription of the foo description. see http://foo.bar/topic',
+        url: '',
+        image: 'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
+      },
+
+      {
+        _id: '4f0d9e31-8241-430c-bb49-40a4e861960f5',
+        name: 'Take photos 2 5',
+        description: 'description of the foo description. see http://foo.bar/topic',
+        url: '',
+        image: 'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
+      },
+
+      {
+        _id: '5f0d9e31-8241-430c-bb49-40a4e861960f6',
+        name: 'Take photos 22 6',
         description: 'description of the foo description. see http://foo.bar/topic',
         url: '',
         image: 'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',

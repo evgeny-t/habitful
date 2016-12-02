@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-const getStyle = (/*props*/) => {
-  return {
+const getStyle = props => {
+  return Object.assign({
     userSelect: 'none',
     paddingTop: 2,
     paddingBottom: 2,
@@ -17,7 +17,7 @@ const getStyle = (/*props*/) => {
     overflow: 'hidden',
     cursor: 'pointer',
     background: 'rgba(0, 0, 0, 0.1)',
-  };
+  }, props.style);
 };
 
 const Chip = props => {
