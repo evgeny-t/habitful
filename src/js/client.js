@@ -196,6 +196,13 @@ ReactDOM.render((
           fontFamily: muiTheme.fontFamily,
           height: '100%',
         },
+        'a:hover': {
+          textDecoration: 'underline',
+        },
+        a: {
+          textDecoration: 'none',
+          color: '#4078c0',
+        },
         '#app': {
           height: '100%',
         },
