@@ -7,7 +7,9 @@ import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import MoreVert from 'material-ui/svg-icons/navigation/more-vert';
 
 import Paper from 'material-ui/Paper';
+import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
+
 import Chip from '../components/Chip';
 
 import {
@@ -80,8 +82,7 @@ const Tile = props => {
             top: '50%',
             transform: 'translateY(-50%)',
           }}>
-            <div style={{
-            }}>
+            <div style={{}}>
               {props.name}
             </div>
             <a rel='noopener noreferrer' target='_blank'
@@ -93,14 +94,29 @@ const Tile = props => {
               Learn more...
             </a>
           </div>
-          <IconButton style={{
+          <div style={{
             position: 'absolute',
             right: 0,
             top: '50%',
-            marginTop: '-24px',
+            transform: 'translateY(-50%)',
           }}>
-            <StarBorder />
-          </IconButton>
+            <IconButton style={{
+              display: 'inline-block',
+              paddingRight: 0,
+            }}>
+              <StarBorder />
+            </IconButton>
+            {props.popularity && (
+              <span style={{
+                color: '#666',
+                fontSize: 11,
+                display: 'inline-block',
+                marginRight: 5,
+                transform: 'translateY(-50%)',
+              }}>
+                {props.popularity}
+              </span>)}
+          </div>
         </div>
       </div>
     </Paper>
@@ -139,8 +155,11 @@ export default class Library extends React.Component {
 
     return (
       <div style={Object.assign({}, styles.root, style)}>
-        {library.items.map(x => (
-          <Tile key={x._id} {...x} columns={3} />)
+        {library.items.map(item => (
+          <Tile key={item._id} columns={3}
+            {...item}
+            popularity={library.popularity[item._id]}
+            />)
         )}
       </div>);
   }

@@ -207,10 +207,10 @@ const dummy = {
         image: 'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
       },
     ],
-    popularity: [
-      { itemId: 'e64467c5-bfe2-4043-a935-ad658f8a854d', count: 123 },
-      { itemId: '6f0d9e31-8241-430c-bb49-40a4e861960f', count: 2 },
-    ],
+    popularity: {
+      'e64467c5-bfe2-4043-a935-ad658f8a854d': 123,
+      '6f0d9e31-8241-430c-bb49-40a4e861960f': 2,
+    },
   }
 };
 
