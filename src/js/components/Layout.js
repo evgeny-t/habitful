@@ -9,7 +9,10 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Drawer from 'material-ui/Drawer';
+import Divider from 'material-ui/Divider';
 import { List, ListItem } from 'material-ui/List';
+
+import Folder from 'material-ui/svg-icons/file/folder';
 
 import Footer from './Footer';
 
@@ -73,12 +76,12 @@ export default class Layout extends React.Component {
     onSignInClick: React.PropTypes.func,
     onNavigate: React.PropTypes.func,
     user: React.PropTypes.object,
+    title: React.PropTypes.string,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      title: 'My Habits',
       drawer: false,
     };
   }
@@ -125,7 +128,7 @@ export default class Layout extends React.Component {
       <div style={styles}>
         <AppBar
           style={styles.appBar}
-          title={this.state.title}
+          title={this.props.title}
           iconElementRight={this.props.user ? avatar : signInButton}
           onLeftIconButtonTouchTap={this.handleBurgerClick}
           />
@@ -144,9 +147,13 @@ export default class Layout extends React.Component {
             <ListItem primaryText="My Habits"
               onClick={this.props.onNavigate.bind(null, '/myhabits')} />
             <ListItem primaryText="Today"
-              onClick={this.props.onNavigate.bind(null, '/today')}/>
+              onClick={this.props.onNavigate.bind(null, '/today')} />
             <ListItem primaryText="Overview"
               onClick={this.props.onNavigate.bind(null, '/overview')} />
+            <Divider />
+            <ListItem primaryText="Library"
+              leftIcon={<Folder />}
+              onClick={this.props.onNavigate.bind(null, '/library')} />
           </List>
         </Drawer>
       </div>

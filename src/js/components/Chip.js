@@ -22,7 +22,8 @@ const getStyle = props => {
 
 const Chip = props => {
   return (
-    <div style={getStyle(props)}>
+    <div style={getStyle(props)}
+      onClick={props.onClick}>
       {props.text}
     </div>);
 };
@@ -30,6 +31,7 @@ const Chip = props => {
 Chip.propTypes = {
   style: React.PropTypes.object,
   text: React.PropTypes.string.isRequired,
+  onClick: React.PropTypes.func,
 };
 
 export default Chip;

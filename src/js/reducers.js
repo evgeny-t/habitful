@@ -100,6 +100,20 @@ export function setUser(state, { user }) {
   return { ...state, user };
 }
 
+// export function filterLibraryItems(state, action) {
+//   return {
+//     ...state,
+//     filter: action.filter,
+//   };
+// }
+
+export function updateTitle(state, action) {
+  return {
+    ...state,
+    title: action.title,
+  };
+}
+
 export default (state, action) => {
   const actionMethod = _.camelCase(action.type);
   if (module.exports[actionMethod]) {

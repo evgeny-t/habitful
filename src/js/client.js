@@ -42,6 +42,7 @@ import {
   refreshLifetime,
   signInGoogle,
   initGoogleAuth,
+  updateTitle,
 } from './actions';
 
 const muiTheme = getMuiTheme({ });
@@ -71,6 +72,7 @@ const store = createStore(reducer, dummy, applyMiddleware(ReduxThunk, logger));
 //   store.dispatch(updateDate(store.getState().today.clone().add(1, 'days')));
 // }, 1000);
 
+store.dispatch(updateTitle());
 store.dispatch(initGoogleAuth());
 store.dispatch(refreshTodos());
 store.dispatch(refreshLifetime());
@@ -165,26 +167,41 @@ const LibraryVisual = connect(
   },
   dispatch => {
     return {
-
+      onLibraryTagClick: tag => {
+        browserHistory.push(`/library/${tag}`);
+      },
+      onFilter: tag => {
+        dispatch(updateTitle(`${tag}`));
+      },
     };
   })(Library);
+
+const routes = {
+  path: '/',
+  component: LayoutVisual,
+  indexRoute: { onEnter: (nextState, replace) => replace('/myhabits') },
+  childRoutes: [
+    { path: 'habits/new', component: NewHabitVisual },
+    { path: '/myhabits', component: MyHabitsVisual },
+    { path: '/today', component: TodayVisual },
+    { path: '/overview', component: OverviewVisual },
+    {
+      path: '/library(/:filter)',
+      component: LibraryVisual,
+      onEnter: (nextState/*, replace*/) =>
+        store.dispatch(updateTitle(nextState.params.filter)),
+      onLeave: () =>
+        store.dispatch(updateTitle()),
+    },
+  ]
+};
 
 const app = document.getElementById('app');
 ReactDOM.render((
   <StyleRoot style={{ height: '100%' }}>
     <Provider store={store}>
       <MuiThemeProvider muiTheme={muiTheme}>
-        <Router history={browserHistory}>
-          <Route path='/' component={LayoutVisual}>
-            <IndexRedirect to='/myhabits' />
-            <Route path='/debug/:component' component={Debug} />
-            <Route path='/habits/new' component={NewHabitVisual} />
-            <Route path='/myhabits' component={MyHabitsVisual} />
-            <Route path='/today' component={TodayVisual} />
-            <Route path='/overview' component={OverviewVisual} />
-            <Route path='/library' component={LibraryVisual} />
-          </Route>
-        </Router>
+        <Router history={browserHistory} routes={routes} />
       </MuiThemeProvider>
     </Provider>
     <Style

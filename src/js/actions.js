@@ -126,3 +126,14 @@ export function signInGoogle() {
   };
 }
 
+// export function filterLibraryItems(tag) {
+//   return {
+//     filter: tag,
+//   };
+// }
+
+export function updateTitle(title = 'My Habits') {
+  return {
+    title
+  };
+}

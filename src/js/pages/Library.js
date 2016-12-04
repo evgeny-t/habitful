@@ -1,13 +1,12 @@
 'use strict';
 
 import React from 'react';
-// import _ from 'lodash';
+import _ from 'lodash';
 
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import MoreVert from 'material-ui/svg-icons/navigation/more-vert';
 
 import Paper from 'material-ui/Paper';
-import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 
 import Chip from '../components/Chip';
@@ -58,7 +57,11 @@ const Tile = props => {
           background: 'transparent',
         }}>
           {props.tags && props.tags.map(t => (
-            <Chip style={{ display: 'inline-block' }} text={t} />
+            <Chip style={{
+              display: 'inline-block'
+            }}
+              key={t} text={t}
+              onClick={props.onTagClick.bind(null, t)}/>
             ))}
         </div>
         <IconButton style={{
@@ -89,7 +92,7 @@ const Tile = props => {
               href={props.url}
               style={{
                 display: 'inline-block',
-                fontSize: '12',
+                fontSize: 12,
               }}>
               Learn more...
             </a>
@@ -111,7 +114,7 @@ const Tile = props => {
                 color: '#666',
                 fontSize: 11,
                 display: 'inline-block',
-                marginRight: 5,
+                marginRight: 10,
                 transform: 'translateY(-50%)',
               }}>
                 {props.popularity}
@@ -129,14 +132,20 @@ Tile.propTypes = {
   image: React.PropTypes.string,
   name: React.PropTypes.string,
   columns: React.PropTypes.number,
+  popularity: React.PropTypes.number,
   tags: React.PropTypes.array,
+
+  onTagClick: React.PropTypes.func,
 };
 
 export default class Library extends React.Component {
   static propTypes = {
     library: React.PropTypes.object,
     style: React.PropTypes.object,
+    params: React.PropTypes.object,
     // onNewHabit: React.PropTypes.func,
+    onLibraryTagClick: React.PropTypes.func,
+    onFilter: React.PropTypes.func,
   }
 
   static defaultProps = {
@@ -151,16 +160,19 @@ export default class Library extends React.Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    let { library, style } = this.props;
+    let { library, style, params: { filter } } = this.props;
 
     return (
       <div style={Object.assign({}, styles.root, style)}>
-        {library.items.map(item => (
-          <Tile key={item._id} columns={3}
-            {...item}
-            popularity={library.popularity[item._id]}
-            />)
-        )}
+        {_.filter(library.items, item =>
+          _.find((item.tags || []), o => o === filter) || !filter)
+          .map(item => (
+            <Tile key={item._id} columns={3}
+              {...item}
+              onTagClick={this.props.onLibraryTagClick}
+              popularity={library.popularity[item._id]}
+              />)
+          )}
       </div>);
   }
 }
