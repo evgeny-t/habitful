@@ -114,6 +114,30 @@ export function updateTitle(state, action) {
   };
 }
 
+export function increaseHabitPopularity(state, action) {
+  state = _.cloneDeep(state);
+  const popularity = state.library.popularity[action.libraryHabitId] || 0;
+  state.library.popularity[action.libraryHabitId] = popularity + 1;
+  return state;
+}
+
+export function addHabitFromLibrary(state, action) {
+  state = _.cloneDeep(state);
+  const item = _.find(state.library.items, '_id', action.libraryHabitId);
+
+  state.habits = (state.habits || []).concat({
+    _id: action.newHabitId,
+    routine: item.description,
+    goal: item.name,
+    days: [true, true, true, true, true, true, true],
+    tags: item.tags,
+    history: [
+    ],
+  });
+
+  return state;
+}
+
 export default (state, action) => {
   const actionMethod = _.camelCase(action.type);
   if (module.exports[actionMethod]) {

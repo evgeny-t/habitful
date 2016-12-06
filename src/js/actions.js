@@ -137,3 +137,22 @@ export function updateTitle(title = 'My Habits') {
     title
   };
 }
+
+export function increaseHabitPopularity(libraryHabitId) {
+  return {
+    libraryHabitId,
+  };
+}
+
+export function addHabitFromLibrary(libraryHabitId) {
+  return {
+    libraryHabitId,
+  };
+}
+
+export function importHabit(libraryHabitId) {
+  return dispatch => {
+    dispatch(module.exports.increaseHabitPopularity(libraryHabitId));
+    dispatch(module.exports.addHabitFromLibrary(libraryHabitId));
+  };
+}

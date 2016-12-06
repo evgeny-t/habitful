@@ -6,6 +6,9 @@ import * as actions from './actions';
 import moment from 'moment';
 import _ from 'lodash';
 
+// TODO(ET): update jest version to avoid toMatchObject polyfilling
+import './__helpers';
+
 describe('addHabit', () => {
   it('should add one more habit with updated `in` field', () => {
     const habit = {
@@ -230,6 +233,48 @@ describe('updateDate', () => {
           ...state.habits[1],
           in: 0,
         }],
+      });
+  });
+});
+
+describe('increaseHabitPopularity', () => {
+  it('should add a new habit using a library one as a source', () => {
+    const state = {
+      library: {
+        items: [
+          {
+            _id: 'e64467c5-bfe2-4043-a935-ad658f8a854d',
+            name: 'foo',
+            description: 'foo description. see http://foo.bar/topic',
+            url: 'http://learn.more',
+            image: 'http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
+            tags: ['foo', 'bar', 'baz'],
+          },
+        ],
+        popularity: {
+        },
+      }
+    };
+
+    expect(reducer(state,
+      actions.increaseHabitPopularity('e64467c5-bfe2-4043-a935-ad658f8a854d')))
+      .toMatchObject({
+        library: {
+          ...state.library,
+          popularity: {
+            'e64467c5-bfe2-4043-a935-ad658f8a854d': 1,
+          },
+        },
+        habits: [
+          {
+            routine: state.library.items[0].description,
+            goal: state.library.items[0].name,
+            days: [true, true, true, true, true, true, true],
+            tags: state.library.items[0].tags,
+            history: [
+            ],
+          },
+        ],
       });
   });
 });

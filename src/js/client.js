@@ -43,6 +43,7 @@ import {
   signInGoogle,
   initGoogleAuth,
   updateTitle,
+  addHabitFromLibrary
 } from './actions';
 
 const muiTheme = getMuiTheme({ });
@@ -172,6 +173,9 @@ const LibraryVisual = connect(
       },
       onFilter: tag => {
         dispatch(updateTitle(`${tag}`));
+      },
+      onAddClick: libraryHabitId => {
+        dispatch(addHabitFromLibrary(libraryHabitId));
       },
     };
   })(Library);

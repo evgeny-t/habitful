@@ -97,7 +97,7 @@ const Tile = props => {
           }}>
             <IconButton style={{
               display: 'inline-block',
-            }}>
+            }} onClick={props.onAddClick}>
               <StarBorder />
             </IconButton>
             {props.popularity && (
@@ -128,6 +128,7 @@ Tile.propTypes = {
   tags: React.PropTypes.array,
 
   onTagClick: React.PropTypes.func,
+  onAddClick: React.PropTypes.func,
 };
 
 export default class Library extends React.Component {
@@ -136,6 +137,7 @@ export default class Library extends React.Component {
     style: React.PropTypes.object,
     params: React.PropTypes.object,
     onLibraryTagClick: React.PropTypes.func,
+    onAddClick: React.PropTypes.func,
     onFilter: React.PropTypes.func,
   }
 
@@ -159,6 +161,7 @@ export default class Library extends React.Component {
             <Tile key={item._id} columns={3}
               {...item}
               onTagClick={this.props.onLibraryTagClick}
+              onAddClick={this.props.onAddClick.bind(this, item)}
               popularity={library.popularity[item._id]}
               />)
           )}
