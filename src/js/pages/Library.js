@@ -17,19 +17,11 @@ import {
 const styles = {
   root: {
     width: '100%',
-    // marginRight: '5%',
-    // marginLeft: '5%',
     marginTop: '2.5%',
   },
 };
 
-// <img style={{
-        //   height: '100%',
-        //   position: 'absolute',
-        //   top: 0,
-        //   right: 0,
-        // }} src={props.image} />
-
+// TODO(ET): separate styles and markup (9)
 const Tile = props => {
   return (
     <Paper style={{
@@ -105,7 +97,6 @@ const Tile = props => {
           }}>
             <IconButton style={{
               display: 'inline-block',
-              paddingRight: 0,
             }}>
               <StarBorder />
             </IconButton>
@@ -115,6 +106,7 @@ const Tile = props => {
                 fontSize: 11,
                 display: 'inline-block',
                 marginRight: 10,
+                marginLeft: -10,
                 transform: 'translateY(-50%)',
               }}>
                 {props.popularity}
@@ -143,7 +135,6 @@ export default class Library extends React.Component {
     library: React.PropTypes.object,
     style: React.PropTypes.object,
     params: React.PropTypes.object,
-    // onNewHabit: React.PropTypes.func,
     onLibraryTagClick: React.PropTypes.func,
     onFilter: React.PropTypes.func,
   }
