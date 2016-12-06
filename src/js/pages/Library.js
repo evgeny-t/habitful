@@ -140,7 +140,6 @@ export default class Library extends React.Component {
   }
 
   static defaultProps = {
-    onNewHabit: () => {},
   }
 
   state = {}
@@ -150,7 +149,6 @@ export default class Library extends React.Component {
   }
 
   render() {
-    // eslint-disable-next-line no-unused-vars
     let { library, style, params: { filter } } = this.props;
 
     return (
