@@ -239,8 +239,17 @@ describe('updateDate', () => {
 describe('importHabit', () => {
   it('should add a new habit using a library one as a source', () => {
     const state = {
+      today: moment().day(0),
       library: {
         items: [
+          {
+            _id: 'foooo-baaaar',
+            name: 'foo bar',
+            description: '213 foo description. see http://foo.bar/topic',
+            url: '123 http://learn.more',
+            image: ' 123http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
+            tags: [],
+          },
           {
             _id: 'e64467c5-bfe2-4043-a935-ad658f8a854d',
             name: 'foo',
@@ -258,7 +267,7 @@ describe('importHabit', () => {
     const action = actions.importHabit(
       'e64467c5-bfe2-4043-a935-ad658f8a854d');
     const store = createStore(state);
-    store.dispatch(action)
+    return store.dispatch(action)
       .then(() => {
         const newState = store.getState();
         expect(newState.library.popularity)
@@ -267,11 +276,13 @@ describe('importHabit', () => {
           });
         expect(newState.habits[0])
           .toEqual({
-            routine: state.library.items[0].description,
-            goal: state.library.items[0].name,
+            routine: state.library.items[1].name,
+            goal: state.library.items[1].description,
             days: [true, true, true, true, true, true, true],
-            tags: state.library.items[0].tags,
+            tags: state.library.items[1].tags,
             history: [],
+            in: 0,
+            _id: undefined,
           });
       });
   });

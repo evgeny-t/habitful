@@ -161,7 +161,7 @@ export default class Library extends React.Component {
             <Tile key={item._id} columns={3}
               {...item}
               onTagClick={this.props.onLibraryTagClick}
-              onAddClick={this.props.onAddClick.bind(this, item)}
+              onAddClick={this.props.onAddClick.bind(this, item._id)}
               popularity={library.popularity[item._id]}
               />)
           )}

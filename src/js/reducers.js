@@ -123,12 +123,13 @@ export function increaseHabitPopularity(state, action) {
 
 export function addHabitFromLibrary(state, action) {
   state = _.cloneDeep(state);
-  const item = _.find(state.library.items, '_id', action.libraryHabitId);
+  const item = _.find(state.library.items,
+    item => item._id === action.libraryHabitId);
 
   state.habits = (state.habits || []).concat({
     _id: action.newHabitId,
-    routine: item.description,
-    goal: item.name,
+    routine: item.name,
+    goal: item.description,
     days: [true, true, true, true, true, true, true],
     tags: item.tags,
     history: [

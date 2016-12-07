@@ -110,7 +110,7 @@ const dummy = {
   library: {
     items: [
       {
-        _id: 'e64467c5-bfe2-4043-a935-ad658f8a854d',
+        _id: '1',
         name: 'foo',
         description: 'foo description. see http://foo.bar/topic',
         url: 'http://learn.more',
@@ -119,7 +119,7 @@ const dummy = {
       },
 
       {
-        _id: '6f0d9e31-8241-430c-bb49-40a4e861960f',
+        _id: '2',
         name: 'baz bar',
         description: 'description of the foo description. see http://foo.bar/topic',
         url: 'http://google.com',
@@ -128,7 +128,7 @@ const dummy = {
       },
 
       {
-        _id: '1f0d9e31-8241-430c-bb49-40a4e861960f',
+        _id: '3',
         name: 'Eat sandwiches',
         description: 'description of the foo description. see http://foo.bar/topic',
         url: '',
@@ -136,8 +136,8 @@ const dummy = {
       },
 
       {
-        _id: '2f0d9e31-8241-430c-bb49-40a4e861960f',
-        name: 'Take photos',
+        _id: '4',
+        name: 'Take photofs',
         description: 'description of the foo description. see http://foo.bar/topic',
         url: '',
         image: 'http://www.material-ui.com/images/grid-list/camera-813814_640.jpg',
@@ -145,7 +145,7 @@ const dummy = {
       },
 
       {
-        _id: '4f0d9e31-8241-430c-bb49-40a4e861960f',
+        _id: '5',
         name: 'Take photos 2',
         description: 'description of the foo description. see http://foo.bar/topic',
         url: '',
@@ -153,7 +153,7 @@ const dummy = {
       },
 
       {
-        _id: '5f0d9e31-8241-430c-bb49-40a4e861960f',
+        _id: '6',
         name: 'Take photos 22',
         description: 'description of the foo description. see http://foo.bar/topic',
         url: '',
@@ -161,7 +161,7 @@ const dummy = {
       },
 
       {
-        _id: 'e64467c5-bfe2-4043-a935-ad658f8a854d1',
+        _id: '7',
         name: 'foo 1',
         description: 'foo description. see http://foo.bar/topic',
         url: 'http://learn.more',
@@ -169,7 +169,7 @@ const dummy = {
       },
 
       {
-        _id: '6f0d9e31-8241-430c-bb49-40a4e861960f2',
+        _id: '8',
         name: 'baz bar 2',
         description: 'description of the foo description. see http://foo.bar/topic',
         url: 'http://google.com',
@@ -177,7 +177,7 @@ const dummy = {
       },
 
       {
-        _id: '1f0d9e31-8241-430c-bb49-40a4e861960f3',
+        _id: '9',
         name: 'Eat sandwiches 3',
         description: 'description of the foo description. see http://foo.bar/topic',
         url: '',
@@ -185,7 +185,7 @@ const dummy = {
       },
 
       {
-        _id: '2f0d9e31-8241-430c-bb49-40a4e861960f4',
+        _id: '10',
         name: 'Take photos 4',
         description: 'des cription of the foo description. see http://foo.bar/topic',
         url: '',
@@ -193,7 +193,7 @@ const dummy = {
       },
 
       {
-        _id: '4f0d9e31-8241-430c-bb49-40a4e861960f5',
+        _id: '11',
         name: 'Take photos 2 5',
         description: 'description of the foo description. see http://foo.bar/topic',
         url: '',
@@ -201,7 +201,7 @@ const dummy = {
       },
 
       {
-        _id: '5f0d9e31-8241-430c-bb49-40a4e861960f6',
+        _id: '12',
         name: 'Take photos 22 6',
         description: 'description of the foo description. see http://foo.bar/topic',
         url: '',
@@ -209,8 +209,9 @@ const dummy = {
       },
     ],
     popularity: {
-      'e64467c5-bfe2-4043-a935-ad658f8a854d': 123,
-      '6f0d9e31-8241-430c-bb49-40a4e861960f': 2,
+      '3': 123,
+      '6': 2,
+      '11': 7877,
     },
   }
 };

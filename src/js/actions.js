@@ -92,6 +92,8 @@ export const initDriveApi = () => {
   };
 };
 
+// TODO(ET): aync actions should return promises for consistency (6)
+
 // TODO(ET): sync store with google drive (1)
 // TODO(ET): think over a better way of wrapping actions to
 // avoid calling them `module.exports.func` from the inside of the module.
@@ -152,10 +154,15 @@ export function addHabitFromLibrary(libraryHabitId) {
 
 export function importHabit(libraryHabitId) {
   return dispatch => {
-    return new Promise(resolve => {
-      dispatch(module.exports.increaseHabitPopularity(libraryHabitId));
-      dispatch(module.exports.addHabitFromLibrary(libraryHabitId));
-      resolve();
+    return new Promise((resolve, reject) => {
+      try {
+        dispatch(module.exports.increaseHabitPopularity(libraryHabitId));
+        dispatch(module.exports.addHabitFromLibrary(libraryHabitId));
+        dispatch(module.exports.refreshTodos());
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 }
