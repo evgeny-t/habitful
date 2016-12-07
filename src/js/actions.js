@@ -152,7 +152,10 @@ export function addHabitFromLibrary(libraryHabitId) {
 
 export function importHabit(libraryHabitId) {
   return dispatch => {
-    dispatch(module.exports.increaseHabitPopularity(libraryHabitId));
-    dispatch(module.exports.addHabitFromLibrary(libraryHabitId));
+    return new Promise(resolve => {
+      dispatch(module.exports.increaseHabitPopularity(libraryHabitId));
+      dispatch(module.exports.addHabitFromLibrary(libraryHabitId));
+      resolve();
+    });
   };
 }

@@ -1,16 +1,10 @@
 'use strict';
 
-// import EventEmitter from 'events';
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route,
-  browserHistory, IndexRedirect } from 'react-router';
+import { Router, browserHistory } from 'react-router';
 import { Provider, connect } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import ReduxThunk from 'redux-thunk';
 import { StyleRoot, Style } from 'radium';
-import createLogger from 'redux-logger';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -19,7 +13,6 @@ import moment from 'moment';
 import 'whatwg-fetch';
 
 import Layout from './components/Layout';
-import Debug from './components/Debug';
 import NewHabit from './pages/NewHabit';
 
 import Today from './pages/Today';
@@ -32,23 +25,10 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
-import reducer from './reducers';
-import {
-  addHabit,
-  removeHabit,
-  // updateDate,
-  markRoutineDone,
-  refreshTodos,
-  refreshLifetime,
-  signInGoogle,
-  initGoogleAuth,
-  updateTitle,
-  addHabitFromLibrary
-} from './actions';
+import createStore from './store';
+import * as actions from './actions';
 
 const muiTheme = getMuiTheme({ });
-
-const logger = createLogger();
 
 let dummy;
 
@@ -67,16 +47,16 @@ try {
   };
 }
 
-const store = createStore(reducer, dummy, applyMiddleware(ReduxThunk, logger));
+const store = createStore(dummy);
 
 // setInterval(() => {
 //   store.dispatch(updateDate(store.getState().today.clone().add(1, 'days')));
 // }, 1000);
 
-store.dispatch(updateTitle());
-store.dispatch(initGoogleAuth());
-store.dispatch(refreshTodos());
-store.dispatch(refreshLifetime());
+store.dispatch(actions.updateTitle());
+store.dispatch(actions.initGoogleAuth());
+store.dispatch(actions.refreshTodos());
+store.dispatch(actions.refreshLifetime());
 
 const NewHabitVisual = connect(
   // state to props
@@ -88,7 +68,7 @@ const NewHabitVisual = connect(
     return {
       onDone: (habit) => {
         browserHistory.push('/myhabits');
-        dispatch(addHabit(habit));
+        dispatch(actions.addHabit(habit));
       }
     };
   })(NewHabit);
@@ -126,7 +106,7 @@ const MyHabitsVisual = connect(
       },
 
       onHabitRemove: (habitId) => {
-        dispatch(removeHabit(habitId));
+        dispatch(actions.removeHabit(habitId));
       }
     };
   })(MyHabits);
@@ -142,7 +122,7 @@ const TodayVisual = connect(
   dispatch => {
     return {
       onCheck: (event, habit) => {
-        dispatch(markRoutineDone(habit._id));
+        dispatch(actions.markRoutineDone(habit._id));
       },
     };
   })(Today);
@@ -154,7 +134,7 @@ const LayoutVisual = connect(
   dispatch => {
     return {
       onSignInClick: () => {
-        dispatch(signInGoogle());
+        dispatch(actions.signInGoogle());
       },
       onNavigate: (route) => {
         browserHistory.push(`${route}`);
@@ -172,10 +152,10 @@ const LibraryVisual = connect(
         browserHistory.push(`/library/${tag}`);
       },
       onFilter: tag => {
-        dispatch(updateTitle(`${tag}`));
+        dispatch(actions.updateTitle(`${tag}`));
       },
       onAddClick: libraryHabitId => {
-        dispatch(addHabitFromLibrary(libraryHabitId));
+        dispatch(actions.importHabit(libraryHabitId));
       },
     };
   })(Library);
@@ -193,9 +173,9 @@ const routes = {
       path: '/library(/:filter)',
       component: LibraryVisual,
       onEnter: (nextState/*, replace*/) =>
-        store.dispatch(updateTitle(nextState.params.filter)),
+        store.dispatch(actions.updateTitle(nextState.params.filter)),
       onLeave: () =>
-        store.dispatch(updateTitle()),
+        store.dispatch(actions.updateTitle()),
     },
   ]
 };
@@ -235,3 +215,4 @@ ReactDOM.render((
     />
   </StyleRoot>
   ), app);
+
