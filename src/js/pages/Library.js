@@ -8,6 +8,7 @@ import MoreVert from 'material-ui/svg-icons/navigation/more-vert';
 
 import Paper from 'material-ui/Paper';
 import IconButton from 'material-ui/IconButton';
+import Dialog from 'material-ui/Dialog';
 
 import Chip from '../components/Chip';
 
@@ -21,6 +22,17 @@ const styles = {
   },
 };
 
+const HabitLink = props => (
+  <a rel='noopener noreferrer' target='_blank'
+    href={props.url}
+    style={{
+      display: 'inline-block',
+      fontSize: 12,
+    }}>
+    Learn more...
+  </a>
+);
+
 // TODO(ET): separate styles and markup (9)
 const Tile = props => {
   return (
@@ -30,17 +42,21 @@ const Tile = props => {
       display: 'inline-block',
       width: `calc(100% / ${props.columns} - 10px)`,
     }}>
-      <div style={{
-        width: '100%',
-        paddingTop: '75%',
-        position: 'relative',
-        overflow: 'hidden',
+      <div
+        onClick={props.onItemClick}
+        style={{
+          width: '100%',
+          paddingTop: '75%',
+          position: 'relative',
+          overflow: 'hidden',
+          cursor: 'pointer',
 
-        background: `
-          linear-gradient(white, transparent , white 85%),
-          url("${props.image}")`,
-        backgroundSize: '100% 100%',
-      }}>
+          background: `
+            linear-gradient(white, transparent , white 85%),
+            url("${props.image}")`,
+          backgroundSize: '100% 100%',
+        }}
+      >
         <div style={{
           width: '50%',
           height: '25%',
@@ -80,14 +96,7 @@ const Tile = props => {
             <div style={{}}>
               {props.name}
             </div>
-            <a rel='noopener noreferrer' target='_blank'
-              href={props.url}
-              style={{
-                display: 'inline-block',
-                fontSize: 12,
-              }}>
-              Learn more...
-            </a>
+            <HabitLink url={props.url} />
           </div>
           <div style={{
             position: 'absolute',
@@ -129,6 +138,29 @@ Tile.propTypes = {
 
   onTagClick: React.PropTypes.func,
   onAddClick: React.PropTypes.func,
+  onItemClick: React.PropTypes.func,
+};
+
+const HabitDialog = props => {
+  return props.selected && (
+    <Dialog
+      title={props.selected.name}
+      actions={[]}
+      modal={false}
+      {...props}
+      >
+      <div>
+        {props.selected.description}
+      </div>
+      <HabitLink url={props.selected.url} />
+    </Dialog>
+  );
+};
+
+HabitDialog.propTypes = {
+  name: React.PropTypes.string,
+  description: React.PropTypes.string,
+  url: React.PropTypes.string,
 };
 
 export default class Library extends React.Component {
@@ -144,7 +176,10 @@ export default class Library extends React.Component {
   static defaultProps = {
   }
 
-  state = {}
+  state = {
+    open: false,
+    selectedItem: null,
+  }
 
   constructor(props) {
     super(props);
@@ -162,9 +197,24 @@ export default class Library extends React.Component {
               {...item}
               onTagClick={this.props.onLibraryTagClick}
               onAddClick={this.props.onAddClick.bind(this, item._id)}
+              onItemClick={this.handleItemClick.bind(this, item)}
               popularity={library.popularity[item._id]}
               />)
           )}
+        <HabitDialog
+          selected={this.state.selectedItem}
+          open={this.state.open}
+          onRequestClose={this.requestClose}
+        />
       </div>);
   }
+
+  handleItemClick = item => {
+    this.setState({
+      open: true,
+      selectedItem: item,
+    });
+  }
+
+  requestClose = () => this.setState({ open: false });
 }
