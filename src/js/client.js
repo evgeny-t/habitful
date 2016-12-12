@@ -210,7 +210,7 @@ ReactDOM.render((
         p: {
           margin: 0
         }
-        // TODO(ET): media queries
+        // TODO(ET): media queries: Make sure app looks good with common resolutions
       }}
     />
   </StyleRoot>
