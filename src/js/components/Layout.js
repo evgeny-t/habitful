@@ -74,6 +74,7 @@ export default class Layout extends React.Component {
   static propTypes = {
     children: React.PropTypes.any,
     onSignInClick: React.PropTypes.func,
+    onSignOutClick: React.PropTypes.func,
     onNavigate: React.PropTypes.func,
     user: React.PropTypes.object,
     title: React.PropTypes.string,
@@ -118,7 +119,7 @@ export default class Layout extends React.Component {
           desktop={true}
         >
           <MenuItem primaryText='Sign out'
-            onClick={() => { console.error('not implemented'); }}
+            onClick={this.props.onSignOutClick}
           />
         </IconMenu>
       </div>

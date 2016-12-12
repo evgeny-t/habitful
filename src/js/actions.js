@@ -46,17 +46,23 @@ export function refreshLifetime() {
 /* global gapi */
 
 export const setUser = user => {
-  const profile = user.getBasicProfile();
-  return {
-    user: {
-      id: profile.getId(),
-      name: profile.getName(),
-      givenName: profile.getGivenName(),
-      familyName: profile.getFamilyName(),
-      imageUrl: profile.getImageUrl(),
-      email: profile.getEmail(),
-    }
-  };
+  if (user && user.getBasicProfile) {
+    const profile = user.getBasicProfile();
+    return {
+      user: {
+        id: profile.getId(),
+        name: profile.getName(),
+        givenName: profile.getGivenName(),
+        familyName: profile.getFamilyName(),
+        imageUrl: profile.getImageUrl(),
+        email: profile.getEmail(),
+      }
+    };
+  } else {
+    return {
+      user
+    };
+  }
 };
 
 for (let k in module.exports) {
@@ -125,6 +131,20 @@ export function signInGoogle() {
       .then(() => {
         dispatch(module.exports.setUser(auth2.currentUser.get()));
       });
+  };
+}
+
+export function signOut() {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      try {
+        dispatch(module.exports.setUser(null));
+        const auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut();
+      } catch (e) {
+        reject(e);
+      }
+    });
   };
 }
 

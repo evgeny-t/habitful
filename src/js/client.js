@@ -136,6 +136,9 @@ const LayoutVisual = connect(
       onSignInClick: () => {
         dispatch(actions.signInGoogle());
       },
+      onSignOutClick: () => {
+        dispatch(actions.signOut());
+      },
       onNavigate: (route) => {
         browserHistory.push(`${route}`);
       }
