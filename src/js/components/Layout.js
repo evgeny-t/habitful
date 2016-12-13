@@ -15,6 +15,7 @@ import { List, ListItem } from 'material-ui/List';
 import Folder from 'material-ui/svg-icons/file/folder';
 
 import Footer from './Footer';
+import Landing from './Landing';
 
 const styles = {
   height: '100%',
@@ -132,10 +133,13 @@ export default class Layout extends React.Component {
           title={this.props.title}
           iconElementRight={this.props.user ? avatar : signInButton}
           onLeftIconButtonTouchTap={this.handleBurgerClick}
+          showMenuIconButton={!!this.props.user}
           />
 
         <div style={styles.container(this.state)}>
-          {this.props.children}
+          {this.props.user ?
+            this.props.children :
+            (<Landing signInButton={signInButton} />)}
         </div>
 
         <Footer />

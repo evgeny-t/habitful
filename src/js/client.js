@@ -53,7 +53,7 @@ const store = createStore(dummy);
 //   store.dispatch(updateDate(store.getState().today.clone().add(1, 'days')));
 // }, 1000);
 
-store.dispatch(actions.updateTitle());
+store.dispatch(actions.updateTitle('Habitful'));
 store.dispatch(actions.initGoogleAuth());
 store.dispatch(actions.refreshTodos());
 store.dispatch(actions.refreshLifetime());

@@ -154,7 +154,7 @@ export function signOut() {
 //   };
 // }
 
-export function updateTitle(title = 'My Habits') {
+export function updateTitle(title) {
   return {
     title
   };
