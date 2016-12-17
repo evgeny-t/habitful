@@ -139,6 +139,20 @@ export function addHabitFromLibrary(state, action) {
   return state;
 }
 
+export function initHabits(state, action) {
+  return {
+    ...state,
+    habits: action.habits,
+  };
+}
+
+export function initBirthday(state, action) {
+  return {
+    ...state,
+    birthday: action.birthday,
+  };
+}
+
 export default (state, action) => {
   const actionMethod = _.camelCase(action.type);
   if (module.exports[actionMethod]) {

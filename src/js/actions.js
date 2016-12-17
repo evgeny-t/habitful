@@ -92,55 +92,197 @@ export function initDriveApiSucceeded() {
 // https://developers.google.com/drive/v3/web/quickstart/js
 export const initDriveApi = () => {
   return dispatch => {
-    gapi.client.load('drive', 'v3', () => {
+    gapi.client.load('drive', 'v2', () => {
       dispatch(module.exports.initDriveApiSucceeded());
 
-      dispatch(module.exports.uploadToDrive());
-      setTimeout(() =>
-        dispatch(module.exports.fetchFromDrive())
-        , 1000);
+      dispatch(module.exports.fetchFromDrive());
     });
   };
 };
 
-export const uploadToDrive = () => {
-  return dispatch => {
-    gapi.client.drive.files.create({
-      resource: {
-        name: 'habitful.json',
-        parents: ['appDataFolder']
-      },
-      media: {
-        mimeType: 'application/json',
-        body: JSON.stringify(module.exports),
-      },
-      fields: 'id',
-    }).then(r => {
-      console.log('r', r);
-    });
+function _gapiUpload(gapi, method, filenameOrId, object) {
+  const boundary = '-------098564-habitful-2340175';
+
+  const metadata = {
+    mimeType: 'application/json',
+    // parents: [{ id: 'appfolder' }],
   };
-};
 
-export const fetchFromDrive = () => {
-  return dispatch => {
-    var request = gapi.client.drive.files.list({
-      spaces: ['appDataFolder'],
-      pageSize: 100,
-      fields: 'nextPageToken, files(id, name)',
-    });
+  if (method === 'POST') {
+    metadata.title = filenameOrId;
+  }
 
-    request.execute(function(resp) {
-      console.log('resp:', resp);
-      var files = resp.files;
-      if (files && files.length > 0) {
-        for (var i = 0; i < files.length; i++) {
-          var file = files[i];
-          console.log(`${file.name} ( ${file.id} )`);
-        }
+  const path = '/upload/drive/v2/files' +
+    (method === 'PUT' ? `/${filenameOrId}` : '');
+
+  const request = gapi.client.request({
+    path,
+    method,
+    params: { uploadType: 'multipart' },
+    headers: {
+      'Content-Type': `multipart/mixed; boundary="${boundary}"`,
+    },
+
+    body: `
+--${boundary}
+Content-Type: application/json
+
+${JSON.stringify(metadata)}
+--${boundary}
+Content-Type: application/json
+
+${JSON.stringify(object)}
+--${boundary}--`,
+  });
+
+  return new Promise((resolve, reject) => {
+    request.execute((response, raw) => {
+      if (response) {
+        resolve(response);
       } else {
-        console.log('No files found.');
+        reject(JSON.parse(raw));
       }
     });
+  });
+}
+
+function gapiGet(gapi, fileId) {
+  const request = gapi.client.drive.files.get({ fileId });
+  return new Promise((resolve, reject) => {
+    try {
+      request.execute(response => {
+        resolve(response);
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function gapiDowload(gapi, gapiFile) {
+  try {
+    const user = gapi.auth2.getAuthInstance().currentUser.get();
+    const accessToken = user.getAuthResponse().access_token;
+    return fetch(gapiFile.downloadUrl, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    });
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}
+
+function gapiList(gapi, filename) {
+  //  and 'appfolder' in parents
+  const request = gapi.client.drive.files.list({
+    q: `title='${filename}' and trashed=false`,
+  });
+  return new Promise((resolve, reject) => {
+    request.execute(response => {
+      if (response.code >= 400) {
+        reject(response);
+      } else {
+        resolve(response);
+      }
+    });
+  });
+}
+
+function gapiInsert(gapi, filename, object) {
+  return _gapiUpload(gapi, 'POST', filename, object);
+}
+
+function gapiUpdate(gapi, fileId, object) {
+  return _gapiUpload(gapi, 'PUT', fileId, object);
+}
+
+const fn = 'habitful.json';
+
+export const uploadToDrive = () => {
+  return (dispatch, getState) => {
+    const doc = {
+      habits: getState().habits,
+      birthday: getState().birthday ,
+    };
+
+    return gapiList(gapi, fn)
+      .then(resp => {
+        if (resp.items.length === 0) {
+          return gapiInsert(gapi, fn, doc);
+        } else {
+          return gapiUpdate(gapi, resp.items[0].id, doc);
+        }
+      })
+      .catch(error => {
+// TODO(ET): handle drive-related errors (3)
+        console.log('error:', error);
+      });
+  };
+};
+
+export function initHabits(habits) {
+  return {
+    habits,
+  };
+}
+
+export function initBirthday(birthday) {
+  return {
+    birthday
+  };
+}
+
+export const fetchFromDrive = () => {
+  function pump(reader) {
+    const chunks = [];
+    function _pump() {
+      return reader.read()
+        .then(({ value, done }) => {
+          if (done) {
+            return chunks;
+          }
+
+          chunks.push(value);
+          return _pump();
+        });
+    }
+
+    return _pump();
+  }
+
+  return dispatch => {
+    gapiList(gapi, fn)
+      .then(resp => {
+        if (resp.items.length > 0) {
+          return gapiGet(gapi, resp.items[0].id)
+            .then(resp => gapiDowload(gapi, resp))
+            .then(file => {
+              const reader = file.body.getReader();
+              const content = pump(reader);
+              return content;
+            });
+        }
+      })
+      .then(content => {
+        if (content) {
+          content = new TextDecoder('utf-8').decode(content[0]);
+          content = JSON.parse(content.toString());
+          content.birthday = moment(content.birthday);
+          content.habits = content.habits.map(h => {
+            return {
+              ...h,
+              history: h.history ? h.history.map(historyItem => {
+                return {
+                  when: moment(historyItem.when),
+                };
+              }) : []
+            };
+          });
+          dispatch(module.exports.initHabits(content.habits));
+          dispatch(module.exports.initBirthday(content.birthday));
+        }
+      });
   };
 };
 
