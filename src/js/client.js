@@ -9,6 +9,7 @@ import { StyleRoot, Style } from 'radium';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
+import _ from 'lodash';
 import moment from 'moment';
 import 'whatwg-fetch';
 
@@ -60,16 +61,29 @@ store.dispatch(actions.initGoogleAuth());
 store.dispatch(actions.refreshTodos());
 store.dispatch(actions.refreshLifetime());
 
+const throttledUploadToDrive = _.throttle(() => {
+  store.dispatch(actions.uploadToDrive());
+}, 500, { leading: false });
+
+const observerOptions = {
+  // equals: _.isEqual
+};
+
 const syncHabitsWithDriveObserver = observer(
   state => state.habits,
-  (dispatch/*, current*//*, previous*/) => {
-    dispatch(actions.uploadToDrive());
-  });
+  () => {
+    if (!store.getState().fetchFromDriveInProgress) {
+      throttledUploadToDrive();
+    }
+  }/*, observerOptions*/);
 const syncBirthdayWithDriveObserver = observer(
-  state => state.habits,
-  (dispatch/*, current*//*, previous*/) => {
-    dispatch(actions.uploadToDrive());
-  });
+  state => state.birthday,
+  () => {
+    if (!store.getState().fetchFromDriveInProgress) {
+      throttledUploadToDrive();
+    }
+  }/*, observerOptions*/);
+
 observe(store, [
   syncHabitsWithDriveObserver,
   syncBirthdayWithDriveObserver,

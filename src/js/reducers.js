@@ -153,6 +153,44 @@ export function initBirthday(state, action) {
   };
 }
 
+export function uploadToDriveStart(state) {
+  return {
+    ...state,
+    uploadToDriveInProgress: true,
+  };
+}
+
+export function uploadToDriveSucceeded(state) {
+  return {
+    ...state,
+    uploadToDriveInProgress: false,
+  };
+}
+
+export function fetchFromDriveStart(state) {
+  return {
+    ...state,
+    fetchFromDriveInProgress: true,
+  };
+}
+
+export function fetchFromDriveSucceeded(state) {
+  return {
+    ...state,
+    fetchFromDriveInProgress: false,
+  };
+}
+
+export function fetchFromDriveFailed(state, action) {
+  // eslint-disable-next-line no-unused-vars
+  const { type, ...error } = action;
+  return {
+    ...state,
+    fetchFromDriveInProgress: false,
+    fetchFromDriveError: error,
+  };
+}
+
 export default (state, action) => {
   const actionMethod = _.camelCase(action.type);
   if (module.exports[actionMethod]) {

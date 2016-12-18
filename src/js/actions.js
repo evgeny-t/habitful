@@ -84,6 +84,7 @@ export function setGoogleAuth2(auth2) {
   };
 }
 
+// TODO(ET): init drive api failed (4)
 export function initDriveApiSucceeded() {
   return {
   };
@@ -199,13 +200,24 @@ function gapiUpdate(gapi, fileId, object) {
 
 const fn = 'habitful.json';
 
-export const uploadToDrive = () => {
+export function uploadToDriveStart() {
+  return {
+  };
+}
+
+export function uploadToDriveSucceeded() {
+  return {
+  };
+}
+
+export function uploadToDrive() {
   return (dispatch, getState) => {
     const doc = {
       habits: getState().habits,
       birthday: getState().birthday ,
     };
 
+    dispatch(module.exports.uploadToDriveStart());
     return gapiList(gapi, fn)
       .then(resp => {
         if (resp.items.length === 0) {
@@ -214,12 +226,16 @@ export const uploadToDrive = () => {
           return gapiUpdate(gapi, resp.items[0].id, doc);
         }
       })
+      .then(arg => {
+        dispatch(module.exports.uploadToDriveSucceeded());
+        return arg;
+      })
       .catch(error => {
 // TODO(ET): handle drive-related errors (3)
         console.log('error:', error);
       });
   };
-};
+}
 
 export function initHabits(habits) {
   return {
@@ -233,41 +249,39 @@ export function initBirthday(birthday) {
   };
 }
 
+export function fetchFromDriveStart() {
+  return {
+  };
+}
+
+export function fetchFromDriveSucceeded() {
+  return {
+  };
+}
+
+export function fetchFromDriveFailed(opts) {
+  return {
+    ...opts,
+  };
+}
+
 export const fetchFromDrive = () => {
-  function pump(reader) {
-    const chunks = [];
-    function _pump() {
-      return reader.read()
-        .then(({ value, done }) => {
-          if (done) {
-            return chunks;
-          }
-
-          chunks.push(value);
-          return _pump();
-        });
-    }
-
-    return _pump();
-  }
-
-  return dispatch => {
-    gapiList(gapi, fn)
+  return (dispatch) => {
+    dispatch(module.exports.fetchFromDriveStart());
+    return gapiList(gapi, fn)
       .then(resp => {
         if (resp.items.length > 0) {
           return gapiGet(gapi, resp.items[0].id)
             .then(resp => gapiDowload(gapi, resp))
-            .then(file => {
-              const reader = file.body.getReader();
-              const content = pump(reader);
-              return content;
-            });
+            .then(resp => resp.json());
+        } else {
+          dispatch(module.exports.fetchFromDriveFailed({
+            message: 'file not found',
+          }));
         }
       })
       .then(content => {
         if (content) {
-          content = new TextDecoder('utf-8').decode(content[0]);
-          content = JSON.parse(content.toString());
           content.birthday = moment(content.birthday);
           content.habits = content.habits.map(h => {
             return {
@@ -279,9 +293,18 @@ export const fetchFromDrive = () => {
               }) : []
             };
           });
+
           dispatch(module.exports.initHabits(content.habits));
           dispatch(module.exports.initBirthday(content.birthday));
+
+          dispatch(module.exports.fetchFromDriveSucceeded());
         }
+      })
+      .catch(error => {
+        dispatch(module.exports.fetchFromDriveFailed({
+          error
+        }));
+        throw error;
       });
   };
 };
@@ -366,6 +389,7 @@ export function increaseHabitPopularity(libraryHabitId) {
 export function addHabitFromLibrary(libraryHabitId) {
   return {
     libraryHabitId,
+    newHabitId: uuid.v4(),
   };
 }
 
