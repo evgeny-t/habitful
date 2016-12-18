@@ -28,7 +28,9 @@ const HabitLink = props => (
     style={{
       display: 'inline-block',
       fontSize: 12,
-    }}>
+    }}
+    onClick={e => e.stopPropagation()}
+  >
     Learn more...
   </a>
 );
@@ -69,14 +71,19 @@ const Tile = props => {
               display: 'inline-block'
             }}
               key={t} text={t}
-              onClick={props.onTagClick.bind(null, t)}/>
+              onClick={e => {
+                e.stopPropagation();
+                props.onTagClick(t);
+              }}/>
             ))}
         </div>
-        <IconButton style={{
-          position: 'absolute',
-          right: 0,
-          top: 0,
-        }}>
+        <IconButton
+          onClick={e => e.stopPropagation()}
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: 0,
+          }}>
           <MoreVert />
         </IconButton>
         <div style={{
@@ -106,7 +113,10 @@ const Tile = props => {
           }}>
             <IconButton style={{
               display: 'inline-block',
-            }} onClick={props.onAddClick}>
+            }} onClick={e => {
+              e.stopPropagation();
+              props.onAddClick();
+            }}>
               <StarBorder />
             </IconButton>
             {props.popularity && (
