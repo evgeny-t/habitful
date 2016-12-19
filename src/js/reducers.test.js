@@ -237,33 +237,33 @@ describe('updateDate', () => {
 });
 
 describe('importHabit', () => {
-  it('should add a new habit using a library one as a source', () => {
-    const state = {
-      today: moment().day(0),
-      library: {
-        items: [
-          {
-            _id: 'foooo-baaaar',
-            name: 'foo bar',
-            description: '213 foo description. see http://foo.bar/topic',
-            url: '123 http://learn.more',
-            image: ' 123http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
-            tags: [],
-          },
-          {
-            _id: 'e64467c5-bfe2-4043-a935-ad658f8a854d',
-            name: 'foo',
-            description: 'foo description. see http://foo.bar/topic',
-            url: 'http://learn.more',
-            image: 'http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
-            tags: ['foo', 'bar', 'baz'],
-          },
-        ],
-        popularity: {
+  const state = {
+    today: moment().day(0),
+    library: {
+      items: [
+        {
+          _id: 'foooo-baaaar',
+          name: 'foo bar',
+          description: '213 foo description. see http://foo.bar/topic',
+          url: '123 http://learn.more',
+          image: ' 123http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
+          tags: [],
         },
-      }
-    };
+        {
+          _id: 'e64467c5-bfe2-4043-a935-ad658f8a854d',
+          name: 'foo',
+          description: 'foo description. see http://foo.bar/topic',
+          url: 'http://learn.more',
+          image: 'http://www.material-ui.com/images/grid-list/00-52-29-429_640.jpg',
+          tags: ['foo', 'bar', 'baz'],
+        },
+      ],
+      popularity: {
+      },
+    }
+  };
 
+  it('should add a new habit using a library one as a source', () => {
     const action = actions.importHabit(
       'e64467c5-bfe2-4043-a935-ad658f8a854d');
     const store = createStore(state);
@@ -274,16 +274,30 @@ describe('importHabit', () => {
           .toEqual({
             'e64467c5-bfe2-4043-a935-ad658f8a854d': 1,
           });
-        expect(newState.habits[0])
+        const { _id, ...habit } = newState.habits[0];
+        expect(habit)
           .toEqual({
+            parentId: expect.any(String),
             routine: state.library.items[1].name,
             goal: state.library.items[1].description,
             days: [true, true, true, true, true, true, true],
             tags: state.library.items[1].tags,
             history: [],
             in: 0,
-            _id: undefined,
           });
+        expect(_id).toBeTruthy();
+      });
+  });
+
+  it('should not import the same habit twice', () => {
+    const action = actions.importHabit(
+      'e64467c5-bfe2-4043-a935-ad658f8a854d');
+    const store = createStore(state);
+    return store.dispatch(action)
+      .then(() => store.dispatch(action))
+      .then(() => {
+        expect(store.getState().library.popularity)
+          .toHaveProperty('e64467c5-bfe2-4043-a935-ad658f8a854d', 1);
       });
   });
 });

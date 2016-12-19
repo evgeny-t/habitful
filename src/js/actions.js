@@ -393,17 +393,29 @@ export function addHabitFromLibrary(libraryHabitId) {
   };
 }
 
+export function showError(error) {
+  return {
+    error,
+  };
+}
+
+export function importHabitError(error) {
+  return dispatch => dispatch(module.exports.showError(error));
+}
+
 export function importHabit(libraryHabitId) {
   return dispatch => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve/*, reject*/) => {
       try {
-        dispatch(module.exports.increaseHabitPopularity(libraryHabitId));
         dispatch(module.exports.addHabitFromLibrary(libraryHabitId));
+        dispatch(module.exports.increaseHabitPopularity(libraryHabitId));
         dispatch(module.exports.refreshTodos());
-        resolve();
       } catch (error) {
-        reject(error);
+        dispatch(module.exports.importHabitError(error));
+        // reject(error);
       }
+
+      resolve();
     });
   };
 }

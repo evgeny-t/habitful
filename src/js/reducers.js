@@ -122,6 +122,11 @@ export function increaseHabitPopularity(state, action) {
 }
 
 export function addHabitFromLibrary(state, action) {
+  if (_.find(state.habits, item =>
+    item.parentId === action.libraryHabitId)) {
+    throw new Error('habit already had been added');
+  }
+
   state = _.cloneDeep(state);
   const item = _.find(state.library.items,
     item => item._id === action.libraryHabitId);
@@ -134,6 +139,7 @@ export function addHabitFromLibrary(state, action) {
     tags: item.tags,
     history: [
     ],
+    parentId: action.libraryHabitId,
   });
 
   return state;
