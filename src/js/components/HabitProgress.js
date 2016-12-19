@@ -181,6 +181,7 @@ class HabitProgress extends React.Component {
     className: React.PropTypes.string,
 
     onHabitRemove: React.PropTypes.func,
+    onTagClick: React.PropTypes.func,
   }
 
   state = {
@@ -247,7 +248,8 @@ class HabitProgress extends React.Component {
         />
         <div style={tagContainerStyle}>
         {this.props.habit.tags && this.props.habit.tags.map(t =>
-          (<Chip key={t} text={t} />))}
+          (<Chip key={t} text={t}
+            onClick={() => this.props.onTagClick(t)} />))}
         </div>
         <Dialog
           title={`Remove ${this.props.habit.routine}`}

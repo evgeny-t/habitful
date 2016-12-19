@@ -44,6 +44,7 @@ export default class MyHabits extends React.Component {
     habits: React.PropTypes.array,
     today: React.PropTypes.object,
     onNewHabit: React.PropTypes.func,
+    params: React.PropTypes.object,
   }
 
   static defaultProps = {
@@ -70,10 +71,12 @@ export default class MyHabits extends React.Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    let { habits, ...other } = this.props;
+    let { habits, params: { filter }, ...other } = this.props;
 
     const tiles = _(this.props.habits)
-      .filter(habit => !habit.deletedAt)
+      .filter(habit =>
+        !habit.deletedAt && (!filter ||
+          _.find(habit.tags || [], tag => tag === filter)))
       .map((habit, i) => (
         <HabitProgress className="my-habits__tile" key={i}
           habit={habit} {...other}

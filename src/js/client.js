@@ -138,7 +138,11 @@ const MyHabitsVisual = connect(
 
       onHabitRemove: (habitId) => {
         dispatch(actions.removeHabit(habitId));
-      }
+      },
+
+      onTagClick: (tag) => {
+        browserHistory.push(`/myhabits/${tag}`);
+      },
     };
   })(MyHabits);
 
@@ -194,22 +198,43 @@ const LibraryVisual = connect(
     };
   })(Library);
 
+function setTitleOnEnter(title) {
+  return () => store.dispatch(actions.updateTitle(title));
+}
+
 const routes = {
   path: '/',
   component: LayoutVisual,
   indexRoute: { onEnter: (nextState, replace) => replace('/myhabits') },
   childRoutes: [
-    { path: 'habits/new', component: NewHabitVisual },
-    { path: '/myhabits', component: MyHabitsVisual },
-    { path: '/today', component: TodayVisual },
-    { path: '/overview', component: OverviewVisual },
+    {
+      path: 'habits/new',
+      component: NewHabitVisual,
+      onEnter: setTitleOnEnter('New Habit'),
+    },
+    {
+      path: '/myhabits(/:filter)',
+      component: MyHabitsVisual,
+      onEnter: (nextState/*, replace*/) =>
+        store.dispatch(actions.updateTitle(
+          nextState.params.filter || 'My Habits')),
+    },
+    {
+      path: '/today',
+      component: TodayVisual,
+      onEnter: setTitleOnEnter('Today'),
+    },
+    {
+      path: '/overview',
+      component: OverviewVisual,
+      onEnter: setTitleOnEnter('Overview'),
+    },
     {
       path: '/library(/:filter)',
       component: LibraryVisual,
       onEnter: (nextState/*, replace*/) =>
-        store.dispatch(actions.updateTitle(nextState.params.filter)),
-      onLeave: () =>
-        store.dispatch(actions.updateTitle()),
+        store.dispatch(actions.updateTitle(
+          nextState.params.filter || 'Library')),
     },
   ]
 };
