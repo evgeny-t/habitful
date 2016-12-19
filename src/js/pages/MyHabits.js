@@ -75,7 +75,7 @@ export default class MyHabits extends React.Component {
     const tiles = _(this.props.habits)
       .filter(habit => !habit.deletedAt)
       .map((habit, i) => (
-        <HabitProgress className="my-tile" key={i}
+        <HabitProgress className="my-habits__tile" key={i}
           habit={habit} {...other}
         />)).value();
 
@@ -85,17 +85,17 @@ export default class MyHabits extends React.Component {
           rules={{
             mediaQueries: {
               '(min-width: 320px)': {
-                '.my-tile': {
+                '.my-habits__tile': {
                   width: 'calc(50% - 10px)',
                 }
               },
               '(min-width: 768px)': {
-                '.my-tile': {
+                '.my-habits__tile': {
                   width: 'calc(33% - 10px)',
                 }
               },
               '(min-width: 1024px)': {
-                '.my-tile': {
+                '.my-habits__tile': {
                   width: `calc(${100 / 5}% - 10px)`,
                 }
               },
