@@ -73,13 +73,18 @@ export default class MyHabits extends React.Component {
     // eslint-disable-next-line no-unused-vars
     let { habits, params: { filter }, ...other } = this.props;
 
+    const allTags = _.uniq(_.reduce(habits,
+      (prev, curr) => prev.concat(curr.tags), []));
+
     const tiles = _(this.props.habits)
       .filter(habit =>
         !habit.deletedAt && (!filter ||
           _.find(habit.tags || [], tag => tag === filter)))
       .map((habit, i) => (
         <HabitProgress className="my-habits__tile" key={i}
-          habit={habit} {...other}
+          habit={habit}
+          allTags={allTags}
+          {...other}
         />)).value();
 
     return (

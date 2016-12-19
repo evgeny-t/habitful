@@ -19,8 +19,11 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import Divider from 'material-ui/Divider';
+import Popover from 'material-ui/Popover';
+
 import Chip from './Chip';
-// import RaisedButton from 'material-ui/RaisedButton';
+import TagsEditor from './TagsEditor';
 
 import Calendar from './Calendar';
 
@@ -167,6 +170,7 @@ HabitStatus.propTypes = {
 
 class HabitProgress extends React.Component {
   static propTypes = {
+    allTags: React.PropTypes.array,
     today: React.PropTypes.object,
     habit: React.PropTypes.shape({
       _id: React.PropTypes.string,
@@ -186,6 +190,7 @@ class HabitProgress extends React.Component {
 
   state = {
     removeDialogOpen: false,
+    tagEditorOpen: false,
   }
 
   handleRemove = (/*event*/) => {
@@ -227,6 +232,15 @@ class HabitProgress extends React.Component {
       <Paper className={this.props.className}
         style={{...style.gridTile, ...this.props.style}}
         >
+
+        <Popover
+          open={this.state.tagEditorOpen}
+        >
+          <TagsEditor
+            allTags={this.props.allTags}
+            tags={this.props.habit.tags} />
+        </Popover>
+
         <div style={routineStyle}>
           <p>{this.props.habit.routine}</p>
         </div>
@@ -237,6 +251,10 @@ class HabitProgress extends React.Component {
           iconButtonElement={<IconButton><MoreVert /></IconButton>}
           style={menuButtonStyle}>
           <MenuItem primaryText="Go to habit page" />
+          <MenuItem primaryText="Add label"
+            onClick={() => this.setState({ tagEditorOpen: true })}
+            />
+          <Divider />
           <MenuItem primaryText="Remove"
             rightIcon={<Delete />}
             onTouchTap={this.handleRemoveItemTap}
