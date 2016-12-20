@@ -13,6 +13,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import 'whatwg-fetch';
 
+import TagsEditor from './components/TagsEditor';
 import Layout from './components/Layout';
 import NewHabit from './pages/NewHabit';
 
@@ -236,6 +237,13 @@ const routes = {
         store.dispatch(actions.updateTitle(
           nextState.params.filter || 'Library')),
     },
+    // {
+    //   path: '/tageditor',
+    //   component: () => (<TagsEditor
+    //     allTags={['foo', 'bar', 'baz', 'foo bar']}
+    //     tags={['baz']}
+    //     />),
+    // }
   ]
 };
 

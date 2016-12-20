@@ -191,6 +191,7 @@ class HabitProgress extends React.Component {
   state = {
     removeDialogOpen: false,
     tagEditorOpen: false,
+    tagEditorAnchor: null,
   }
 
   handleRemove = (/*event*/) => {
@@ -204,6 +205,20 @@ class HabitProgress extends React.Component {
 
   handleCancel = () => {
     this.setState({ removeDialogOpen: false });
+  }
+
+  renderTagsEditorPopover() {
+    return (<Popover
+      open={this.state.tagEditorOpen}
+      anchorEl={this.state.tagEditorAnchor}
+      anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+      targetOrigin={{horizontal: 'left', vertical: 'top'}}
+      onRequestClose={() => this.setState({ tagEditorOpen: false })}
+    >
+      <TagsEditor
+        allTags={this.props.allTags}
+        tags={this.props.habit.tags} />
+    </Popover>);
   }
 
   render() {
@@ -233,14 +248,6 @@ class HabitProgress extends React.Component {
         style={{...style.gridTile, ...this.props.style}}
         >
 
-        <Popover
-          open={this.state.tagEditorOpen}
-        >
-          <TagsEditor
-            allTags={this.props.allTags}
-            tags={this.props.habit.tags} />
-        </Popover>
-
         <div style={routineStyle}>
           <p>{this.props.habit.routine}</p>
         </div>
@@ -251,9 +258,12 @@ class HabitProgress extends React.Component {
           iconButtonElement={<IconButton><MoreVert /></IconButton>}
           style={menuButtonStyle}>
           <MenuItem primaryText="Go to habit page" />
-          <MenuItem primaryText="Add label"
-            onClick={() => this.setState({ tagEditorOpen: true })}
-            />
+          {/*<MenuItem primaryText="Add label"
+            onClick={(e) => this.setState({
+              tagEditorOpen: true,
+              tagEditorAnchor: e.currentTarget,
+            })}
+            />*/}
           <Divider />
           <MenuItem primaryText="Remove"
             rightIcon={<Delete />}

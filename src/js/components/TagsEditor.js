@@ -35,7 +35,16 @@ class TagsEditor extends React.Component {
         {
           _.map(this.props.allTags, t =>
             (<ListItem
+                style={{
+                  minHeight: 20,
+                  paddingLeft: 45,
+                  paddingTop: 4,
+                  paddingBottom: 4,
+                }}
                 leftCheckbox={<Checkbox
+                  style={{
+                    top: 0,
+                  }}
                   defaultChecked={!!_.find(this.props.tags, tag => tag === t)} />}
                 key={t} primaryText={t} />))
         }
