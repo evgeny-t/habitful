@@ -4,3 +4,6 @@ client.min.js
 set-env
 .version
 .build
+*.pyc
+src/public/*.png
+lib/
