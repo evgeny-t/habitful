@@ -5,9 +5,11 @@ import _ from 'lodash';
 import uuid from 'uuid';
 
 const dummy = {
+  openDrawer: false,
   birthday: moment('19900821', 'YYYYMMDD'),
   today: moment('20160906', 'YYYYMMDD'),
   title: null,
+  firstTime: true,
   habits: [
     {
       _id: 'bf792bf1-6031-439d-b492-08b5a8472e49',

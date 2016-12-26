@@ -29,6 +29,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
+import createTour from './tour';
 import createStore from './store';
 import * as actions from './actions';
 
@@ -40,6 +41,8 @@ try {
   dummy = require('../../dummy.js').default;
 } catch(e) {
   dummy = {
+    loaded: false,
+    openDrawer: false,
     firstTime: true,
     birthday: moment(),
     today: moment(),
@@ -65,6 +68,8 @@ store.dispatch(actions.initGoogleAuth());
 store.dispatch(actions.refreshTodos());
 store.dispatch(actions.refreshLifetime());
 
+import '../../node_modules/tether-shepherd/dist/css/shepherd-theme-arrows.css';
+
 const throttledUploadToDrive = _.throttle(() => {
   store.dispatch(actions.uploadToDrive());
 }, 500, { leading: false });
@@ -73,6 +78,16 @@ const observerOptions = {
   // equals: _.isEqual
 };
 
+const loadedObserver = observer(
+  state => state.loaded,
+  (dispatch, current) => {
+    if (current && store.getState().firstTime) {
+      const tour = createTour(store, actions);
+      tour.start();
+    }
+  });
+
+// TODO(ET): stop copy-pasting here
 const syncHabitsWithDriveObserver = observer(
   state => state.habits,
   () => {
@@ -88,9 +103,19 @@ const syncBirthdayWithDriveObserver = observer(
     }
   }/*, observerOptions*/);
 
+const syncFirstTimeWithDriveObserver = observer(
+  state => state.firstTime,
+  () => {
+    if (!store.getState().fetchFromDriveInProgress) {
+      throttledUploadToDrive();
+    }
+  }/*, observerOptions*/);
+
 observe(store, [
+  loadedObserver,
   syncHabitsWithDriveObserver,
   syncBirthdayWithDriveObserver,
+  syncFirstTimeWithDriveObserver,
 ]);
 
 const NewHabitVisual = connect(

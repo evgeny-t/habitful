@@ -145,17 +145,12 @@ export function addHabitFromLibrary(state, action) {
   return state;
 }
 
-export function initHabits(state, action) {
+export function init(state, action) {
+  // eslint-disable-next-line no-unused-vars
+  const { type, ...slice } = action;
   return {
     ...state,
-    habits: action.habits,
-  };
-}
-
-export function initBirthday(state, action) {
-  return {
-    ...state,
-    birthday: action.birthday,
+    ...slice,
   };
 }
 
@@ -184,6 +179,7 @@ export function fetchFromDriveSucceeded(state) {
   return {
     ...state,
     fetchFromDriveInProgress: false,
+    loaded: true,
   };
 }
 
@@ -194,6 +190,21 @@ export function fetchFromDriveFailed(state, action) {
     ...state,
     fetchFromDriveInProgress: false,
     fetchFromDriveError: error,
+    loaded: true,
+  };
+}
+
+export function openDrawer(state) {
+  return {
+    ...state,
+    openDrawer: true,
+  };
+}
+
+export function completeTour(state) {
+  return {
+    ...state,
+    firstTime: false,
   };
 }
 

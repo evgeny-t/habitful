@@ -215,6 +215,7 @@ export function uploadToDrive() {
     const doc = {
       habits: getState().habits,
       birthday: getState().birthday ,
+      firstTime: getState().firstTime,
     };
 
     dispatch(module.exports.uploadToDriveStart());
@@ -237,16 +238,8 @@ export function uploadToDrive() {
   };
 }
 
-export function initHabits(habits) {
-  return {
-    habits,
-  };
-}
-
-export function initBirthday(birthday) {
-  return {
-    birthday
-  };
+export function init(slice) {
+  return slice;
 }
 
 export function fetchFromDriveStart() {
@@ -294,8 +287,11 @@ export function fetchFromDrive() {
             };
           });
 
-          dispatch(module.exports.initHabits(content.habits));
-          dispatch(module.exports.initBirthday(content.birthday));
+          dispatch(module.exports.init({
+            habits: content.habits,
+            birthday: content.birthday,
+            firstTime: content.firstTime,
+          }));
 
           dispatch(module.exports.fetchFromDriveSucceeded());
         }
@@ -418,4 +414,13 @@ export function importHabit(libraryHabitId) {
       resolve();
     });
   };
+}
+
+export function openDrawer() {
+  return {
+  };
+}
+
+export function completeTour() {
+  return {};
 }

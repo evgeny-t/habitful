@@ -85,12 +85,16 @@ export default class Layout extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      drawer: false,
+      drawer: props.openDrawer,
     };
   }
 
   handleBurgerClick = () => {
     this.setState({ drawer: !this.state.drawer });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ drawer: nextProps.openDrawer });
   }
 
   render() {
@@ -149,14 +153,14 @@ export default class Layout extends React.Component {
           onRequestChange={open => this.setState({ drawer:open })}
           open={this.state.drawer}>
           <List style={styles.drawer.list}>
-            <ListItem primaryText="My Habits"
+            <ListItem id="drawer__menu__my-habits" primaryText="My Habits"
               onClick={this.props.onNavigate.bind(null, '/myhabits')} />
-            <ListItem primaryText="Today"
+            <ListItem id="drawer__menu__today" primaryText="Today"
               onClick={this.props.onNavigate.bind(null, '/today')} />
-            <ListItem primaryText="Overview"
+            <ListItem id="drawer__menu__overview" primaryText="Overview"
               onClick={this.props.onNavigate.bind(null, '/overview')} />
             <Divider />
-            <ListItem primaryText="Library"
+            <ListItem id="drawer__menu__library" primaryText="Library"
               leftIcon={<Folder />}
               onClick={this.props.onNavigate.bind(null, '/library')} />
           </List>

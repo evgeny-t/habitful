@@ -136,6 +136,7 @@ export default class MyHabits extends React.Component {
         {content}
 
         <FloatingActionButton
+          id="my-habits__add-button"
           onClick={this.props.onNewHabit}
           zDepth={2}
           style={topics_addNew}
