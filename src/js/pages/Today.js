@@ -7,6 +7,8 @@ import _ from 'lodash';
 // import moment from 'moment';
 
 import {
+  centerScreenLabel,
+  centerScreenContainer,
 } from '../styles';
 
 // import Paper from 'material-ui/Paper';
@@ -135,8 +137,13 @@ export default class Today extends React.Component {
       )).value();
 
     return (
-      <div style={styles.root}>
-        {habitItems}
+      <div style={Object.assign({}, styles.root,
+        habitItems.length ? {} : centerScreenContainer)}>
+        {habitItems.length ? habitItems : (
+          <p style={centerScreenLabel}>
+          All done.
+          </p>
+        )}
       </div>
     );
   }

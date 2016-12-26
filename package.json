@@ -43,7 +43,7 @@
     "webpack-dev-server": "^1.15.0"
   },
   "scripts": {
-    "dev": "NODE_ENV=production webpack-dev-server --content-base src --inline --hot --watch-poll --history-api-fallback",
+    "dev": "webpack-dev-server --content-base src --inline --hot --watch-poll --history-api-fallback",
     "test": "NODE_ENV=production jest",
     "test:watch": "NODE_ENV=production npm test -- --watch",
     "build": "NODE_ENV=production webpack"

@@ -48,6 +48,9 @@ try {
     lifetime: {
       modified: 0,
     },
+    library: {
+      items: [],
+    },
   };
 }
 
@@ -129,6 +132,12 @@ const NewHabitVisual = connect(
 //     };
 //   })(TabbedContent);
 
+const onNavigate = {
+  onNavigate: (route) => {
+    browserHistory.push(`${route}`);
+  },
+};
+
 const MyHabitsVisual = connect(
   state => state,
   dispatch => {
@@ -144,6 +153,8 @@ const MyHabitsVisual = connect(
       onTagClick: (tag) => {
         browserHistory.push(`/myhabits/${tag}`);
       },
+
+      ...onNavigate,
     };
   })(MyHabits);
 
@@ -175,9 +186,8 @@ const LayoutVisual = connect(
       onSignOutClick: () => {
         dispatch(actions.signOut());
       },
-      onNavigate: (route) => {
-        browserHistory.push(`${route}`);
-      }
+
+      ...onNavigate,
     };
   })(Layout);
 
@@ -258,11 +268,12 @@ ReactDOM.render((
     <Style
       rules={{
         html: {
-          height: '100%',
+          height: `calc(100% - ${muiTheme.appBar.height}px)`,
         },
         body: {
           fontFamily: muiTheme.fontFamily,
           height: '100%',
+          margin: 0,
         },
         'a:hover': {
           textDecoration: 'underline',
@@ -270,6 +281,7 @@ ReactDOM.render((
         a: {
           textDecoration: 'none',
           color: '#4078c0',
+          cursor: 'pointer',
         },
         '#app': {
           height: '100%',

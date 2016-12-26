@@ -9,6 +9,8 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import {
+  centerScreenLabel,
+  centerScreenContainer,
 } from '../styles';
 
 import HabitProgress from '../components/HabitProgress';
@@ -44,6 +46,7 @@ export default class MyHabits extends React.Component {
     habits: React.PropTypes.array,
     today: React.PropTypes.object,
     onNewHabit: React.PropTypes.func,
+    onNavigate: React.PropTypes.func,
     params: React.PropTypes.object,
   }
 
@@ -88,12 +91,26 @@ export default class MyHabits extends React.Component {
         />))
       .value();
 
-    if (!tiles.length) {
-      return (<p>Start from... you know.. exploring hte app and stuff</p>);
+    let content;
+    if (tiles.length) {
+      content = (
+        <div style={style.root.tilesContainer}>
+          {tiles}
+        </div>
+      );
+    } else {
+      content = (
+        <p style={centerScreenLabel}>
+        Start from adding a habit you want to track using the button below or
+        exploring the
+        <a onClick={() => this.props.onNavigate('/library')}> habits library</a>.
+        </p>
+      );
     }
 
     return (
-      <div style={style.root}>
+      <div style={Object.assign({}, style.root,
+        tiles.length ? {} : centerScreenContainer)}>
         <Style
           rules={{
             mediaQueries: {
@@ -116,9 +133,8 @@ export default class MyHabits extends React.Component {
           }}
         />
 
-        <div style={style.root.tilesContainer}>
-          {tiles}
-        </div>
+        {content}
+
         <FloatingActionButton
           onClick={this.props.onNewHabit}
           zDepth={2}

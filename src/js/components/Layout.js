@@ -50,6 +50,7 @@ const styles = {
       marginTop: 64,
       marginLeft: state.drawer ? 200 : 0,
       width: `calc(100% - ${state.drawer ? 200 : 0}px)`,
+      height: '100%',
     };
   },
 
@@ -102,7 +103,6 @@ export default class Layout extends React.Component {
       />
     );
 
-// TODO(ET): correct sign-out
     const avatar = (
       <div style={styles.appBar.avatar}>
         <a href='#'
