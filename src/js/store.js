@@ -9,9 +9,9 @@ import createLogger from 'redux-logger';
 const logger = createLogger();
 
 const middlewares = [ReduxThunk];
-if (!process.env.NO_LOGS) {
+// if (process.env.NODE_ENV !== 'production') {
   middlewares.push(logger);
-}
+// }
 
 export default initState => createStore(
   reducer, initState, applyMiddleware(...middlewares));

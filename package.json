@@ -43,10 +43,10 @@
     "webpack-dev-server": "^1.15.0"
   },
   "scripts": {
-    "dev": "webpack-dev-server --content-base src --inline --hot --watch-poll --history-api-fallback",
-    "test": "NO_LOGS=1 jest",
-    "test:watch": "NO_LOGS=1 npm test -- --watch",
-    "build": "NODE_ENV=production NO_LOGS=1 webpack"
+    "dev": "NODE_ENV=production webpack-dev-server --content-base src --inline --hot --watch-poll --history-api-fallback",
+    "test": "NODE_ENV=production jest",
+    "test:watch": "NODE_ENV=production npm test -- --watch",
+    "build": "NODE_ENV=production webpack"
   },
   "author": "",
   "license": "ISC"

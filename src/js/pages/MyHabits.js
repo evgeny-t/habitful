@@ -76,7 +76,7 @@ export default class MyHabits extends React.Component {
     const allTags = _.uniq(_.reduce(habits,
       (prev, curr) => prev.concat(curr.tags), []));
 
-    const tiles = _(this.props.habits)
+    let tiles = _(this.props.habits)
       .filter(habit =>
         !habit.deletedAt && (!filter ||
           _.find(habit.tags || [], tag => tag === filter)))
@@ -85,7 +85,12 @@ export default class MyHabits extends React.Component {
           habit={habit}
           allTags={allTags}
           {...other}
-        />)).value();
+        />))
+      .value();
+
+    if (!tiles.length) {
+      return (<p>Start from... you know.. exploring hte app and stuff</p>);
+    }
 
     return (
       <div style={style.root}>

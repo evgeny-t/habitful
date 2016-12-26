@@ -45,7 +45,7 @@ export function refreshLifetime() {
 
 /* global gapi */
 
-export const setUser = user => {
+export function setUser(user) {
   if (user && user.getBasicProfile) {
     const profile = user.getBasicProfile();
     return {
@@ -63,7 +63,7 @@ export const setUser = user => {
       user
     };
   }
-};
+}
 
 for (let k in module.exports) {
   if (typeof module.exports[k] === 'function') {
@@ -91,7 +91,7 @@ export function initDriveApiSucceeded() {
 }
 
 // https://developers.google.com/drive/v3/web/quickstart/js
-export const initDriveApi = () => {
+export function initDriveApi() {
   return dispatch => {
     gapi.client.load('drive', 'v2', () => {
       dispatch(module.exports.initDriveApiSucceeded());
@@ -99,7 +99,7 @@ export const initDriveApi = () => {
       dispatch(module.exports.fetchFromDrive());
     });
   };
-};
+}
 
 function _gapiUpload(gapi, method, filenameOrId, object) {
   const boundary = '-------098564-habitful-2340175';
@@ -265,7 +265,7 @@ export function fetchFromDriveFailed(opts) {
   };
 }
 
-export const fetchFromDrive = () => {
+export function fetchFromDrive() {
   return (dispatch) => {
     dispatch(module.exports.fetchFromDriveStart());
     return gapiList(gapi, fn)
@@ -307,7 +307,7 @@ export const fetchFromDrive = () => {
         throw error;
       });
   };
-};
+}
 
 // TODO(ET): aync actions should return promises for consistency (6)
 
