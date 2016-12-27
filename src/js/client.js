@@ -33,7 +33,30 @@ import createTour from './tour';
 import createStore from './store';
 import * as actions from './actions';
 
-const muiTheme = getMuiTheme({ });
+import * as colors from 'material-ui/styles/colors';
+import { fade } from 'material-ui/utils/colorManipulator';
+
+const muiTheme = getMuiTheme({
+  spacing: {
+    desktopKeylineIncrement: 52,
+  },
+  palette: {
+    primary1Color: colors.blue500,
+    primary2Color: colors.blue700,
+    primary3Color: colors.grey400,
+    accent1Color: colors.deepOrangeA200,
+    accent2Color: colors.deepOrange100,
+    accent3Color: colors.deepOrange500,
+    textColor: colors.darkBlack,
+    alternateTextColor: colors.white,
+    canvasColor: colors.white,
+    borderColor: colors.grey300,
+    disabledColor: fade(colors.darkBlack, 0.3),
+    pickerHeaderColor: colors.cyan500,
+    clockCircleColor: fade(colors.darkBlack, 0.07),
+    shadowColor: colors.fullBlack,
+  },
+});
 
 let dummy;
 
