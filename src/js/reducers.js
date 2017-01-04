@@ -208,6 +208,13 @@ export function completeTour(state) {
   };
 }
 
+export function showSetupDialog(state) {
+  return {
+    ...state,
+    showSetupDialog: true,
+  };
+}
+
 export default (state, action) => {
   const actionMethod = _.camelCase(action.type);
   if (module.exports[actionMethod]) {

@@ -16,6 +16,7 @@ import Folder from 'material-ui/svg-icons/file/folder';
 
 import Footer from './Footer';
 import Landing from './Landing';
+import SetupDialog from './SetupDialog';
 
 const styles = {
   height: '100%',
@@ -134,7 +135,7 @@ export default class Layout extends React.Component {
       <div style={styles}>
         <AppBar
           style={styles.appBar}
-          title={this.props.title}
+          title={this.props.user ? this.props.title : 'Habitful'}
           iconElementRight={this.props.user ? avatar : signInButton}
           onLeftIconButtonTouchTap={this.handleBurgerClick}
           showMenuIconButton={!!this.props.user}
@@ -165,6 +166,8 @@ export default class Layout extends React.Component {
               onClick={this.props.onNavigate.bind(null, '/library')} />
           </List>
         </Drawer>
+
+        {this.props.showSetupDialog && (<SetupDialog />)}
       </div>
     );
   }

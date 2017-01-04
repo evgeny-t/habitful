@@ -86,7 +86,6 @@ const store = createStore(dummy);
 //   store.dispatch(updateDate(store.getState().today.clone().add(1, 'days')));
 // }, 1000);
 
-store.dispatch(actions.updateTitle('Habitful'));
 store.dispatch(actions.initGoogleAuth());
 store.dispatch(actions.refreshTodos());
 store.dispatch(actions.refreshLifetime());
@@ -105,8 +104,9 @@ const loadedObserver = observer(
   state => state.loaded,
   (dispatch, current) => {
     if (current && store.getState().firstTime) {
-      const tour = createTour(store, actions);
-      tour.start();
+      dispatch(actions.showSetupDialog());
+      // const tour = createTour(store, actions);
+      // tour.start();
     }
   });
 
@@ -232,7 +232,10 @@ const LayoutVisual = connect(
         dispatch(actions.signInGoogle());
       },
       onSignOutClick: () => {
-        dispatch(actions.signOut());
+        const reload = () => window.location = '/';
+        dispatch(actions.signOut())
+          .then(reload)
+          .catch(reload);
       },
 
       ...onNavigate,
@@ -257,14 +260,26 @@ const LibraryVisual = connect(
     };
   })(Library);
 
+const habitful = 'Habitful';
+
 function setTitleOnEnter(title) {
-  return () => store.dispatch(actions.updateTitle(title));
+  return () => {
+    if (store.getState().user) {
+      store.dispatch(actions.updateTitle(title));
+    } else {
+      store.dispatch(actions.updateTitle(habitful));
+    }
+  };
 }
 
 const routes = {
   path: '/',
   component: LayoutVisual,
-  indexRoute: { onEnter: (nextState, replace) => replace('/myhabits') },
+  indexRoute: {
+    onEnter: (nextState, replace) => {
+      replace('/myhabits');
+    }
+  },
   childRoutes: [
     {
       path: 'habits/new',
@@ -274,9 +289,10 @@ const routes = {
     {
       path: '/myhabits(/:filter)',
       component: MyHabitsVisual,
-      onEnter: (nextState/*, replace*/) =>
+      onEnter: (nextState/*, replace*/) => {
         store.dispatch(actions.updateTitle(
-          nextState.params.filter || 'My Habits')),
+          nextState.params.filter || 'My Habits'));
+      },
     },
     {
       path: '/today',

@@ -305,7 +305,7 @@ export function fetchFromDrive() {
   };
 }
 
-// TODO(ET): aync actions should return promises for consistency (6)
+// TODO(ET): async actions should return promises for consistency (6)
 
 // TODO(ET): sync store with google drive (1)
 // TODO(ET): think over a better way of wrapping actions to
@@ -339,7 +339,7 @@ export function initGoogleAuth() {
 export function signInGoogle() {
   return (dispatch, getState) => {
     if (getState().user) {
-      return;
+      return Promise.resolve();
     }
 
     const auth2 = gapi.auth2.getAuthInstance();
@@ -357,6 +357,7 @@ export function signOut() {
         dispatch(module.exports.setUser(null));
         const auth2 = gapi.auth2.getAuthInstance();
         auth2.signOut();
+        resolve();
       } catch (e) {
         reject(e);
       }
@@ -424,3 +425,9 @@ export function openDrawer() {
 export function completeTour() {
   return {};
 }
+
+export function showSetupDialog() {
+  return {};
+}
+
+
