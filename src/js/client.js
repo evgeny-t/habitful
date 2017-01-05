@@ -13,7 +13,6 @@ import _ from 'lodash';
 import moment from 'moment';
 import 'whatwg-fetch';
 
-import TagsEditor from './components/TagsEditor';
 import Layout from './components/Layout';
 import NewHabit from './pages/NewHabit';
 
@@ -137,11 +136,9 @@ observe(store, [
 ]);
 
 const NewHabitVisual = connect(
-  // state to props
   state => {
     return { defaultStartDate: state.today };
   },
-  // dipatch to props
   dispatch => {
     return {
       onDone: (habit) => {
@@ -151,29 +148,6 @@ const NewHabitVisual = connect(
     };
   })(NewHabit);
 
-// const TabbedContentVisual = connect(
-//   // state to props
-//   state => state,
-//   // dispatch to props
-//   (dispatch) => {
-//     return {
-//       onMarkRoutineDone: (event, habit) => {
-//         dispatch(markRoutineDone(habit._id));
-//       },
-
-//       onTabChanged: (tab) => {
-//         browserHistory.push(`${tab}`);
-//       },
-
-//       onNewHabit: () => {
-//         browserHistory.push('/habits/new');
-//       },
-
-//       onHabitRemove: (habitId) => {
-//         dispatch(removeHabit(habitId));
-//       }
-//     };
-//   })(TabbedContent);
 
 const onNavigate = {
   onNavigate: (route) => {
@@ -218,9 +192,7 @@ const TodayVisual = connect(
   })(Today);
 
 const LayoutVisual = connect(
-  // state to props
   state => state,
-  // dispatch to props
   dispatch => {
     return {
       onSignInClick: () => {
@@ -233,7 +205,6 @@ const LayoutVisual = connect(
           .catch(reload);
       },
       onNext: (state) => {
-        console.log(state);
         dispatch(actions.setBirthday(state.date));
         const tour = createTour(store, actions);
         tour.start();
