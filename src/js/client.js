@@ -96,17 +96,12 @@ const throttledUploadToDrive = _.throttle(() => {
   store.dispatch(actions.uploadToDrive());
 }, 500, { leading: false });
 
-const observerOptions = {
-  // equals: _.isEqual
-};
 
 const loadedObserver = observer(
   state => state.loaded,
   (dispatch, current) => {
     if (current && store.getState().firstTime) {
       dispatch(actions.showSetupDialog());
-      // const tour = createTour(store, actions);
-      // tour.start();
     }
   });
 
@@ -124,7 +119,7 @@ const syncBirthdayWithDriveObserver = observer(
     if (!store.getState().fetchFromDriveInProgress) {
       throttledUploadToDrive();
     }
-  }/*, observerOptions*/);
+  }, { equals: _.isEqual });
 
 const syncFirstTimeWithDriveObserver = observer(
   state => state.firstTime,
@@ -236,6 +231,12 @@ const LayoutVisual = connect(
         dispatch(actions.signOut())
           .then(reload)
           .catch(reload);
+      },
+      onNext: (state) => {
+        console.log(state);
+        dispatch(actions.setBirthday(state.date));
+        const tour = createTour(store, actions);
+        tour.start();
       },
 
       ...onNavigate,

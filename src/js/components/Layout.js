@@ -167,7 +167,7 @@ export default class Layout extends React.Component {
           </List>
         </Drawer>
 
-        {this.props.showSetupDialog && (<SetupDialog />)}
+        {this.props.showSetupDialog && (<SetupDialog {...this.props} />)}
       </div>
     );
   }

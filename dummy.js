@@ -6,7 +6,7 @@ import uuid from 'uuid';
 
 const dummy = {
   openDrawer: false,
-  birthday: moment('19900821', 'YYYYMMDD'),
+  birthday: null,
   today: moment('20160906', 'YYYYMMDD'),
   title: null,
   firstTime: true,

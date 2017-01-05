@@ -430,4 +430,8 @@ export function showSetupDialog() {
   return {};
 }
 
-
+export function setBirthday(bd) {
+  return {
+    birthday: bd,
+  };
+}

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
+import DatePicker from 'material-ui/DatePicker';
 
 
 export default class SetupDialog extends Component {
@@ -14,41 +14,43 @@ export default class SetupDialog extends Component {
     super(props);
   }
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
-
   handleClose = () => {
+    this.props.onNext(this.state);
     this.setState({ open: false });
   };
+
+  handleDateChange = (event, date) => {
+    this.setState({ date });
+  }
 
   render() {
     const actions = [
       <FlatButton
-        label="Cancel"
+        label="next"
         primary={true}
-        onTouchTap={this.handleClose}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        disabled={true}
+        disabled={!this.state.date}
         onTouchTap={this.handleClose}
       />,
     ];
 
     return (
-      <div>
-        <RaisedButton label="Modal Dialog" onTouchTap={this.handleOpen} />
-        <Dialog
-          title="Dialog With Actions"
-          actions={actions}
-          modal={true}
-          open={this.state.open}
-        >
-          Only actions can close this dialog.
-        </Dialog>
-      </div>
+      <Dialog
+        title="One thing before we start"
+        actions={actions}
+        modal={true}
+        open={this.state.open}
+      >
+        <p>Please, let us know your date of birth in order
+        for one feature to work properly:</p>
+        <br></br>
+        <DatePicker
+          hintText="Your date of birth"
+          mode="landscape"
+          value={this.state.date}
+          onChange={this.handleDateChange}
+        />
+      </Dialog>
     );
   }
 }
+
