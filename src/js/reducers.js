@@ -23,6 +23,22 @@ export function removeHabit(state, { habitId, now }) {
   };
 }
 
+export function updateHabit(state, { habit }) {
+  return {
+    ...state,
+    habits: _.map(state.habits, h => {
+      if (h._id && habit._id && h._id === habit._id) {
+        return {
+          ...h,
+          ...habit,
+        };
+      } else {
+        return h;
+      }
+    }),
+  };
+}
+
 export function updateDate(state, { date }) {
   return refreshTodos({ ...state, today: date });
 }

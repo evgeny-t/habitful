@@ -207,6 +207,10 @@ class HabitProgress extends React.Component {
     this.setState({ removeDialogOpen: false });
   }
 
+  handleEditHabit = () => {
+    this.props.onEditHabit(this.props.habit);
+  }
+
   renderTagsEditorPopover() {
     return (<Popover
       open={this.state.tagEditorOpen}
@@ -257,7 +261,10 @@ class HabitProgress extends React.Component {
         <IconMenu
           iconButtonElement={<IconButton><MoreVert /></IconButton>}
           style={menuButtonStyle}>
-          <MenuItem primaryText="Go to habit page" />
+          <MenuItem
+            primaryText="Edit habit"
+            onTouchTap={this.handleEditHabit}
+          />
           {/*<MenuItem primaryText="Add label"
             onClick={(e) => this.setState({
               tagEditorOpen: true,

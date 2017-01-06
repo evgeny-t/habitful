@@ -20,6 +20,12 @@ export function removeHabit(habitId) {
   };
 }
 
+export function updateHabit(habit) {
+  return {
+    habit,
+  };
+}
+
 export function updateDate(date) {
   return {
     date,

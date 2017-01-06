@@ -14,6 +14,7 @@ import {
 } from '../styles';
 
 import HabitProgress from '../components/HabitProgress';
+import HabitEditor from '../components/HabitEditor';
 
 // workaround for floating button -- hides it when tab is not active.
 const topics_addNew = {
@@ -48,13 +49,18 @@ export default class MyHabits extends React.Component {
     onNewHabit: React.PropTypes.func,
     onNavigate: React.PropTypes.func,
     params: React.PropTypes.object,
+
+    onSubmitHabit: React.PropTypes.func,
   }
 
   static defaultProps = {
     onNewHabit: () => {},
   }
 
-  state = {}
+  state = {
+    habitEditorOpen: false,
+    habitToEdit: null,
+  }
 
   constructor(props) {
     super(props);
@@ -87,6 +93,7 @@ export default class MyHabits extends React.Component {
         <HabitProgress className="my-habits__tile" key={i}
           habit={habit}
           allTags={allTags}
+          onEditHabit={this.handleEditHabit}
           {...other}
         />))
       .value();
@@ -143,7 +150,29 @@ export default class MyHabits extends React.Component {
         >
           <ContentAdd />
         </FloatingActionButton>
+
+        <HabitEditor
+          open={this.state.habitEditorOpen}
+          onSubmitHabit={this.handleHabitSubmit}
+          habit={this.state.habitToEdit}
+        />
       </div>
     );
   }
+
+  handleHabitSubmit = (habit) => {
+    this.setState({
+      habitToEdit: null,
+      habitEditorOpen: false,
+    });
+    this.props.onSubmitHabit(habit);
+  }
+
+  handleEditHabit = (habit) => {
+    this.setState({
+      habitToEdit: habit,
+      habitEditorOpen: true,
+    });
+  }
 }
+

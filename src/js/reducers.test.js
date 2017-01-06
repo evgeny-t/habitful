@@ -32,6 +32,38 @@ describe('addHabit', () => {
   });
 });
 
+describe('updateHabit', () => {
+  it('should update one habit', () => {
+    const habit = i => _.assign({
+      _id: `${i}`,
+      goal: `goal${i}`,
+      routine: `routine${i}`,
+    });
+    const state = {
+      habits: [
+        habit(1), habit(2), habit(3),
+      ],
+    };
+
+    const next = reducer(state, actions.updateHabit({
+      _id: '1',
+      goal: 'foo',
+      routine: 'bar',
+    }));
+    expect(next).toEqual({
+      habits: [
+        {
+          _id: '1',
+          goal: 'foo',
+          routine: 'bar',
+        },
+        habit(2),
+        habit(3),
+      ],
+    });
+  });
+});
+
 describe('removeHabit', () => {
   it('should mark habit as deleted', () => {
     const habit = {

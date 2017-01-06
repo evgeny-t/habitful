@@ -178,6 +178,11 @@ const MyHabitsVisual = connect(
         browserHistory.push(`/myhabits/${tag}`);
       },
 
+      onSubmitHabit: (nextHabit) => {
+        dispatch(actions.updateHabit(nextHabit));
+        dispatch(actions.refreshTodos());
+      },
+
       ...onNavigate,
     };
   })(MyHabits);

@@ -13,11 +13,9 @@ import {
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import {
-  Table, TableBody, TableHeader, TableHeaderColumn,
-  TableRow, TableRowColumn } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
-import Checkbox from 'material-ui/Checkbox';
+
+import DaysOfWeek from '../components/DaysOfWeek';
 
 const styles = {
   stepActions: {
@@ -26,31 +24,6 @@ const styles = {
       marginRight: 12,
     },
   },
-
-  arrangement: {
-    table: {
-      width: 0,
-
-      header: {
-        borderBottomStyle: 'none',
-        height: 10,
-
-        row: {
-          column: {
-            width: 24,
-            paddingRight: 2,
-            paddingLeft: 2,
-            textAlign: 'middle',
-            height: 0
-          }
-        }
-      },
-      body: {
-        height: 0,
-      }
-    }
-  },
-
 };
 
 export default class NewHabit extends React.Component {
@@ -64,14 +37,7 @@ export default class NewHabit extends React.Component {
     goal: '',
     routine: '',
     startDate: null,
-    checked_0: true,
-    checked_1: true,
-    checked_2: true,
-    checked_3: true,
-    checked_4: true,
-    checked_5: true,
-    checked_6: true,
-    checked_7: true,
+    checked: [true, true, true, true, true, true, true, true],
   }
 
   constructor(props) {
@@ -101,7 +67,7 @@ export default class NewHabit extends React.Component {
     let newOne = {};
     newOne.goal = this.state.goal;
     newOne.routine = this.state.routine;
-    newOne.days = _.range(7).map(i => this.state[`checked_${i}`]);
+    newOne.days = this.state.checked;
     newOne.history = [];
     newOne.startsFrom = this.state.startDate;
 
@@ -136,15 +102,6 @@ export default class NewHabit extends React.Component {
   }
 
   render() {
-    const { column } = styles.arrangement.table.header.row;
-    const checkbox = index => {
-      return {
-        defaultChecked: this.state[`checked_${index}`],
-        onCheck: (e, checked) =>
-          this.setState({ [`checked_${index}`]: checked }),
-      };
-    };
-
     return (
       <div>
         <Stepper activeStep={this.state.stepIndex}
@@ -177,38 +134,20 @@ export default class NewHabit extends React.Component {
           <Step>
             <StepButton>Arrangement</StepButton>
             <StepContent>
+              <br></br>
               <p>You would like to repeat the routine each:</p>
-              <Table
-                style={styles.arrangement.table}
-                selectable={false}>
-                <TableHeader
-                  style={styles.arrangement.table.header}
-                  displaySelectAll={false}
-                  adjustForCheckbox={false}>
-                  <TableRow style={styles.arrangement.table.header}>
-                    <TableHeaderColumn style={column}>Mon</TableHeaderColumn>
-                    <TableHeaderColumn style={column}>Tue</TableHeaderColumn>
-                    <TableHeaderColumn style={column}>Wed</TableHeaderColumn>
-                    <TableHeaderColumn style={column}>Thu</TableHeaderColumn>
-                    <TableHeaderColumn style={column}>Fri</TableHeaderColumn>
-                    <TableHeaderColumn style={column}>Sat</TableHeaderColumn>
-                    <TableHeaderColumn style={column}>Sun</TableHeaderColumn>
-                  </TableRow>
-                </TableHeader>
-                <TableBody
-                  style={styles.arrangement.table.body}
-                  displayRowCheckbox={false}>
-                  <TableRow style={styles.arrangement.table.body}>
-                    {
-                      _.range(7).map(i => (
-                        <TableRowColumn key={i} style={column}>
-                          <Checkbox {...checkbox(i)} />
-                        </TableRowColumn>))
-                    }
-                  </TableRow>
-                </TableBody>
-              </Table>
+              <br></br>
+              <DaysOfWeek
+                defaultChecked={this.state.checked}
+                onCheck={(e, index, checked) => {
+                  const nextChecked = _.set(
+                    _.clone(this.state.checked), index, checked);
+                  this.setState({ checked: nextChecked });
+                }}
+              />
+              <br></br>
               <p>starting from</p>
+              <br></br>
               <DatePicker
                 defaultDate={this.props.defaultStartDate.toDate()}
                 hintText='Start date' container='inline'
