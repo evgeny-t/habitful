@@ -64,7 +64,7 @@ import library from '../../library';
 try {
   dummy = require('../../dummy.js').default;
   dummy.library.items = [
-    ...library.items,
+    ...library.library.items,
     ...dummy.library.items,
   ];
 } catch(e) {
