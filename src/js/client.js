@@ -59,8 +59,14 @@ const muiTheme = getMuiTheme({
 
 let dummy;
 
+import library from '../../library';
+
 try {
   dummy = require('../../dummy.js').default;
+  dummy.library.items = [
+    ...library.items,
+    ...dummy.library.items,
+  ];
 } catch(e) {
   dummy = {
     loaded: false,
@@ -73,9 +79,7 @@ try {
     lifetime: {
       modified: 0,
     },
-    library: {
-      items: [],
-    },
+    ...library,
   };
 }
 
