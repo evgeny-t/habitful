@@ -328,7 +328,7 @@ export function initGoogleAuth() {
   return (dispatch) => {
     gapi.load('auth2', () => {
       gapi.auth2.init({
-        client_id: '478874198596-bcmpccejmulhe4uf9o04tejtq16pbjmu.apps.googleusercontent.com',
+        client_id: '832979325436-j4cbthqh279knlkhaka71qji5m95ibtf.apps.googleusercontent.com',
         scope,
       }).then(() => {
         const auth2 = gapi.auth2.getAuthInstance();
