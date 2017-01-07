@@ -2,6 +2,9 @@ var debug = process.env.NODE_ENV !== 'production';
 var webpack = require('webpack');
 var path = require('path');
 
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+
+
 module.exports = {
   context: path.join(__dirname, 'src'),
   devtool: debug ? 'inline-sourcemap' : null,
@@ -31,7 +34,10 @@ module.exports = {
     path: __dirname + '/src/public/',
     filename: 'client.min.js'
   },
-  plugins: debug ? [ ] : [
+  plugins: debug ? [
+    new FaviconsWebpackPlugin('./assets/logo.png'),
+  ] : [
+    new FaviconsWebpackPlugin('./assets/logo.png'),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production')

@@ -5,5 +5,5 @@ set-env
 .version
 .build
 *.pyc
-src/public/*.png
+src/public/
 lib/
