@@ -4,7 +4,7 @@ import React from 'react';
 // import moment from 'moment';
 import _ from 'lodash';
 
-import MeasureIt from 'react-measure-it';
+import MeasureIt from 'react-measure-it-no-ff-bug';
 
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
