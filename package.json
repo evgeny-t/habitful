@@ -13,11 +13,12 @@
     "react-measure-it": "^0.1.1",
     "react-redux": "^4.4.5",
     "react-router": "^2.6.1",
-    "react-tap-event-plugin": "^1.0.0",
+    "react-tap-event-plugin": "^2.0.1",
     "redux": "^3.6.0",
     "redux-logger": "^2.7.4",
     "redux-thunk": "^2.1.0",
     "superagent": "^2.2.0",
+    "tether-shepherd": "^1.8.1",
     "uuid": "^3.0.0",
     "webpack": "^1.12.9",
     "whatwg-fetch": "^1.0.0"
