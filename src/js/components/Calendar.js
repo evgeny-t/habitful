@@ -98,6 +98,8 @@ class Calendar extends React.Component {
         if (level !== undefined) {
           rects.push((
             <rect key={`${row}_${col}`} className={`calendar-${this.props.tag}`}
+              width={styles.day.width}
+              height={styles.day.height}
               x={col * stepX + stepX * 1.5}
               y={row * stepY + stepY}
               fill={LEVELS[level]} />

@@ -1,5 +1,6 @@
 'use strict';
 
+import _ from 'lodash';
 import React from 'react';
 
 import AppBar from 'material-ui/AppBar';
@@ -134,7 +135,7 @@ export default class Layout extends React.Component {
     return (
       <div style={styles}>
         <AppBar
-          style={styles.appBar}
+          style={_.cloneDeep(styles.appBar)}
           title={this.props.user ? this.props.title : 'Habitful'}
           iconElementRight={this.props.user ? avatar : signInButton}
           onLeftIconButtonTouchTap={this.handleBurgerClick}
