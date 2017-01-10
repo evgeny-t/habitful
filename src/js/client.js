@@ -139,8 +139,14 @@ const syncFirstTimeWithDriveObserver = observer(
     }
   }/*, observerOptions*/);
 
+const userObserver = observer(
+  state => state.user,
+  dispatch => dispatch(actions.initDriveApi()),
+  { equals: _.isEqual });
+
 observe(store, [
   loadedObserver,
+  userObserver,
   syncHabitsWithDriveObserver,
   syncBirthdayWithDriveObserver,
   syncFirstTimeWithDriveObserver,
