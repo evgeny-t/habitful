@@ -1,27 +1,13 @@
-image: python:2.7
+image: evgeny/gcloud-plus-node
 
 pipelines:
   default:
     - step:
         script:
-          # Install Google Cloud SDK
-          - export CLOUDSDK_CORE_DISABLE_PROMPTS=1
-          # Google Cloud SDK is pinned for build reliability. Bump if the SDK complains about deprecation.
-          - SDK_VERSION=127.0.0
-          - SDK_FILENAME=google-cloud-sdk-${SDK_VERSION}-linux-x86_64.tar.gz
-          - curl -O -J https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/${SDK_FILENAME}
-          - tar -zxvf ${SDK_FILENAME} --directory ${HOME}
-          - export PATH=${PATH}:${HOME}/google-cloud-sdk/bin
-          # Install Google App Engine SDK
-          - GAE_PYTHONPATH=${HOME}/google_appengine
-          - export PYTHONPATH=${PYTHONPATH}:${GAE_PYTHONPATH}
-          - python scripts/fetch_gae_sdk.py $(dirname "${GAE_PYTHONPATH}")
-          - echo "${PYTHONPATH}" && ls ${GAE_PYTHONPATH}
-          # Install app & dev dependencies, test, deploy, test deployment
           - pip --quiet install -r requirements.txt -t lib/
           - echo "key = '${GOOGLE_API_KEY}'" > api_key.py
-          #- python test_main.py
           - echo ${GOOGLE_CLIENT_SECRET} > client-secret.json
           - gcloud auth activate-service-account --key-file client-secret.json
+          - npm install -D
+          - npm run build
           - gcloud --quiet --verbosity=error app deploy app.yaml --promote
-          #- python e2e_test.py
