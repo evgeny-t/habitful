@@ -227,13 +227,13 @@ export function uploadToDrive() {
     dispatch(module.exports.uploadToDriveStart());
     return gapiList(gapi, fn)
       .then(resp => resp)
-      // .then(resp => {
-      //   if (resp.items.length === 0) {
-      //     return gapiInsert(gapi, fn, doc);
-      //   } else {
-      //     return gapiUpdate(gapi, resp.items[0].id, doc);
-      //   }
-      // })
+      .then(resp => {
+        if (resp.items.length === 0) {
+          return gapiInsert(gapi, fn, doc);
+        } else {
+          return gapiUpdate(gapi, resp.items[0].id, doc);
+        }
+      })
       .then(arg => {
         dispatch(module.exports.uploadToDriveSucceeded());
         return arg;

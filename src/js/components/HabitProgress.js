@@ -52,14 +52,16 @@ const HabitStatus = MeasureIt()((props) => {
   }
 
   const outterDivStyle = {
+    // border: '1px solid blue',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     marginBottom: 5,
+    display: 'flex',
   };
 
   const divStyle = {
-    width: 70,
-    float: 'left',
+    // border: '1px solid red',
+    width: 90,
     display: 'inline-block',
   };
 
@@ -86,7 +88,7 @@ const HabitStatus = MeasureIt()((props) => {
   };
 
   const calendarDivStyle = {
-    float: 'right',
+    // border: '1px solid black',
     marginRight: 10,
     display: 'inline-block',
   };
@@ -101,8 +103,8 @@ const HabitStatus = MeasureIt()((props) => {
 
   const calendarWidth =
     props.containerWidth - divStyle.width - calendarDivStyle.marginRight;
-  // day size + day padding - 4 cols
-  const cols = Math.min(14, Math.trunc(calendarWidth / (10 + 3)) - 4);
+  // day size + day padding - 2 cols
+  const cols = Math.min(14, Math.trunc(calendarWidth / (10 + 3)) - 2);
   if (cols < 0) {
     throw new Error('Number of column should not be negative');
   }
@@ -136,6 +138,7 @@ const HabitStatus = MeasureIt()((props) => {
         {props.habit.in != 0 && (<div style={nextTimeInStyle}>next time in</div>)}
         {props.habit.in != 0 &&
           <CircularProgress
+            style={{ display: 'block', margin: '10px auto', }}
             color={progressColor}
             mode="determinate" value={value} />
         }
@@ -228,11 +231,16 @@ class HabitProgress extends React.Component {
   render() {
     const goalStyle = {
       margin: 10,
-      overflow: 'hidden',
+      // overflow: 'hidden',
       fontSize: 'smaller',
     };
 
-    const routineStyle = { ...goalStyle, fontSize: 'larger' };
+    const routineStyle = {
+      ...goalStyle,
+      fontSize: 'large',
+      lineHeight: 1,
+      width: 'calc(100% - 48px - 10px)',
+    };
 
     const menuButtonStyle = {
       position: 'absolute',
