@@ -3,12 +3,12 @@ image: evgeny/gcloud-plus-node
 pipelines:
   branches:
     master:
-    - step:
-      script:
-        - pip --quiet install -r requirements.txt -t lib/
-        - echo "key = '${GOOGLE_API_KEY}'" > api_key.py
-        - echo ${GOOGLE_CLIENT_SECRET} > client-secret.json
-        - gcloud auth activate-service-account --key-file client-secret.json
-        - npm install -D
-        - npm run build
-        - gcloud --quiet --verbosity=error app deploy app.yaml --promote
+      - step:
+        script:
+          - pip --quiet install -r requirements.txt -t lib/
+          - echo "key = '${GOOGLE_API_KEY}'" > api_key.py
+          - echo ${GOOGLE_CLIENT_SECRET} > client-secret.json
+          - gcloud auth activate-service-account --key-file client-secret.json
+          - npm install -D
+          - npm run build
+          - gcloud --quiet --verbosity=error app deploy app.yaml --promote
