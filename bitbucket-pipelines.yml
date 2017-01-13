@@ -3,7 +3,7 @@ image: evgeny/gcloud-plus-node
 pipelines:
   branches:
     master:
-      - step:
+       - step:
         script:
           - pip --quiet install -r requirements.txt -t lib/
           - echo "key = '${GOOGLE_API_KEY}'" > api_key.py
