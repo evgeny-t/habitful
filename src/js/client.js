@@ -30,7 +30,7 @@ injectTapEventPlugin();
 
 import createTour from './tour';
 import createStore from './store';
-import * as actions from './actions';
+import * as actions from './actions/';
 
 import * as colors from 'material-ui/styles/colors';
 import { fade } from 'material-ui/utils/colorManipulator';
