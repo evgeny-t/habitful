@@ -159,6 +159,12 @@ export function uploadToDriveSucceeded() {
   };
 }
 
+export function uploadToDriveFailed(error) {
+  return {
+    error,
+  };
+}
+
 export function uploadToDrive() {
   return (dispatch, getState) => {
     const doc = {
@@ -177,13 +183,12 @@ export function uploadToDrive() {
           return gapiUpdate(gapi, resp.items[0].id, doc);
         }
       })
-      .then(arg => {
+      .then(result => {
         dispatch(module.exports.uploadToDriveSucceeded());
-        return arg;
+        return result;
       })
       .catch(error => {
-// TODO(ET): handle drive-related errors (3)
-        console.log('error:', error);
+        dispatch(module.exports.uploadToDriveFailed(error));
       });
   };
 }
@@ -256,9 +261,6 @@ export function fetchFromDrive() {
 }
 
 // TODO(ET): async actions should return promises for consistency (6)
-
-// TODO(ET): think over a better way of wrapping actions to
-// avoid calling them `module.exports.func` from the inside of the module.
 
 /**
  * Should be dispatch first.
