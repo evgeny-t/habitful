@@ -231,8 +231,8 @@ class HabitProgress extends React.Component {
   render() {
     const goalStyle = {
       margin: 10,
-      // overflow: 'hidden',
       fontSize: 'smaller',
+      minHeight: 36,
     };
 
     const routineStyle = {
@@ -240,6 +240,7 @@ class HabitProgress extends React.Component {
       fontSize: 'large',
       lineHeight: 1,
       width: 'calc(100% - 48px - 10px)',
+      minHeight: 36,
     };
 
     const menuButtonStyle = {
@@ -261,10 +262,16 @@ class HabitProgress extends React.Component {
         >
 
         <div style={routineStyle}>
-          <p>{this.props.habit.routine}</p>
+          <p style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}>{this.props.habit.routine}</p>
         </div>
         <div style={goalStyle}>
-          <p>{this.props.habit.goal}</p>
+          <p style={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}>{this.props.habit.goal}</p>
         </div>
         <IconMenu
           iconButtonElement={<IconButton><MoreVert /></IconButton>}
