@@ -42,11 +42,12 @@ export function initDriveApiSucceeded() {
 // https://developers.google.com/drive/v3/web/quickstart/js
 export function initDriveApi() {
   return dispatch => {
-    gapi.client.load('drive', 'v2', () => {
-      dispatch(module.exports.initDriveApiSucceeded());
+    return (new Promise(resolve => gapi.client.load('drive', 'v2', resolve)))
+        .then(() => {
+          dispatch(module.exports.initDriveApiSucceeded());
 
-      dispatch(module.exports.fetchFromDrive());
-    });
+          return dispatch(module.exports.fetchFromDrive());
+        });
   };
 }
 
@@ -273,21 +274,39 @@ export function initGoogleAuth() {
     'https://www.googleapis.com/auth/drive.appfolder',
   ].join(' ');
 
-  return (dispatch) => {
-    gapi.load('auth2', () => {
-      gapi.auth2.init({
-        client_id: '832979325436-j4cbthqh279knlkhaka71qji5m95ibtf.apps.googleusercontent.com',
-        scope,
-      }).then(() => {
+  const init = {
+    client_id: '832979325436-j4cbthqh279knlkhaka71qji5m95ibtf.apps.googleusercontent.com',
+    scope,
+  };
+
+  return dispatch =>
+    (new Promise(resolve => {
+      gapi.load('auth2', () => resolve());
+    }))
+      .then(() => new Promise(resolve => {
+        gapi.auth2.init(init).then(() => resolve());
+      }))
+      .then(() => {
         const auth2 = gapi.auth2.getAuthInstance();
         if (auth2.isSignedIn.get()) {
           dispatch(module.exports.setUser(auth2.currentUser.get()));
 
-          dispatch(module.exports.initDriveApi());
+          return dispatch(module.exports.initDriveApi());
         }
       });
-    });
-  };
+
+  // return (dispatch) => {
+  //   gapi.load('auth2', () => {
+  //     gapi.auth2.init(init).then(() => {
+  //       const auth2 = gapi.auth2.getAuthInstance();
+  //       if (auth2.isSignedIn.get()) {
+  //         dispatch(module.exports.setUser(auth2.currentUser.get()));
+
+  //         dispatch(module.exports.initDriveApi());
+  //       }
+  //     });
+  //   });
+  // };
 }
 
 export function signInGoogle() {

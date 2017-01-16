@@ -91,13 +91,17 @@ if (process.NODE_ENV === 'production') {
     store.dispatch(actions.updateDate(moment())), 60 * 1000);
 }
 
+store.dispatch(actions.updateDate(moment()));
+
 // setInterval(() => {
 //   store.dispatch(updateDate(store.getState().today.clone().add(1, 'days')));
 // }, 1000);
 
-store.dispatch(actions.initGoogleAuth());
-store.dispatch(actions.refreshTodos());
-store.dispatch(actions.refreshLifetime());
+store.dispatch(actions.initGoogleAuth())
+  .then(() => {
+    store.dispatch(actions.refreshTodos());
+    store.dispatch(actions.refreshLifetime());
+  });
 
 
 import '../../node_modules/tether-shepherd/dist/css/shepherd-theme-arrows.css';
