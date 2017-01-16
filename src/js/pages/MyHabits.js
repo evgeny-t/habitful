@@ -75,9 +75,6 @@ export default class MyHabits extends React.Component {
     // sigh out from events
   }
 
-  componentWillReceiveProps(/*props*/) {
-  }
-
   render() {
     // eslint-disable-next-line no-unused-vars
     let { habits, params: { filter }, ...other } = this.props;
@@ -89,8 +86,8 @@ export default class MyHabits extends React.Component {
       .filter(habit =>
         !habit.deletedAt && (!filter ||
           _.find(habit.tags || [], tag => tag === filter)))
-      .map((habit, i) => (
-        <HabitProgress className="my-habits__tile" key={i}
+      .map(habit => (
+        <HabitProgress className="my-habits__tile" key={habit._id}
           habit={habit}
           allTags={allTags}
           onEditHabit={this.handleEditHabit}
