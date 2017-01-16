@@ -226,6 +226,75 @@ describe('refreshTodos', () => {
         ]
       });
   });
+
+  it(`should update 'in' correctly when
+    there is a history entry for today`, () => {
+    const sunday = moment().day(0);
+    const before = {
+      today: sunday,
+      habits: [{
+        days: [true, true, true, true, true, true, true],
+        history: [
+          { when: moment(sunday).subtract(1, 'day') },
+          { when: moment(sunday).subtract(2, 'day') },
+        ],
+        in: 3,
+      }, {
+        days: [true, true, true, true, true, true, true],
+        history: [
+          { when: sunday },
+          { when: moment(sunday).subtract(1, 'day') },
+        ],
+        in: 100,
+      }, ],
+    };
+
+    const next = reducer(before, actions.refreshTodos());
+    expect(next.today).toEqual(sunday);
+    expect(next.habits[0].in).toEqual(0);
+    expect(next.habits[1].in).toEqual(1);
+  });
+
+
+  it('reproduce a bug with incorrect \'in\' update', () => {
+    const state = {
+      today: moment('2017-01-16T22:33:47.956Z'),
+      'habits':[{
+        _id:'6b193766-cbf3-4771-8784-f34aabe0fe19',
+        routine:'Journaling',
+        'goal':'',
+        'days':[true,true,true,true,true,true,true],
+        'tags':['mindfulness'],
+        'history':[
+          {
+            'when':moment('2017-01-15T19:01:18.932Z')
+          },
+          {
+            'when':moment('2017-01-16T20:49:44.883Z')
+          }],
+        'parentId':'846ac85b-533d-4134-aa9a-df4ba535abc0',
+        'in':0
+      },{
+        _id:'6fd1cc2b-a1ff-4c28-841e-a5853b1a9009',
+        routine:'Reading',
+        'goal':'',
+        'days':[true,true,true,true,true,true,true],
+        'tags':['development'],
+        'history':[{
+          'when':moment('2017-01-15T19:01:18.932Z')}],
+        'parentId':'f9bfdacb-71b0-43b0-ac9b-38e73382de5b',
+        'in':0
+      }],
+      'birthday':moment('1990-08-20T22:00:00.000Z'),
+      'firstTime':false
+    };
+
+    // console.log(state);
+    const next = reducer(state, actions.refreshTodos());
+    expect(next.habits[0].in).toEqual(1);
+    expect(next.habits[1].in).toEqual(0);
+  });
+
 });
 
 describe('refreshLifetime', () => {
