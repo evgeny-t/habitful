@@ -180,6 +180,29 @@ describe('refreshTodos', () => {
       });
   });
 
+  it(`should consider that it can be more
+    than 24h between history entries`, () => {
+    const today = moment().day(0).startOf('date').add(6, 'h');
+    const when = moment().day(-1).startOf('date').add(1, 'h');
+    const before = {
+      today,
+      habits: [{
+        days: [true, true, true, true, true, true, true],
+        history: [
+          { when: moment().day(-1).startOf('date').add(1, 'h') },
+        ],
+      }, ],
+    };
+
+    expect(reducer(before, actions.refreshTodos()))
+      .toEqual({
+        today,
+        habits: [
+          _.assign({}, before.habits[0], { in: 0 }),
+        ],
+      });
+  });
+
   it('should set `in` correctly taking startsFrom into account', () => {
     const today = moment().day(0);
     const before = {
