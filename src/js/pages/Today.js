@@ -89,7 +89,7 @@ class TodayItem extends React.Component {
           iconButtonElement={<IconButton><MoreVert /></IconButton>}
           style={TodayItem.defaultStyles.menuButton}>
           <MenuItem primaryText="Go to Habit page" />
-          <MenuItem primaryText="some menu item" />
+          {/*<MenuItem primaryText="some menu item" />*/}
         </IconMenu>
       </Paper>
       );
