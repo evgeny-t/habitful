@@ -71,7 +71,7 @@ export function refreshTodos(state) {
         return habit;
       }
 
-      let nextDoW = today.day() + (today.isSame(lastTime) ? 1 : 0);
+      let nextDoW = today.day() + (today.diff(lastTime, 'days') === 0 ? 1 : 0);
       while (!habit.days[nextDoW] && nextDoW < habit.days.length) {
         nextDoW++;
       }

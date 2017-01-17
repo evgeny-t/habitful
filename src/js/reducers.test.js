@@ -259,37 +259,36 @@ describe('refreshTodos', () => {
   it('reproduce a bug with incorrect \'in\' update', () => {
     const state = {
       today: moment('2017-01-16T22:33:47.956Z'),
-      'habits':[{
+      habits:[{
         _id:'6b193766-cbf3-4771-8784-f34aabe0fe19',
         routine:'Journaling',
-        'goal':'',
-        'days':[true,true,true,true,true,true,true],
-        'tags':['mindfulness'],
-        'history':[
+        goal:'',
+        days:[true,true,true,true,true,true,true],
+        tags:['mindfulness'],
+        history:[
           {
-            'when':moment('2017-01-15T19:01:18.932Z')
+            when: moment('2017-01-15T19:01:18.932Z')
           },
           {
-            'when':moment('2017-01-16T20:49:44.883Z')
+            when: moment('2017-01-16T20:49:44.883Z')
           }],
-        'parentId':'846ac85b-533d-4134-aa9a-df4ba535abc0',
-        'in':0
+        parentId: '846ac85b-533d-4134-aa9a-df4ba535abc0',
+        in: 0
       },{
-        _id:'6fd1cc2b-a1ff-4c28-841e-a5853b1a9009',
-        routine:'Reading',
-        'goal':'',
-        'days':[true,true,true,true,true,true,true],
-        'tags':['development'],
-        'history':[{
-          'when':moment('2017-01-15T19:01:18.932Z')}],
-        'parentId':'f9bfdacb-71b0-43b0-ac9b-38e73382de5b',
-        'in':0
+        _id: '6fd1cc2b-a1ff-4c28-841e-a5853b1a9009',
+        routine: 'Reading',
+        goal: '',
+        days: [true,true,true,true,true,true,true],
+        tags: ['development'],
+        history: [{
+          when: moment('2017-01-15T19:01:18.932Z')}],
+        parentId: 'f9bfdacb-71b0-43b0-ac9b-38e73382de5b',
+        in: 0
       }],
-      'birthday':moment('1990-08-20T22:00:00.000Z'),
-      'firstTime':false
+      birthday: moment('1990-08-20T22:00:00.000Z'),
+      firstTime: false
     };
 
-    // console.log(state);
     const next = reducer(state, actions.refreshTodos());
     expect(next.habits[0].in).toEqual(1);
     expect(next.habits[1].in).toEqual(0);
