@@ -4,7 +4,8 @@ import React from 'react';
 // import moment from 'moment';
 import _ from 'lodash';
 
-import MeasureIt from 'react-measure-it-no-ff-bug';
+// import MeasureIt from 'react-measure-it-no-ff-bug';
+import Measure from 'react-measure';
 
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -36,135 +37,157 @@ const style = {
   }
 };
 
-const HabitStatus = MeasureIt()((props) => {
-  let value = 100 / 7 * props.habit.in;
-  let progressColor;
+class HabitStatus extends React.Component {
 
-  if (props.habit.in == 0) {
-    progressColor = 'grey';
-    value = 100;
-  } else if (props.habit.in < 3) {
-    progressColor = '#F44336';
-  } else if (props.habit.in < 6) {
-    progressColor = '#FF9800';
-  } else {
-    progressColor = '#4CAF50';
-  }
-
-  const outterDivStyle = {
-    // border: '1px solid blue',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    marginBottom: 5,
-    display: 'flex',
+  state = {
+    dims: {
+      width: 300,
+    },
   };
 
-  const divStyle = {
-    // border: '1px solid red',
-    width: 90,
-    display: 'inline-block',
-  };
+  render() {
+    let value = 100 / 7 * this.props.habit.in;
+    let progressColor;
 
-  const nextTimeInStyle = {
-    marginTop: 10,
-    fontSize: 'x-small',
-    textAlign: 'center',
-  };
-
-  const inStyle = {
-    fontSize: 'x-small',
-    textAlign: 'center',
-    marginTop: 0,
-  };
-
-  const todayStyle = {
-  };
-
-  const todayIconStyle = {
-    color: 'red',
-    width: '100%',
-    height: '100%',
-    paddingTop: 20,
-  };
-
-  const calendarDivStyle = {
-    // border: '1px solid black',
-    marginRight: 10,
-    display: 'inline-block',
-  };
-
-  const dayOfWeek = props.today.day();
-
-  let startOfTheWeek = props.today.clone();
-  startOfTheWeek.day(0);
-
-  const dayOfWeekLabels = [
-    undefined, 'Mon', undefined, 'Wed', undefined, 'Fri', undefined];
-
-  const calendarWidth =
-    props.containerWidth - divStyle.width - calendarDivStyle.marginRight;
-  // day size + day padding - 2 cols
-  const cols = Math.min(14, Math.trunc(calendarWidth / (10 + 3)) - 2);
-  if (cols < 0) {
-    throw new Error('Number of column should not be negative');
-  }
-
-  const columnFirstDay = index =>
-    startOfTheWeek.clone().subtract(7 * (cols - index), 'days');
-
-  const columnLabel = (index) => {
-    const day = columnFirstDay(index);
-    return index % 2 === 0 ? `${day.date()}` : undefined;
-  };
-
-  const remapped = _.reduce(props.habit.history, (prev, next) => {
-    prev[next.when.format('YYYYMMDD')] =
-      (prev[next.when.format('YYYYMMDD')] || 0) + 1;
-    return prev;
-  }, {});
-
-  const showCell = (row, col) => {
-    if (col === cols && row > dayOfWeek) {
-      return undefined;
+    if (this.props.habit.in == 0) {
+      progressColor = 'grey';
+      value = 100;
+    } else if (this.props.habit.in < 3) {
+      progressColor = '#F44336';
+    } else if (this.props.habit.in < 6) {
+      progressColor = '#FF9800';
+    } else {
+      progressColor = '#4CAF50';
     }
 
-    const day = columnFirstDay(col).add(row, 'days');
-    return remapped[day.format('YYYYMMDD')] ? 5 : 0;
-  };
+    const outterDivStyle = {
+      // border: '1px solid blue',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      marginBottom: 5,
+      // display: 'flex',
+    };
 
-  return (
-    <div style={outterDivStyle}>
-      <div style={divStyle}>
-        {props.habit.in != 0 && (<div style={nextTimeInStyle}>next time in</div>)}
-        {props.habit.in != 0 &&
-          <CircularProgress
-            style={{ display: 'block', margin: '10px auto', }}
-            color={progressColor}
-            mode="determinate" value={value} />
+    const divStyle = {
+      // border: '1px solid red',
+      width: 90,
+      minWidth: 90,
+      display: 'inline-block',
+    };
+
+    const nextTimeInStyle = {
+      marginTop: 10,
+      fontSize: 'x-small',
+      textAlign: 'center',
+    };
+
+    const inStyle = {
+      fontSize: 'x-small',
+      textAlign: 'center',
+      marginTop: 0,
+    };
+
+    const todayStyle = {
+    };
+
+    const todayIconStyle = {
+      color: 'red',
+      width: '100%',
+      height: '100%',
+      paddingTop: 20,
+    };
+
+    const calendarDivStyle = {
+      // border: '1px solid black',
+      marginRight: 10,
+      display: 'inline-block',
+    };
+
+    const dayOfWeek = this.props.today.day();
+
+    let startOfTheWeek = this.props.today.clone();
+    startOfTheWeek.day(0);
+
+    const dayOfWeekLabels = [
+      undefined, 'Mon', undefined, 'Wed', undefined, 'Fri', undefined];
+
+    const delayed = (width) => {
+      const calendarWidth =
+        width - divStyle.width - calendarDivStyle.marginRight;
+      // day size + day padding - 2 cols
+      const cols = Math.min(14, Math.trunc(calendarWidth / (10 + 3)) - 2);
+      if (cols < 0) {
+        throw new Error('Number of column should not be negative');
+      }
+
+      const columnFirstDay = index =>
+        startOfTheWeek.clone().subtract(7 * (cols - index), 'days');
+
+      const columnLabel = (index) => {
+        const day = columnFirstDay(index);
+        return index % 2 === 0 ? `${day.date()}` : undefined;
+      };
+
+      const remapped = _.reduce(this.props.habit.history, (prev, next) => {
+        prev[next.when.format('YYYYMMDD')] =
+          (prev[next.when.format('YYYYMMDD')] || 0) + 1;
+        return prev;
+      }, {});
+
+      const showCell = (row, col) => {
+        if (col === cols && row > dayOfWeek) {
+          return undefined;
         }
-        {props.habit.in != 0 && <div style={inStyle}>{`${props.habit.in} days`}</div>}
-        {props.habit.in == 0 &&
-          <div style={todayStyle}>
-            <TodayIcon style={todayIconStyle} />
-          </div>}
-      </div>
-      <div style={calendarDivStyle}>
-        <Calendar
-          hash={`${props.habit.history.length}`}
-          today={props.today}
-          viewBoxX={-9}
-          tag='progress'
-          rows={6}
-          cols={cols}
-          daySize={10}
-          dayPadding={3}
-          rowLabel={(index) => dayOfWeekLabels[index]}
-          colLabel={columnLabel}
-          showCell={showCell}
-          />
-      </div>
-    </div>);
-});
+
+        const day = columnFirstDay(col).add(row, 'days');
+        return remapped[day.format('YYYYMMDD')] ? 5 : 0;
+      };
+
+      return {
+        cols,
+        columnLabel,
+        showCell,
+      };
+    };
+
+
+    return (
+      <Measure onMeasure={dims => this.setState({ dims })}>
+        <div style={outterDivStyle}>
+          <div style={divStyle}>
+            {this.props.habit.in != 0 && (<div style={nextTimeInStyle}>next time in</div>)}
+            {this.props.habit.in != 0 &&
+              <CircularProgress
+                style={{ display: 'block', margin: '10px auto', }}
+                color={progressColor}
+                mode="determinate" value={value} />
+            }
+            {this.props.habit.in != 0 && <div style={inStyle}>{`${this.props.habit.in} days`}</div>}
+            {this.props.habit.in == 0 &&
+              <div style={todayStyle}>
+                <TodayIcon style={todayIconStyle} />
+              </div>}
+          </div>
+          <div style={calendarDivStyle}>
+            <Calendar
+              hash={`${this.props.habit.history.length}`}
+              today={this.props.today}
+              viewBoxX={-9}
+              tag='progress'
+              rows={6}
+              cols={delayed(this.state.dims.width).cols}
+              daySize={10}
+              dayPadding={3}
+              rowLabel={(index) => dayOfWeekLabels[index]}
+              colLabel={delayed(this.state.dims.width).columnLabel}
+              showCell={delayed(this.state.dims.width).showCell}
+              />
+          </div>
+        </div>
+      </Measure>
+    );
+  }
+}
 
 HabitStatus.propTypes = {
   today: React.PropTypes.object,
