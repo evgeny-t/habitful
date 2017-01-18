@@ -189,7 +189,7 @@ describe('refreshTodos', () => {
       habits: [{
         days: [true, true, true, true, true, true, true],
         history: [
-          { when: moment().day(-1).startOf('date').add(1, 'h') },
+          { when },
         ],
       }, ],
     };
@@ -293,6 +293,54 @@ describe('refreshTodos', () => {
     expect(next.habits[0].in).toEqual(1);
     expect(next.habits[1].in).toEqual(0);
   });
+
+  it('reproduce a bug with incorrect \'in\' update 2', () => {
+    const state = {
+      today: moment('2017-01-18T18:02:17.142Z'),
+      habits:[{
+        _id:'6b193766-cbf3-4771-8784-f34aabe0fe19',
+        routine:'Journaling',
+        goal:'',
+        days:[true,true,true,true,true,true,true],
+        tags:['mindfulness'],
+        history:[
+          {when:moment('2017-01-15T19:01:18.932Z')},
+          {when:moment('2017-01-16T20:49:44.883Z')},
+          {when:moment('2017-01-17T20:11:37.469Z')}
+        ],
+        parentId:'846ac85b-533d-4134-aa9a-df4ba535abc0',
+        in:1
+      },{
+        _id:'6fd1cc2b-a1ff-4c28-841e-a5853b1a9009',
+        routine:'Reading',
+        goal:'',
+        days:[true,true,true,true,true,true,true],
+        tags:['development'],
+        history:[
+          {when:moment('2017-01-15T19:01:18.932Z')}
+        ],
+        parentId:'f9bfdacb-71b0-43b0-ac9b-38e73382de5b',
+        in:0
+      },{
+        history:[{when:moment('2017-01-17T21:17:43.805Z')}],
+        in:1,
+        days:[true,true,true,true,true,true,true,true],
+        _id:'2cfdbba8-b9fd-4021-ba66-1d357743e584',
+        goal:'Become healthier',
+        routine:'3 push-ups',
+        startsFrom:null
+      }],
+      'birthday':moment('1990-08-20T22:00:00.000Z'),
+      'firstTime':false
+    };
+
+    const next = reducer(state, actions.refreshTodos());
+    expect(next.habits[0].in).toEqual(0);
+    expect(next.habits[1].in).toEqual(0);
+    expect(next.habits[2].in).toEqual(0);
+  });
+
+
 
 });
 

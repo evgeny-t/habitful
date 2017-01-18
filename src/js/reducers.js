@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
+import moment from 'moment';
 
 export function addHabit(state, { habit }) {
   const newState = Object.assign({}, state, {
@@ -56,43 +57,46 @@ export function markRoutineDone(state, { habitId/*, now*/ }) {
 }
 
 export function refreshTodos(state) {
+  const today = moment(state.today).startOf('date');
+
   return Object.assign({}, state, {
     habits: state.habits.map(habit => {
-      const today = habit.startsFrom ?
-        (habit.startsFrom > state.today ? habit.startsFrom : state.today) :
-        state.today;
       habit = _.cloneDeep(habit);
       habit.in = null;
-      let history = habit.history || [];
-      history.sort((a, b) => a.when > b.when);
-      const lastTime = history.length ? _.last(history).when : null;
-
       if (!_.some(habit.days)) {
         return habit;
       }
 
-      let nextDoW = today.day() + (today.diff(lastTime, 'days') === 0 ? 1 : 0);
-      while (!habit.days[nextDoW] && nextDoW < habit.days.length) {
+      const startsFrom = (do {
+        if (habit.startsFrom) {
+          habit.startsFrom > today ? moment(habit.startsFrom) : today;
+        } else {
+          today;
+        }
+      }).startOf('date');
+
+      let history = habit.history || [];
+      history.sort((a, b) => a.when > b.when);
+      let lastTime = (do {
+        if (history.length) {
+          moment(_.last(history).when);
+        } else {
+          moment(0);
+        }
+      }).startOf('date');
+
+      const lastTimeWasToday = startsFrom.diff(lastTime, 'days') === 0;
+      let nextDoW = startsFrom.day() + (lastTimeWasToday ? 1 : 0);
+      while (!habit.days[nextDoW % habit.days.length] && nextDoW < 2 * habit.days.length) {
         nextDoW++;
       }
 
-      if (nextDoW >= habit.days.length) {
-        nextDoW = 0;
-        while (!habit.days[nextDoW] && nextDoW < habit.days.length) {
-          nextDoW++;
-        }
-      }
-
-      if (nextDoW >= habit.days.length) {
+      if (nextDoW >= 2 * habit.days.length) {
         // next time will be never
       } else {
-        let daySpan = nextDoW - today.day();
-        if (today.isSame(lastTime) && daySpan === 0) {
-          daySpan = 7;
-        }
 
-        habit.in = daySpan >= 0 ? daySpan : (7 + daySpan);
-        habit.in -= state.today.diff(today, 'days');
+        let daySpan = nextDoW - startsFrom.day();
+        habit.in = daySpan + startsFrom.diff(today, 'days');
       }
 
       return habit;
