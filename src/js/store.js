@@ -1,6 +1,7 @@
 'use strict';
 
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import reducer from './reducers';
 
 import ReduxThunk from 'redux-thunk';
@@ -14,4 +15,5 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export default initState => createStore(
-  reducer, initState, applyMiddleware(...middlewares));
+  reducer, initState,
+  composeWithDevTools(applyMiddleware(...middlewares)));
