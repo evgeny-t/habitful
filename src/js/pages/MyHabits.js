@@ -51,6 +51,7 @@ export default class MyHabits extends React.Component {
     params: React.PropTypes.object,
 
     onSubmitHabit: React.PropTypes.func,
+    onMarkDone: React.PropTypes.func,
   }
 
   static defaultProps = {
@@ -91,6 +92,7 @@ export default class MyHabits extends React.Component {
           habit={habit}
           allTags={allTags}
           onEditHabit={this.handleEditHabit}
+          onMarkDone={this.props.onMarkDone}
           {...other}
         />))
       .value();

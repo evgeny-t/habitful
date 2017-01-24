@@ -12,7 +12,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 // import { GridTile } from 'material-ui/GridList';
 // import IconButton from 'material-ui/IconButton';
 // import Done from 'material-ui/svg-icons/action/done';
-import TodayIcon from 'material-ui/svg-icons/action/today';
+import DoneIcon from 'material-ui/svg-icons/action/done';
 import IconButton from 'material-ui/IconButton';
 import Delete from 'material-ui/svg-icons/action/delete';
 import MoreVert from 'material-ui/svg-icons/navigation/more-vert';
@@ -91,7 +91,7 @@ class HabitStatus extends React.Component {
     };
 
     const todayIconStyle = {
-      color: 'red',
+      color: '#388E3C',
       width: '100%',
       height: '100%',
       paddingTop: 20,
@@ -165,7 +165,13 @@ class HabitStatus extends React.Component {
             {this.props.habit.in != 0 && <div style={inStyle}>{`${this.props.habit.in} days`}</div>}
             {this.props.habit.in == 0 &&
               <div style={todayStyle}>
-                <TodayIcon style={todayIconStyle} />
+                <IconButton onClick={this.props.onMarkDone}
+                  iconStyle={todayIconStyle}
+                  style={todayIconStyle}
+                  tooltip="Done!"
+                  >
+                  <DoneIcon />
+                </IconButton>
               </div>}
           </div>
           <div style={calendarDivStyle}>
@@ -192,6 +198,7 @@ class HabitStatus extends React.Component {
 HabitStatus.propTypes = {
   today: React.PropTypes.object,
   habit: React.PropTypes.object,
+  onMarkDone: React.PropTypes.func,
 };
 
 class HabitProgress extends React.Component {
@@ -212,6 +219,7 @@ class HabitProgress extends React.Component {
 
     onHabitRemove: React.PropTypes.func,
     onTagClick: React.PropTypes.func,
+    onMarkDone: React.PropTypes.func,
   }
 
   state = {
@@ -235,6 +243,10 @@ class HabitProgress extends React.Component {
 
   handleEditHabit = () => {
     this.props.onEditHabit(this.props.habit);
+  }
+
+  handleMarkDone = event => {
+    this.props.onMarkDone(event, this.props.habit);
   }
 
   renderTagsEditorPopover() {
@@ -318,6 +330,7 @@ class HabitProgress extends React.Component {
         <HabitStatus
           today={this.props.today}
           habit={this.props.habit}
+          onMarkDone={this.handleMarkDone}
         />
         <div style={tagContainerStyle}>
         {this.props.habit.tags && this.props.habit.tags.map(t =>

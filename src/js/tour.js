@@ -23,11 +23,11 @@ export default function createTour(store, actions) {
     }),
   });
 
-  tour.addStep('Routines', {
-    title: 'Complete daily routines',
-    text: 'Make sure you have completed all your daily routines.',
-    attachTo: '#drawer__menu__today right',
-  });
+  // tour.addStep('Routines', {
+  //   title: 'Complete daily routines',
+  //   text: 'Make sure you have completed all your daily routines.',
+  //   attachTo: '#drawer__menu__today right',
+  // });
 
   tour.addStep('Overview', {
     title: 'Progress in life perspective',

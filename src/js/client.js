@@ -197,6 +197,11 @@ const MyHabitsVisual = connect(
         dispatch(actions.refreshTodos());
       },
 
+      onMarkDone: (event, habit) => {
+        console.log(event, habit);
+        dispatch(actions.markRoutineDone(habit._id));
+      },
+
       ...onNavigate,
     };
   })(MyHabits);
